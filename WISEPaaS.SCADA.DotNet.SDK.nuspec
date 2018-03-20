@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>WISEPaaS.SCADA.DotNet.SDK</id>
+    <version>1.0.2</version>
+    <title>WISEPaaS.SCADA.DotNet.SDK</title>
+    <authors>Steven Li</authors>
+    <owners>Steven Li</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <projectUrl>https://nuget.org/packages/WISEPaaS.SCADA.DotNet.SDK</projectUrl>
+    <iconUrl>https://advwacloud.github.io/WISEPaaS.SCADA.DotNet.SDK/icon.png</iconUrl>
+    <description>The WISEPaaS.SCADA.DotNet.SDK package allows developers to write C# applications which access the WISE-PaaS Platform via MQTT or MQTT over the Secure WebSocket Protocol.</description>
+    <summary>The WISEPaaS.SCADA.DotNet.SDK package allows developers to write C# applications which access the WISE-PaaS Platform via MQTT or MQTT over the Secure WebSocket Protocol.</summary>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright  2018</copyright>
+    <language>en-US</language>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5.2">
+        <dependency id="Newtonsoft.Json" version="11.0.1" />
+        <dependency id="MQTTnet" version="2.7.0" />
+        <dependency id="Dapper" version="1.50.4" />
+        <dependency id="System.Data.SQLite.Core" version="1.0.108" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src=".\WISEPaaS.SCADA.DotNet.SDK\bin\Release\WISEPaaS.SCADA.DotNet.SDK.dll" target="lib\net452\WISEPaaS.SCADA.DotNet.SDK.dll" />
+    <file src=".\WISEPaaS.SCADA.DotNet.SDK\x64\SQLite.Interop.dll" target="x64\SQLite.Interop.dll" />
+    <file src=".\WISEPaaS.SCADA.DotNet.SDK\x86\SQLite.Interop.dll" target="x86\SQLite.Interop.dll" />
+  </files>
+</package>
