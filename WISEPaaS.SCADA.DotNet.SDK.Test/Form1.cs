@@ -91,17 +91,27 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
             {
                 EdgeAgentOptions options = new EdgeAgentOptions()
                 {
-                    HostName = txtHostName.Text.Trim(),
-                    Port = Convert.ToInt32( txtPort.Text.Trim() ),
-                    Username = txtUserName.Text.Trim(),
-                    Password = txtPassword.Text.Trim(),
-                    ProtocolType = Protocol.TCP,
-                    UseSecure = ckbSecure.Checked,
                     AutoReconnect = true,
                     ReconnectInterval = 1000,
                     ScadaId = txtScadaId.Text.Trim(),
                     Heartbeat = 60000,   // default is 60 seconds,
-                    DataRecover = true
+                    DataRecover = true,
+                    ConnectType = ConnectType.DCCS,
+                    UseSecure = ckbSecure.Checked,
+
+                    MQTT = new MQTTOptions()
+                    {
+                        HostName = txtHostName.Text.Trim(),
+                        Port = Convert.ToInt32( txtPort.Text.Trim() ),
+                        Username = txtUserName.Text.Trim(),
+                        Password = txtPassword.Text.Trim(),
+                        ProtocolType = Protocol.TCP
+                    },
+                    DCCS = new DCCSOptions()
+                    {
+                        CredentialKey = txtDCCSKey.Text.Trim(),
+                        APIUrl = txtDCCSAPIUrl.Text.Trim()
+                    }
                 };
 
                 _edgeAgent = new EdgeAgent( options );

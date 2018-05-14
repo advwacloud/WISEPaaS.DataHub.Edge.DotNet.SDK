@@ -6,6 +6,17 @@ using System.Threading.Tasks;
 
 namespace WISEPaaS.SCADA.DotNet.SDK
 {
+    public enum Protocol
+    {
+        TCP,
+        WebSocket,
+    }
+
+    public enum ConnectType
+    {
+        MQTT,
+        DCCS,
+    }
 
     public enum EdgeType
     {

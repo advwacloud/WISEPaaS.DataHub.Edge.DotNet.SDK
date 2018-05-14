@@ -6,7 +6,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
@@ -98,6 +102,8 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             }
         }
 
+        private bool checkValidationResult( object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors ) { return true; }
+
         private void _dataRecoverTimer_Elapsed( object sender, ElapsedEventArgs e )
         {
             if ( _mqttClient.IsConnected == false )
@@ -145,6 +151,32 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 if ( Options == null )
                     return;
 
+                if ( Options.ConnectType == ConnectType.DCCS )
+                {
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback( checkValidationResult );
+
+                    WebClient client = new WebClient();
+                    Uri uri = new Uri( new Uri( Options.DCCS.APIUrl ), "v1/serviceCredentials/" + Options.DCCS.CredentialKey );
+                    string response = client.DownloadString( uri );
+                    dynamic json = JObject.Parse( response );
+                    dynamic credential = json.credential;
+                   
+                    Options.MQTT.HostName = json.serviceHost;
+                    if ( Options.UseSecure )
+                    {
+                        Options.MQTT.Port = credential.protocols["mqtt+ssl"].port;
+                        Options.MQTT.Username = credential.protocols["mqtt+ssl"].username;
+                        Options.MQTT.Password = credential.protocols["mqtt+ssl"].password;
+                    }
+                    else
+                    {
+                        Options.MQTT.Port = credential.protocols.mqtt.port;
+                        Options.MQTT.Username = credential.protocols.mqtt.username;
+                        Options.MQTT.Password = credential.protocols.mqtt.password;
+                    }
+                }
+
                 LastWillMessage lastWillMsg = new LastWillMessage();
                 string payload = JsonConvert.SerializeObject( lastWillMsg );
                 MqttApplicationMessage msg = new MqttApplicationMessage()
@@ -158,23 +190,23 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 string clientId = "EdgeAgent_" + DateTime.Now.ToString( "HHmmssfff" );
                 var ob = new MqttClientOptionsBuilder();
                 ob.WithClientId( clientId )
-                .WithCredentials( Options.Username, Options.Password )
+                .WithCredentials( Options.MQTT.Username, Options.MQTT.Password )
                 .WithCleanSession()
                 .WithWillMessage( msg );
 
                 if ( Options.UseSecure )
                     ob.WithTls();
 
-                switch ( Options.ProtocolType )
+                switch ( Options.MQTT.ProtocolType )
                 {
                     case Protocol.TCP:
-                        ob.WithTcpServer( Options.HostName, Options.Port );
+                        ob.WithTcpServer( Options.MQTT.HostName, Options.MQTT.Port );
                         break;
                     case Protocol.WebSocket:
-                        ob.WithWebSocketServer( Options.HostName );
+                        ob.WithWebSocketServer( Options.MQTT.HostName );
                         break;
                     default:
-                        ob.WithTcpServer( Options.HostName, Options.Port );
+                        ob.WithTcpServer( Options.MQTT.HostName, Options.MQTT.Port );
                         break;
                 }
 
