@@ -291,7 +291,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                 }
                 data.DeviceList.Add( device );
             }
-            data.Timestamp = DateTime.UtcNow;
+            data.Timestamp = DateTime.Now;
 
             return data;
         }

@@ -245,6 +245,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     return false;
 
                 DataMessage msg = new DataMessage();
+                msg.Timestamp = data.Timestamp.ToUniversalTime();
                 foreach ( var device in data.DeviceList )
                 {
                     Dictionary<string, object> tags = new Dictionary<string, object>();
