@@ -256,20 +256,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     msg.D.Add( device.Id, tags );
                 }
 
-                /*var output = new ExpandoObject();
-                var d = new ExpandoObject();
-                
-                foreach ( var device in data.DeviceList )
-                {
-                    var deviceObj = new ExpandoObject();
-                    foreach ( var tag in device.TagList )
-                    {
-                        deviceObj.AddProperty( tag.Name, tag.Value );
-                    }
-                    d.AddProperty( device.Id, deviceObj );
-                }
-                output.AddProperty( "d", d );
-                output.AddProperty( "ts", data.Timestamp );*/
                 payload = JsonConvert.SerializeObject( msg );
                 return true;
             }
@@ -288,26 +274,11 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     return false;
 
                 DeviceStatusMessage msg = new DeviceStatusMessage();
-                msg.Timestamp = deviceStatus.Timestamp;
-                foreach(var device in deviceStatus.DeviceList)
-                {
-                    msg.D.DeviceList.Add( device.Id, (int)device.Status );
-                }
-                /*var output = new ExpandoObject();
-                var d = new ExpandoObject();
-
+                msg.Timestamp = deviceStatus.Timestamp.ToUniversalTime();
                 foreach ( var device in deviceStatus.DeviceList )
                 {
-                    var deviceObj = new ExpandoObject();
-                    dev
-                    foreach ( var tag in device.TagList )
-                    {
-                        deviceObj.AddProperty( tag.Name, tag.Value );
-                    }
-                    d.AddProperty( device.Id, deviceObj );
+                    msg.D.DeviceList.Add( device.Id, ( int ) device.Status );
                 }
-                output.AddProperty( "d", d );
-                output.AddProperty( "ts", deviceStatus.Timestamp );*/
                 payload = JsonConvert.SerializeObject( msg );
                 return true;
             }
