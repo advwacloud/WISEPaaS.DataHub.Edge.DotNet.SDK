@@ -1,5 +1,6 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
+using MQTTnet.Implementations;
 using MQTTnet.ManagedClient;
 using MQTTnet.Protocol;
 using Newtonsoft.Json;
@@ -73,6 +74,8 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 _dataRecoverTimer.Elapsed += _dataRecoverTimer_Elapsed;
                 _dataRecoverTimer.Enabled = true;
             }
+
+            MqttTcpChannel.CustomCertificateValidationCallback = ( x509Certificate, x509Chain, sslPolicyErrors, mqttClientTcpOptions ) => { return true; };
         }
 
         #region >>> Private Method <<<
@@ -162,6 +165,10 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             {
                 if ( _mqttClient != null && _mqttClient.IsConnected )
                     return;
+                /*{
+                    Task t = _mqttClient.StopAsync();
+                    t.Wait();
+                }*/
 
                 if ( Options == null )
                     return;
@@ -188,9 +195,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 .WithCleanSession()
                 .WithWillMessage( msg );
 
-                if ( Options.UseSecure )
-                    ob.WithTls();
-
                 switch ( Options.MQTT.ProtocolType )
                 {
                     case Protocol.TCP:
@@ -203,6 +207,9 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                         ob.WithTcpServer( Options.MQTT.HostName, Options.MQTT.Port );
                         break;
                 }
+
+                if ( Options.UseSecure )
+                    ob.WithTls();
 
                 var mob = new ManagedMqttClientOptionsBuilder()
                 .WithAutoReconnectDelay( TimeSpan.FromMilliseconds( Options.ReconnectInterval ) )
