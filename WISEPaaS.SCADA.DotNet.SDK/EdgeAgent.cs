@@ -42,37 +42,10 @@ namespace WISEPaaS.SCADA.DotNet.SDK
         private Timer _dataRecoverTimer;
 
         private EdgeAgentOptions _options;
-        public EdgeAgentOptions Options 
+        public EdgeAgentOptions Options
         {
-            get
-            {
-                return _options;
-            }
-            set
-            {
-                if ( string.IsNullOrEmpty( value.ScadaId ) == false )
-                {
-                    _configTopic = string.Format( "/wisepaas/scada/{0}/cfg", value.ScadaId );
-                    _dataTopic = string.Format( "/wisepaas/scada/{0}/data", value.ScadaId );
-                    _scadaConnTopic = string.Format( "/wisepaas/scada/{0}/conn", value.ScadaId );
-                    _deviceConnTopic = string.Format( "/wisepaas/scada/{0}/{1}/conn", value.ScadaId, value.DeviceId );
-                    _scadaCmdTopic = string.Format( "/wisepaas/scada/{0}/cmd", value.ScadaId );
-                    _deviceCmdTopic = string.Format( "/wisepaas/scada/{0}/{1}/cmd", value.ScadaId, value.DeviceId );
-                    _ackTopic = string.Format( "/wisepaas/scada/{0}/ack", value.ScadaId );
-                    _cfgAckTopic = string.Format( "/wisepaas/scada/{0}/cfgack", value.ScadaId );
-                }
-
-                if ( value.Heartbeat > 0 )
-                {
-                    if ( _heartbeatTimer == null )
-                        _heartbeatTimer = new Timer();
-
-                    _heartbeatTimer.Enabled = false;
-                    _heartbeatTimer.Interval = value.Heartbeat;
-                }
-
-                _options = value;
-            }
+            get { return _options; }
+            set { _options = value; }
         }
 
         public event EventHandler<EdgeAgentConnectedEventArgs> Connected;
@@ -102,7 +75,13 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             }
         }
 
-        private bool checkValidationResult( object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors ) { return true; }
+        #region >>> Private Method <<<
+
+        // for self-signed cert
+        private bool checkValidationResult( object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors )
+        { 
+            return true;
+        }
 
         private void _dataRecoverTimer_Elapsed( object sender, ElapsedEventArgs e )
         {
@@ -141,27 +120,20 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             _mqttClient.PublishAsync( message );
         }
 
-        public async void Connect()
+        private bool _getCredentialFromDCCS()
         {
             try
             {
-                if ( _mqttClient != null && _mqttClient.IsConnected )
-                    return;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback( checkValidationResult );
 
-                if ( Options == null )
-                    return;
-
-                if ( Options.ConnectType == ConnectType.DCCS )
+                using ( WebClient client = new WebClient() )
                 {
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback( checkValidationResult );
-
-                    WebClient client = new WebClient();
                     Uri uri = new Uri( new Uri( Options.DCCS.APIUrl ), "v1/serviceCredentials/" + Options.DCCS.CredentialKey );
                     string response = client.DownloadString( uri );
                     dynamic json = JObject.Parse( response );
                     dynamic credential = json.credential;
-                   
+
                     Options.MQTT.HostName = json.serviceHost;
                     if ( Options.UseSecure )
                     {
@@ -175,6 +147,28 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                         Options.MQTT.Username = credential.protocols.mqtt.username;
                         Options.MQTT.Password = credential.protocols.mqtt.password;
                     }
+                }
+                return true;
+            }
+            catch ( Exception ex )
+            {
+                return false;
+            }
+        }
+
+        private void _connect()
+        {
+            try
+            {
+                if ( _mqttClient != null && _mqttClient.IsConnected )
+                    return;
+
+                if ( Options == null )
+                    return;
+
+                if ( Options.ConnectType == ConnectType.DCCS )
+                {
+                    _getCredentialFromDCCS();
                 }
 
                 LastWillMessage lastWillMsg = new LastWillMessage();
@@ -215,7 +209,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 .WithClientOptions( ob.Build() )
                 .Build();
 
-                await _mqttClient.StartAsync( mob );
+                _mqttClient.StartAsync( mob );
             }
             catch ( Exception ex )
             {
@@ -223,7 +217,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             }
         }
 
-        public async void Disconnect()
+        private void _disconnect()
         {
             try
             {
@@ -240,7 +234,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     .WithRetainFlag( true )
                     .Build();
 
-                await _mqttClient.PublishAsync( message ).ContinueWith( t => _mqttClient.StopAsync() );
+                _mqttClient.PublishAsync( message ).ContinueWith( t => _mqttClient.StopAsync() );
             }
             catch ( Exception ex )
             {
@@ -248,7 +242,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             }
         }
 
-        public async Task<bool> UploadConfig( ActionType action, EdgeConfig edgeConfig )
+        private bool _uploadConfig( ActionType action, EdgeConfig edgeConfig )
         {
             try
             {
@@ -272,7 +266,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                         result = Converter.ConvertDeleteConfig( edgeConfig, ref payload );
                         break;
                 }
-                
+
                 if ( result )
                 {
                     var message = new MqttApplicationMessageBuilder()
@@ -282,7 +276,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     .WithRetainFlag( false )
                     .Build();
 
-                    await _mqttClient.PublishAsync( message );
+                    _mqttClient.PublishAsync( message );
                 }
                 return result;
             }
@@ -293,10 +287,10 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             }
         }
 
-        public async Task<bool> SendData( EdgeData data )
+        private bool _sendData( EdgeData data )
         {
             try
-            {       
+            {
                 if ( data == null )
                     return false;
 
@@ -318,7 +312,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     .WithRetainFlag( false )
                     .Build();
 
-                    await _mqttClient.PublishAsync( message );
+                    _mqttClient.PublishAsync( message );
                 }
 
                 //_logger.Info( "Send Data: {0}", payload );
@@ -332,7 +326,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             }
         }
 
-        public async Task<bool> SendDeviceStatus( EdgeDeviceStatus deviceStatus )
+        private bool _sendDeviceStatus( EdgeDeviceStatus deviceStatus )
         {
             try
             {
@@ -353,7 +347,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     .WithRetainFlag( true )
                     .Build();
 
-                    await _mqttClient.PublishAsync( message );
+                    _mqttClient.PublishAsync( message );
                 }
                 return result;
             }
@@ -373,14 +367,14 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
                 string payload = Encoding.UTF8.GetString( e.ApplicationMessage.Payload );
                 //_logger.Info( "Recieved Message: {0}", payload );
-                
+
                 JObject jObj = JObject.Parse( payload );
                 if ( jObj == null || jObj["d"] == null )
                     return;
 
                 if ( jObj["d"]["Cmd"] != null )
                 {
-                    string cmd = (string)jObj["d"]["Cmd"];
+                    string cmd = ( string ) jObj["d"]["Cmd"];
 
                     var message = new BaseMessage();
                     switch ( cmd )
@@ -404,7 +398,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 }
                 else if ( jObj["d"]["Cfg"] != null )
                 {
-                    string cmd = (string)jObj["d"]["Cfg"];
+                    string cmd = ( string ) jObj["d"]["Cfg"];
 
                     var message = JsonConvert.DeserializeObject<ConfigAckMessage>( payload );
                     MessageReceived( sender, new MessageReceivedEventArgs( MessageType.ConfigAck, message ) );
@@ -421,6 +415,27 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             try
             {
                 //_logger.Info( "MQTT Connect Success !" );
+
+                if ( string.IsNullOrEmpty( _options.ScadaId ) == false )
+                {
+                    _configTopic = string.Format( "/wisepaas/scada/{0}/cfg", _options.ScadaId );
+                    _dataTopic = string.Format( "/wisepaas/scada/{0}/data", _options.ScadaId );
+                    _scadaConnTopic = string.Format( "/wisepaas/scada/{0}/conn",_options.ScadaId );
+                    _deviceConnTopic = string.Format( "/wisepaas/scada/{0}/{1}/conn", _options.ScadaId, _options.DeviceId );
+                    _scadaCmdTopic = string.Format( "/wisepaas/scada/{0}/cmd", _options.ScadaId );
+                    _deviceCmdTopic = string.Format( "/wisepaas/scada/{0}/{1}/cmd", _options.ScadaId, _options.DeviceId );
+                    _ackTopic = string.Format( "/wisepaas/scada/{0}/ack", _options.ScadaId );
+                    _cfgAckTopic = string.Format( "/wisepaas/scada/{0}/cfgack", _options.ScadaId );
+                }
+
+                if ( _options.Heartbeat > 0 )
+                {
+                    if ( _heartbeatTimer == null )
+                        _heartbeatTimer = new Timer();
+
+                    _heartbeatTimer.Enabled = false;
+                    _heartbeatTimer.Interval = _options.Heartbeat;
+                }
 
                 if ( Connected != null )
                     Connected( sender, new EdgeAgentConnectedEventArgs( e.IsSessionPresent ) );
@@ -461,9 +476,13 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             try
             {
                 //_logger.Info( "MQTT Disonnected !" );
-
+                Console.WriteLine( "Disonnected" );
                 if ( Disconnected != null )
                     Disconnected( sender, new DisconnectedEventArgs( e.ClientWasConnected, e.Exception ) );
+
+                // refetch MQTT credential from DCCS
+                if ( _options.ConnectType == ConnectType.DCCS )
+                    _getCredentialFromDCCS();
 
                 // stop heartbeat timer
                 _heartbeatTimer.Enabled = false;
@@ -474,5 +493,35 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             }
         }
 
+        #endregion
+
+        #region >>> Public Method <<<
+
+        public Task Connect()
+        {
+            return Task.Run( () => _connect() );
+        }
+
+        public Task Disconnect()
+        {
+            return Task.Run( () => _disconnect() );
+        }
+
+        public Task<bool> UploadConfig( ActionType action, EdgeConfig edgeConfig )
+        {
+            return Task.Run( () => _uploadConfig( action, edgeConfig ) );
+        }
+
+        public Task<bool> SendData( EdgeData data )
+        {
+            return Task.Run( () => _sendData( data ) );
+        }
+
+        public Task<bool> SendDeviceStatus( EdgeDeviceStatus deviceStatus )
+        {
+            return Task.Run( () => _sendDeviceStatus( deviceStatus ) );
+        }
+
+        #endregion
     }
 }
