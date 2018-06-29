@@ -96,29 +96,62 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                     ScadaId = txtScadaId.Text.Trim(),
                     Heartbeat = 60000,   // default is 60 seconds,
                     DataRecover = true,
-                    ConnectType = ConnectType.DCCS,
-                    UseSecure = ckbSecure.Checked,
-
-                    MQTT = new MQTTOptions()
-                    {
-                        HostName = txtHostName.Text.Trim(),
-                        Port = Convert.ToInt32( txtPort.Text.Trim() ),
-                        Username = txtUserName.Text.Trim(),
-                        Password = txtPassword.Text.Trim(),
-                        ProtocolType = Protocol.TCP
-                    },
-                    DCCS = new DCCSOptions()
-                    {
-                        CredentialKey = txtDCCSKey.Text.Trim(),
-                        APIUrl = txtDCCSAPIUrl.Text.Trim()
-                    }
+                    ConnectType = ( string.IsNullOrEmpty( txtDCCSKey.Text ) == false ) ? ConnectType.DCCS : ConnectType.MQTT,
+                    UseSecure = ckbSecure.Checked
                 };
+
+                switch ( options.ConnectType )
+                {
+                    case ConnectType.DCCS:
+                        options.DCCS = new DCCSOptions()
+                        {
+                            CredentialKey = txtDCCSKey.Text.Trim(),
+                            APIUrl = txtDCCSAPIUrl.Text.Trim()
+                        };
+                        break;
+                    case ConnectType.MQTT:
+                        options.MQTT = new MQTTOptions()
+                        {
+                            HostName = txtHostName.Text.Trim(),
+                            Port = Convert.ToInt32( txtPort.Text.Trim() ),
+                            Username = txtUserName.Text.Trim(),
+                            Password = txtPassword.Text.Trim(),
+                            ProtocolType = Protocol.TCP
+                        };
+                        break;
+                }
 
                 _edgeAgent = new EdgeAgent( options );
 
                 _edgeAgent.Connected += _edgeAgent_Connected;
                 _edgeAgent.Disconnected += _edgeAgent_Disconnected;
                 _edgeAgent.MessageReceived += _edgeAgent_MessageReceived;
+            }
+            else
+            {
+                _edgeAgent.Options.ScadaId = txtScadaId.Text.Trim();
+                _edgeAgent.Options.ConnectType = ( string.IsNullOrEmpty( txtDCCSKey.Text ) == false ) ? ConnectType.DCCS : ConnectType.MQTT;
+                _edgeAgent.Options.UseSecure = ckbSecure.Checked;
+                switch ( _edgeAgent.Options.ConnectType )
+                {
+                    case ConnectType.DCCS:
+                        _edgeAgent.Options.DCCS = new DCCSOptions()
+                        {
+                            CredentialKey = txtDCCSKey.Text.Trim(),
+                            APIUrl = txtDCCSAPIUrl.Text.Trim()
+                        };
+                        break;
+                    case ConnectType.MQTT:
+                        _edgeAgent.Options.MQTT = new MQTTOptions()
+                        {
+                            HostName = txtHostName.Text.Trim(),
+                            Port = Convert.ToInt32( txtPort.Text.Trim() ),
+                            Username = txtUserName.Text.Trim(),
+                            Password = txtPassword.Text.Trim(),
+                            ProtocolType = Protocol.TCP
+                        };
+                        break;
+                }
             }
 
             _edgeAgent.Connect();
