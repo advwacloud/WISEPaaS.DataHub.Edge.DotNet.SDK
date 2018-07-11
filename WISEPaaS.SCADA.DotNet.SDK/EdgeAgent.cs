@@ -49,6 +49,11 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             set { _options = value; }
         }
 
+        public bool IsConnected
+        {
+            get { return _mqttClient.IsConnected; }
+        }
+
         public event EventHandler<EdgeAgentConnectedEventArgs> Connected;
         public event EventHandler<DisconnectedEventArgs> Disconnected;
         public event EventHandler<MessageReceivedEventArgs> MessageReceived;
