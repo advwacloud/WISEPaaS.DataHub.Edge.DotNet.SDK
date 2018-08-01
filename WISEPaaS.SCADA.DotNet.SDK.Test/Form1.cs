@@ -272,6 +272,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
             if ( _edgeAgent == null )
                 return;
 
+            timer1.Interval = ( int ) numDataFreq.Value * 1000;
             timer1.Enabled = true;
         }
 
@@ -311,7 +312,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                     EdgeData.Tag aTag = new EdgeData.Tag()
                     {
                         Name = "ATag" + j,
-                        Value = Math.Round(random.NextDouble(), 3)
+                        Value = random.Next( 100 )
                     };
                     device.TagList.Add( aTag );
                 }

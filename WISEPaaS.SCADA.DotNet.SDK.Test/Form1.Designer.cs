@@ -30,6 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.numTTagCount = new System.Windows.Forms.NumericUpDown();
+            this.lblTTagCount = new System.Windows.Forms.Label();
+            this.numDTagCount = new System.Windows.Forms.NumericUpDown();
+            this.lblDTagCount = new System.Windows.Forms.Label();
+            this.numATagCount = new System.Windows.Forms.NumericUpDown();
+            this.lblATagCount = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.lblDCCSKey = new System.Windows.Forms.Label();
@@ -61,24 +67,23 @@
             this.lblDeviceCount = new System.Windows.Forms.Label();
             this.numDeviceCount = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.numTTagCount = new System.Windows.Forms.NumericUpDown();
-            this.lblTTagCount = new System.Windows.Forms.Label();
-            this.numDTagCount = new System.Windows.Forms.NumericUpDown();
-            this.lblDTagCount = new System.Windows.Forms.Label();
-            this.numATagCount = new System.Windows.Forms.NumericUpDown();
-            this.lblATagCount = new System.Windows.Forms.Label();
+            this.lblDataFreq = new System.Windows.Forms.Label();
+            this.numDataFreq = new System.Windows.Forms.NumericUpDown();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTTagCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numDTagCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numATagCount)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDeviceCount)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numTTagCount)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numDTagCount)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numATagCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numDataFreq)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lblDataFreq);
+            this.groupBox2.Controls.Add(this.numDataFreq);
             this.groupBox2.Controls.Add(this.numTTagCount);
             this.groupBox2.Controls.Add(this.lblTTagCount);
             this.groupBox2.Controls.Add(this.numDTagCount);
@@ -107,6 +112,93 @@
             this.groupBox2.Size = new System.Drawing.Size(812, 481);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
+            // 
+            // numTTagCount
+            // 
+            this.numTTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.numTTagCount.Location = new System.Drawing.Point(364, 438);
+            this.numTTagCount.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.numTTagCount.Name = "numTTagCount";
+            this.numTTagCount.Size = new System.Drawing.Size(120, 29);
+            this.numTTagCount.TabIndex = 50;
+            this.numTTagCount.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // lblTTagCount
+            // 
+            this.lblTTagCount.AutoSize = true;
+            this.lblTTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblTTagCount.Location = new System.Drawing.Point(360, 415);
+            this.lblTTagCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTTagCount.Name = "lblTTagCount";
+            this.lblTTagCount.Size = new System.Drawing.Size(124, 20);
+            this.lblTTagCount.TabIndex = 49;
+            this.lblTTagCount.Text = "Text Tag Count";
+            // 
+            // numDTagCount
+            // 
+            this.numDTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.numDTagCount.Location = new System.Drawing.Point(185, 438);
+            this.numDTagCount.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.numDTagCount.Name = "numDTagCount";
+            this.numDTagCount.Size = new System.Drawing.Size(120, 29);
+            this.numDTagCount.TabIndex = 48;
+            this.numDTagCount.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // lblDTagCount
+            // 
+            this.lblDTagCount.AutoSize = true;
+            this.lblDTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblDTagCount.Location = new System.Drawing.Point(181, 415);
+            this.lblDTagCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDTagCount.Name = "lblDTagCount";
+            this.lblDTagCount.Size = new System.Drawing.Size(153, 20);
+            this.lblDTagCount.TabIndex = 47;
+            this.lblDTagCount.Text = "Discrete Tag Count";
+            // 
+            // numATagCount
+            // 
+            this.numATagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.numATagCount.Location = new System.Drawing.Point(25, 438);
+            this.numATagCount.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.numATagCount.Name = "numATagCount";
+            this.numATagCount.Size = new System.Drawing.Size(120, 29);
+            this.numATagCount.TabIndex = 46;
+            this.numATagCount.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // lblATagCount
+            // 
+            this.lblATagCount.AutoSize = true;
+            this.lblATagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblATagCount.Location = new System.Drawing.Point(22, 415);
+            this.lblATagCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblATagCount.Name = "lblATagCount";
+            this.lblATagCount.Size = new System.Drawing.Size(146, 20);
+            this.lblATagCount.TabIndex = 45;
+            this.lblATagCount.Text = "Analog Tag Count";
             // 
             // tabControl1
             // 
@@ -428,92 +520,27 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // numTTagCount
+            // lblDataFreq
             // 
-            this.numTTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.numTTagCount.Location = new System.Drawing.Point(364, 438);
-            this.numTTagCount.Maximum = new decimal(new int[] {
-            999999,
+            this.lblDataFreq.AutoSize = true;
+            this.lblDataFreq.Location = new System.Drawing.Point(521, 417);
+            this.lblDataFreq.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDataFreq.Name = "lblDataFreq";
+            this.lblDataFreq.Size = new System.Drawing.Size(127, 20);
+            this.lblDataFreq.TabIndex = 51;
+            this.lblDataFreq.Text = "Data Frequency";
+            // 
+            // numDataFreq
+            // 
+            this.numDataFreq.Location = new System.Drawing.Point(522, 440);
+            this.numDataFreq.Name = "numDataFreq";
+            this.numDataFreq.Size = new System.Drawing.Size(98, 29);
+            this.numDataFreq.TabIndex = 52;
+            this.numDataFreq.Value = new decimal(new int[] {
+            1,
             0,
             0,
             0});
-            this.numTTagCount.Name = "numTTagCount";
-            this.numTTagCount.Size = new System.Drawing.Size(120, 29);
-            this.numTTagCount.TabIndex = 50;
-            this.numTTagCount.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            // 
-            // lblTTagCount
-            // 
-            this.lblTTagCount.AutoSize = true;
-            this.lblTTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.lblTTagCount.Location = new System.Drawing.Point(360, 415);
-            this.lblTTagCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblTTagCount.Name = "lblTTagCount";
-            this.lblTTagCount.Size = new System.Drawing.Size(124, 20);
-            this.lblTTagCount.TabIndex = 49;
-            this.lblTTagCount.Text = "Text Tag Count";
-            // 
-            // numDTagCount
-            // 
-            this.numDTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.numDTagCount.Location = new System.Drawing.Point(185, 438);
-            this.numDTagCount.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.numDTagCount.Name = "numDTagCount";
-            this.numDTagCount.Size = new System.Drawing.Size(120, 29);
-            this.numDTagCount.TabIndex = 48;
-            this.numDTagCount.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            // 
-            // lblDTagCount
-            // 
-            this.lblDTagCount.AutoSize = true;
-            this.lblDTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.lblDTagCount.Location = new System.Drawing.Point(181, 415);
-            this.lblDTagCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblDTagCount.Name = "lblDTagCount";
-            this.lblDTagCount.Size = new System.Drawing.Size(153, 20);
-            this.lblDTagCount.TabIndex = 47;
-            this.lblDTagCount.Text = "Discrete Tag Count";
-            // 
-            // numATagCount
-            // 
-            this.numATagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.numATagCount.Location = new System.Drawing.Point(25, 438);
-            this.numATagCount.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.numATagCount.Name = "numATagCount";
-            this.numATagCount.Size = new System.Drawing.Size(120, 29);
-            this.numATagCount.TabIndex = 46;
-            this.numATagCount.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            // 
-            // lblATagCount
-            // 
-            this.lblATagCount.AutoSize = true;
-            this.lblATagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.lblATagCount.Location = new System.Drawing.Point(22, 415);
-            this.lblATagCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblATagCount.Name = "lblATagCount";
-            this.lblATagCount.Size = new System.Drawing.Size(146, 20);
-            this.lblATagCount.TabIndex = 45;
-            this.lblATagCount.Text = "Analog Tag Count";
             // 
             // Form1
             // 
@@ -528,15 +555,16 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTTagCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numDTagCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numATagCount)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDeviceCount)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numTTagCount)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numDTagCount)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numATagCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numDataFreq)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -581,6 +609,8 @@
         private System.Windows.Forms.Label lblDTagCount;
         private System.Windows.Forms.NumericUpDown numATagCount;
         private System.Windows.Forms.Label lblATagCount;
+        private System.Windows.Forms.Label lblDataFreq;
+        private System.Windows.Forms.NumericUpDown numDataFreq;
 
     }
 }
