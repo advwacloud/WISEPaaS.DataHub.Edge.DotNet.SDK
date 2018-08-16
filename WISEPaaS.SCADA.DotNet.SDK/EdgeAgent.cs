@@ -193,7 +193,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     Topic = string.Format( MQTTTopic.ScadaConnTopic, Options.ScadaId )
                 };
 
-                string clientId = "EdgeAgent_" + DateTime.Now.ToString( "HHmmssfff" );
+                string clientId = "EdgeAgent_" + Guid.NewGuid().ToString( "N" );
                 var ob = new MqttClientOptionsBuilder();
                 ob.WithClientId( clientId )
                 .WithCredentials( Options.MQTT.Username, Options.MQTT.Password )
@@ -413,7 +413,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     string cmd = ( string ) jObj["d"]["Cfg"];
 
                     var message = JsonConvert.DeserializeObject<ConfigAckMessage>( payload );
-                    MessageReceived( sender, new MessageReceivedEventArgs( MessageType.ConfigAck, message ) );
+                    MessageReceived( this, new MessageReceivedEventArgs( MessageType.ConfigAck, message ) );
                 }
             }
             catch ( Exception ex )
@@ -450,7 +450,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 }
 
                 if ( Connected != null )
-                    Connected( sender, new EdgeAgentConnectedEventArgs( e.IsSessionPresent ) );
+                    Connected( this, new EdgeAgentConnectedEventArgs( e.IsSessionPresent ) );
 
                 // subscribe
                 string cmdTopic = string.Empty;
@@ -490,7 +490,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 //_logger.Info( "MQTT Disonnected !" );
                 Console.WriteLine( "Disonnected" );
                 if ( Disconnected != null )
-                    Disconnected( sender, new DisconnectedEventArgs( e.ClientWasConnected, e.Exception ) );
+                    Disconnected( this, new DisconnectedEventArgs( e.ClientWasConnected, e.Exception ) );
 
                 // refetch MQTT credential from DCCS
                 if ( _options.ConnectType == ConnectType.DCCS )
