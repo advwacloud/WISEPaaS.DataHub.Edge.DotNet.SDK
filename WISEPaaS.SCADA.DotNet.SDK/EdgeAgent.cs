@@ -34,8 +34,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
         private string _dataTopic;
         private string _scadaConnTopic;
         private string _deviceConnTopic;
-        private string _scadaCmdTopic;
-        private string _deviceCmdTopic;
+        private string _cmdTopic;
         private string _ackTopic;
         private string _cfgAckTopic;
 
@@ -245,7 +244,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     .WithAtLeastOnceQoS()
                     .WithRetainFlag( true )
                     .Build();
-
+                
                 _mqttClient.PublishAsync( message ).ContinueWith( t => _mqttClient.StopAsync() );
             }
             catch ( Exception ex )
@@ -430,14 +429,19 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
                 if ( string.IsNullOrEmpty( _options.ScadaId ) == false )
                 {
+                    string scadaCmdTopic = string.Format( "/wisepaas/scada/{0}/cmd", _options.ScadaId );
+                    string deviceCmdTopic = string.Format( "/wisepaas/scada/{0}/{1}/cmd", _options.ScadaId, _options.DeviceId );
+
                     _configTopic = string.Format( "/wisepaas/scada/{0}/cfg", _options.ScadaId );
                     _dataTopic = string.Format( "/wisepaas/scada/{0}/data", _options.ScadaId );
-                    _scadaConnTopic = string.Format( "/wisepaas/scada/{0}/conn",_options.ScadaId );
+                    _scadaConnTopic = string.Format( "/wisepaas/scada/{0}/conn", _options.ScadaId );
                     _deviceConnTopic = string.Format( "/wisepaas/scada/{0}/{1}/conn", _options.ScadaId, _options.DeviceId );
-                    _scadaCmdTopic = string.Format( "/wisepaas/scada/{0}/cmd", _options.ScadaId );
-                    _deviceCmdTopic = string.Format( "/wisepaas/scada/{0}/{1}/cmd", _options.ScadaId, _options.DeviceId );
                     _ackTopic = string.Format( "/wisepaas/scada/{0}/ack", _options.ScadaId );
                     _cfgAckTopic = string.Format( "/wisepaas/scada/{0}/cfgack", _options.ScadaId );
+                    if ( _options.Type == EdgeType.Gatway )
+                        _cmdTopic = scadaCmdTopic;
+                    else
+                        _cmdTopic = deviceCmdTopic;
                 }
 
                 if ( _options.Heartbeat > 0 )
@@ -453,13 +457,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     Connected( this, new EdgeAgentConnectedEventArgs( e.IsSessionPresent ) );
 
                 // subscribe
-                string cmdTopic = string.Empty;
-                if ( _options.Type == EdgeType.Gatway )
-                    cmdTopic = _scadaCmdTopic;
-                else
-                    cmdTopic = _deviceCmdTopic;
-
-                _mqttClient.SubscribeAsync( new TopicFilterBuilder().WithTopic( cmdTopic ).WithAtLeastOnceQoS().Build() );
+                _mqttClient.SubscribeAsync( new TopicFilterBuilder().WithTopic( _cmdTopic ).WithAtLeastOnceQoS().Build() );
                 _mqttClient.SubscribeAsync( new TopicFilterBuilder().WithTopic( _ackTopic ).WithAtLeastOnceQoS().Build() );
 
                 // publish
