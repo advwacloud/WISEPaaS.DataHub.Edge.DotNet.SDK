@@ -39,15 +39,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                     break;
                 /*case MessageType.WriteConfig:
                     break;*/
-                case MessageType.DataOn:
-                    DataOnCommandMessage dataOnMsg = (DataOnCommandMessage)e.Message;
-                    EdgeData data = prepareData();
-                    bool result = _edgeAgent.SendData( data ).Result;
-                    break;
-                case MessageType.DataOff:
-                    DataOffCommandMessage dataOffMsg = (DataOffCommandMessage)e.Message;
-                    timer1.Enabled = false;
-                    break;
                 case MessageType.ConfigAck:
                     ConfigAckMessage cfgAckMsg = (ConfigAckMessage)e.Message;
                     MessageBox.Show( string.Format( "Upload Config Result: {0}", cfgAckMsg.D.Cfg.ToString() ) );

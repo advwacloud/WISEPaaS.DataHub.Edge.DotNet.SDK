@@ -397,14 +397,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                         case "WC":
                             MessageReceived( sender, new MessageReceivedEventArgs( MessageType.WriteConfig, message ) );
                             break;
-                        case "DOn":
-                            message = JsonConvert.DeserializeObject<DataOnCommandMessage>( payload );
-                            MessageReceived( sender, new MessageReceivedEventArgs( MessageType.DataOn, message ) );
-                            break;
-                        case "DOf":
-                            message = JsonConvert.DeserializeObject<DataOffCommandMessage>( payload );
-                            MessageReceived( sender, new MessageReceivedEventArgs( MessageType.DataOff, message ) );
-                            break;
                     }
                 }
                 else if ( jObj["d"]["Cfg"] != null )

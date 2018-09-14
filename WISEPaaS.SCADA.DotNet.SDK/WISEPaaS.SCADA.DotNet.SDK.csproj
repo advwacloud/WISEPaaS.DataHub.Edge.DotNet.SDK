@@ -96,8 +96,6 @@
     <Compile Include="Model\MQTTMessage\DataMessage.cs" />
     <Compile Include="Model\MQTTMessage\DeviceStatusMessage.cs" />
     <Compile Include="Model\MQTTMessage\WriteValueCommandMessage.cs" />
-    <Compile Include="Model\MQTTMessage\DataOnCommandMessage.cs" />
-    <Compile Include="Model\MQTTMessage\DataOffCommandMessage.cs" />
     <Compile Include="Model\MQTTMessage\HeartbeatMessage.cs" />
     <Compile Include="Model\MQTTMessage\ConnectMessage.cs" />
     <Compile Include="Model\MQTTMessage\DisconnectMessage.cs" />
