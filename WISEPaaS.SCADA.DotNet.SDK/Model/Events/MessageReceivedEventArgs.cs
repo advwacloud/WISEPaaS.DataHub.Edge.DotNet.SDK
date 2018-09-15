@@ -9,7 +9,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
     public class MessageReceivedEventArgs : EventArgs
     {
         private MessageType _type;
-        private BaseMessage _message;
+        private object _message;
 
         public MessageType Type
         {
@@ -19,7 +19,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
             }
         }
 
-        public BaseMessage Message
+        public object Message
         {
             get
             {
@@ -27,7 +27,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
             }
         }
 
-        public MessageReceivedEventArgs( MessageType type, BaseMessage message )
+        public MessageReceivedEventArgs( MessageType type, object message )
         {
             _type = type;
             _message = message;

@@ -4,9 +4,12 @@ using MQTTnet.Implementations;
 using MQTTnet.ManagedClient;
 using MQTTnet.Protocol;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -27,7 +30,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
         private ManagedMqttClient _mqttClient;
         private DataRecoverHelper _recoverHelper;
-        
+
         //private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         private string _configTopic;
@@ -86,7 +89,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
         // for self-signed cert
         private bool checkValidationResult( object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors )
-        { 
+        {
             return true;
         }
 
@@ -244,7 +247,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     .WithAtLeastOnceQoS()
                     .WithRetainFlag( true )
                     .Build();
-                
+
                 _mqttClient.PublishAsync( message ).ContinueWith( t => _mqttClient.StopAsync() );
             }
             catch ( Exception ex )
@@ -383,33 +386,51 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 if ( jObj == null || jObj["d"] == null )
                     return;
 
+                dynamic obj = jObj as dynamic;
                 if ( jObj["d"]["Cmd"] != null )
                 {
-                    string cmd = ( string ) jObj["d"]["Cmd"];
-
-                    var message = new BaseMessage();
-                    switch ( cmd )
+                    switch ( (string) obj.d.Cmd )
                     {
                         case "WV":
-                            message = JsonConvert.DeserializeObject<WriteValueCommandMessage>( payload );
-                            MessageReceived( sender, new MessageReceivedEventArgs( MessageType.WriteValue, message ) );
+                            WriteValueCommand wvcMsg = new WriteValueCommand();
+                            foreach ( JProperty devObj in obj.d.Val )
+                            {
+                                WriteValueCommand.Device device = new WriteValueCommand.Device();
+                                device.Id = devObj.Name;
+                                foreach ( JProperty tagObj in devObj.Value )
+                                {
+                                    WriteValueCommand.Tag tag = new WriteValueCommand.Tag();
+                                    tag.Name = tagObj.Name;
+                                    tag.Value = tagObj.Value;
+                                    device.TagList.Add( tag );
+                                }
+                                wvcMsg.DeviceList.Add( device );
+                            }
+                            //message = JsonConvert.DeserializeObject<WriteValueCommandMessage>( payload );
+                            MessageReceived( sender, new MessageReceivedEventArgs( MessageType.WriteValue, wvcMsg ) );
                             break;
                         case "WC":
-                            MessageReceived( sender, new MessageReceivedEventArgs( MessageType.WriteConfig, message ) );
+                            //MessageReceived( sender, new MessageReceivedEventArgs( MessageType.WriteConfig, message ) );
+                            break;
+                        case "TSyn":
+                            TimeSyncCommand tscMsg = new TimeSyncCommand();
+                            DateTime miniDateTime = new DateTime( 1970, 1, 1, 0, 0, 0, 0 );
+                            tscMsg.UTCTime = miniDateTime.AddSeconds( obj.d.UTC.Value );
+                            MessageReceived( sender, new MessageReceivedEventArgs( MessageType.TimeSync, tscMsg ) );
                             break;
                     }
                 }
                 else if ( jObj["d"]["Cfg"] != null )
                 {
-                    string cmd = ( string ) jObj["d"]["Cfg"];
-
-                    var message = JsonConvert.DeserializeObject<ConfigAckMessage>( payload );
-                    MessageReceived( this, new MessageReceivedEventArgs( MessageType.ConfigAck, message ) );
+                    ConfigAck ackMsg = new ConfigAck();
+                    ackMsg.Result = Convert.ToBoolean( obj.d.Cfg.Value );
+                    MessageReceived( this, new MessageReceivedEventArgs( MessageType.ConfigAck, ackMsg ) );
                 }
             }
             catch ( Exception ex )
             {
                 //_logger.Error( ex.ToString() );
+                Console.WriteLine( ex.ToString() );
             }
         }
 

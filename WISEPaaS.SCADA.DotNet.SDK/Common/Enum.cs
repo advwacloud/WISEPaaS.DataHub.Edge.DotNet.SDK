@@ -26,11 +26,9 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
     public enum MessageType
     {
-        DataOn = 0,
-        DataOff,
-        WriteValue,
+        WriteValue = 0,
         WriteConfig,
-        //TimeSync,
+        TimeSync,
         ConfigAck
     }
 

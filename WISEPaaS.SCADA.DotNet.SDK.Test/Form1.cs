@@ -30,18 +30,25 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
             switch ( e.Type )
             {
                 case MessageType.WriteValue:
-                    WriteValueCommandMessage wvCmdMsg = (WriteValueCommandMessage)e.Message;
-                    foreach ( var item in wvCmdMsg.D.Val )
+                    WriteValueCommand wvcMsg = ( WriteValueCommand ) e.Message;
+                    foreach ( var device in wvcMsg.DeviceList )
                     {
-                        Console.Write( "Tag: {0}, ", item.Key );
-                        Console.WriteLine( "Value: {0}", item.Value );
+                        Console.WriteLine( "DeviceId: {0}", device.Id );
+                        foreach ( var tag in device.TagList )
+                        {
+                            Console.WriteLine( "TagName: {0}, Value: {1}", tag.Name, tag.Value.ToString() );
+                        }
                     }
                     break;
                 /*case MessageType.WriteConfig:
                     break;*/
+                case MessageType.TimeSync:  // when received this message
+                    TimeSyncCommand tscMsg = ( TimeSyncCommand ) e.Message;
+                    Console.WriteLine( "UTC Time: {0}", tscMsg.UTCTime.ToString() );
+                    break;
                 case MessageType.ConfigAck:
-                    ConfigAckMessage cfgAckMsg = (ConfigAckMessage)e.Message;
-                    MessageBox.Show( string.Format( "Upload Config Result: {0}", cfgAckMsg.D.Cfg.ToString() ) );
+                    ConfigAck cfgAckMsg = ( ConfigAck ) e.Message;
+                    MessageBox.Show( string.Format( "Upload Config Result: {0}", cfgAckMsg.Result.ToString() ) );
                     break;
             }
         }
@@ -50,7 +57,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
         {
             if ( this.lblStatus.InvokeRequired )
             {
-                BeginInvoke( (MethodInvoker)delegate()
+                BeginInvoke( ( MethodInvoker ) delegate()
                 {
                     lblStatus.Text = "DISCONNECTED";
                     lblStatus.BackColor = Color.Silver;
@@ -62,7 +69,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
         {
             if ( this.lblStatus.InvokeRequired )
             {
-                BeginInvoke( (MethodInvoker)delegate()
+                BeginInvoke( ( MethodInvoker ) delegate()
                 {
                     lblStatus.Text = "CONNECTED";
                     lblStatus.BackColor = Color.Green;
@@ -72,9 +79,9 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
 
         private void btnConnect_Click( object sender, EventArgs e )
         {
-            if ( string.IsNullOrEmpty(txtScadaId.Text) )
+            if ( string.IsNullOrEmpty( txtScadaId.Text ) )
             {
-                MessageBox.Show("SCADA ID can not be null !");
+                MessageBox.Show( "SCADA ID can not be null !" );
                 return;
             }
 
