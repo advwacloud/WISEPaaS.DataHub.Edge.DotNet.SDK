@@ -27,7 +27,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
             ReconnectInterval = 1000;
             ScadaId = string.Empty;
             DeviceId = string.Empty;
-            Type = EdgeType.Gatway;
+            Type = EdgeType.Gateway;
             Heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL;
             DataRecover = true;
             ConnectType = ConnectType.DCCS;

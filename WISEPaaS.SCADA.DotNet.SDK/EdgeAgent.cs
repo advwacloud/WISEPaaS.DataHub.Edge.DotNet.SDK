@@ -121,7 +121,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             string payload = JsonConvert.SerializeObject( heartbeatMsg );
 
             var message = new MqttApplicationMessageBuilder()
-            .WithTopic( ( _options.Type == EdgeType.Gatway ) ? _scadaConnTopic : _deviceConnTopic )
+            .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _scadaConnTopic : _deviceConnTopic )
             .WithPayload( payload )
             .WithAtLeastOnceQoS()
             .WithRetainFlag( true )
@@ -172,10 +172,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             {
                 if ( _mqttClient != null && _mqttClient.IsConnected )
                     return;
-                /*{
-                    Task t = _mqttClient.StopAsync();
-                    t.Wait();
-                }*/
 
                 if ( Options == null )
                     return;
@@ -242,7 +238,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 string payload = JsonConvert.SerializeObject( disconnectMsg );
 
                 var message = new MqttApplicationMessageBuilder()
-                    .WithTopic( ( _options.Type == EdgeType.Gatway ) ? _scadaConnTopic : _deviceConnTopic )
+                    .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _scadaConnTopic : _deviceConnTopic )
                     .WithPayload( payload )
                     .WithAtLeastOnceQoS()
                     .WithRetainFlag( true )
@@ -451,7 +447,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     _deviceConnTopic = string.Format( "/wisepaas/scada/{0}/{1}/conn", _options.ScadaId, _options.DeviceId );
                     _ackTopic = string.Format( "/wisepaas/scada/{0}/ack", _options.ScadaId );
                     _cfgAckTopic = string.Format( "/wisepaas/scada/{0}/cfgack", _options.ScadaId );
-                    if ( _options.Type == EdgeType.Gatway )
+                    if ( _options.Type == EdgeType.Gateway )
                         _cmdTopic = scadaCmdTopic;
                     else
                         _cmdTopic = deviceCmdTopic;
@@ -477,7 +473,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 ConnectMessage connectMsg = new ConnectMessage();
                 string payload = JsonConvert.SerializeObject( connectMsg );
                 var message = new MqttApplicationMessageBuilder()
-                .WithTopic( ( _options.Type == EdgeType.Gatway ) ? _scadaConnTopic : _deviceConnTopic )
+                .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _scadaConnTopic : _deviceConnTopic )
                 .WithPayload( payload )
                 .WithAtLeastOnceQoS()
                 .WithRetainFlag( true )
