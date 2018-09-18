@@ -304,25 +304,28 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 if ( data == null )
                     return false;
 
-                string payload = string.Empty;
-                bool result = Converter.ConvertData( data, ref payload );
+                List<string> payloads = new List<string>();
+                bool result = Converter.ConvertData( data, ref payloads );
                 if ( result )
                 {
-                    if ( _mqttClient.IsConnected == false && _recoverHelper != null )
+                    foreach ( var payload in payloads )
                     {
-                        // keep data for MQTT connected
-                        _recoverHelper.Write( payload );
-                        return false;
+                        if ( _mqttClient.IsConnected == false && _recoverHelper != null )
+                        {
+                            // keep data for MQTT connected
+                            _recoverHelper.Write( payload );
+                            return false;
+                        }
+
+                        var message = new MqttApplicationMessageBuilder()
+                        .WithTopic( _dataTopic )
+                        .WithPayload( payload )
+                        .WithAtLeastOnceQoS()
+                        .WithRetainFlag( false )
+                        .Build();
+
+                        _mqttClient.PublishAsync( message );
                     }
-
-                    var message = new MqttApplicationMessageBuilder()
-                    .WithTopic( _dataTopic )
-                    .WithPayload( payload )
-                    .WithAtLeastOnceQoS()
-                    .WithRetainFlag( false )
-                    .Build();
-
-                    _mqttClient.PublishAsync( message );
                 }
 
                 //_logger.Info( "Send Data: {0}", payload );

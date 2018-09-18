@@ -22,4 +22,9 @@ namespace WISEPaaS.SCADA.DotNet.SDK
     {
         public const string DatabaseFileName = "recover.sqlite";
     }
+
+    public class Limit
+    {
+        public const int DataMaxTagCount = 100;
+    }
 }

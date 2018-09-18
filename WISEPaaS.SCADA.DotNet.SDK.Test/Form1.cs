@@ -299,40 +299,36 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
             EdgeData data = new EdgeData();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
-                EdgeData.Device device = new EdgeData.Device()
-                {
-                    Id = "Device" + i,
-                    TagList = new List<EdgeData.Tag>()
-                };
-
                 for ( int j = 1; j <= numATagCount.Value; j++ )
                 {
                     EdgeData.Tag aTag = new EdgeData.Tag()
                     {
-                        Name = "ATag" + j,
+                        DeviceId = "Device" + i,
+                        TagName = "ATag" + j,
                         Value = random.Next( 100 )
                     };
-                    device.TagList.Add( aTag );
+                    data.TagList.Add( aTag );
                 }
                 for ( int j = 1; j <= numDTagCount.Value; j++ )
                 {
                     EdgeData.Tag dTag = new EdgeData.Tag()
                     {
-                        Name = "DTag" + j,
+                        DeviceId = "Device" + i,
+                        TagName = "DTag" + j,
                         Value = j % 2
                     };
-                    device.TagList.Add( dTag );
+                    data.TagList.Add( dTag );
                 }
                 for ( int j = 1; j <= numTTagCount.Value; j++ )
                 {
                     EdgeData.Tag tTag = new EdgeData.Tag()
                     {
-                        Name = "TTag" + j,
+                        DeviceId = "Device" + i,
+                        TagName = "TTag" + j,
                         Value = "TEST " + j.ToString()
                     };
-                    device.TagList.Add( tTag );
+                    data.TagList.Add( tTag );
                 }
-                data.DeviceList.Add( device );
             }
             data.Timestamp = DateTime.Now;
 
