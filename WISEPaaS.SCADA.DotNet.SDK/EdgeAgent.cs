@@ -262,6 +262,8 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 if ( edgeConfig == null )
                     return false;
 
+                edgeConfig.Scada.Id = Options.ScadaId;
+
                 string payload = string.Empty;
                 bool result = false;
                 switch ( action )
