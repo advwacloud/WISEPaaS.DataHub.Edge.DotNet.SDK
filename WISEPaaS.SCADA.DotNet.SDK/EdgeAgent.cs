@@ -262,20 +262,18 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 if ( edgeConfig == null )
                     return false;
 
-                edgeConfig.Scada.Id = Options.ScadaId;
-
                 string payload = string.Empty;
                 bool result = false;
                 switch ( action )
                 {
                     case ActionType.Create:
-                        result = Converter.ConvertCreateOrUpdateConfig( edgeConfig, ref payload, _options.Heartbeat );
+                        result = Converter.ConvertCreateOrUpdateConfig( Options.ScadaId, edgeConfig, ref payload, _options.Heartbeat );
                         break;
                     case ActionType.Update:
-                        result = Converter.ConvertCreateOrUpdateConfig( edgeConfig, ref payload, _options.Heartbeat );
+                        result = Converter.ConvertCreateOrUpdateConfig( Options.ScadaId, edgeConfig, ref payload, _options.Heartbeat );
                         break;
                     case ActionType.Delete:
-                        result = Converter.ConvertDeleteConfig( edgeConfig, ref payload );
+                        result = Converter.ConvertDeleteConfig( Options.ScadaId, edgeConfig, ref payload );
                         break;
                 }
 

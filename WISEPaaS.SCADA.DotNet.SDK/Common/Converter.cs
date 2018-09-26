@@ -15,7 +15,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
         public Converter()
         { }
 
-        public static bool ConvertCreateOrUpdateConfig( EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL )
+        public static bool ConvertCreateOrUpdateConfig( string scadaId, EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL )
         {
             try
             {
@@ -28,7 +28,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
                 ConfigMessage.ScadaObject scadaObj = new ConfigMessage.ScadaObject()
                 {
-                    Id = config.Scada.Id,
+                    Id = scadaId,
                     Name = config.Scada.Name,
                     Description = (config.Scada.Description),
                     PrimaryIP = config.Scada.PrimaryIP,
@@ -153,7 +153,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                         scadaObj.DeviceList.Add( device.Id, deviceObj );
                     }
                 }
-                msg.D.ScadaList.Add( config.Scada.Id, scadaObj );
+                msg.D.ScadaList.Add( scadaId, scadaObj );
 
                 payload = JsonConvert.SerializeObject( msg, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore } );
                 return true;
@@ -166,7 +166,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
         }
 
 
-        public static bool ConvertDeleteConfig( EdgeConfig config, ref string payload )
+        public static bool ConvertDeleteConfig( string scadaId, EdgeConfig config, ref string payload )
         {
             try
             {
@@ -225,7 +225,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                         scadaObj.DeviceList.Add( device.Id, deviceObj );
                     }
                 }
-                msg.D.ScadaList.Add( config.Scada.Id, scadaObj );
+                msg.D.ScadaList.Add( scadaId, scadaObj );
 
                 payload = JsonConvert.SerializeObject( msg, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore } );
                 return true;
