@@ -4,9 +4,12 @@ using MQTTnet.Implementations;
 using MQTTnet.ManagedClient;
 using MQTTnet.Protocol;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -27,15 +30,14 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
         private ManagedMqttClient _mqttClient;
         private DataRecoverHelper _recoverHelper;
-        
+
         //private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         private string _configTopic;
         private string _dataTopic;
         private string _scadaConnTopic;
         private string _deviceConnTopic;
-        private string _scadaCmdTopic;
-        private string _deviceCmdTopic;
+        private string _cmdTopic;
         private string _ackTopic;
         private string _cfgAckTopic;
 
@@ -87,7 +89,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
         // for self-signed cert
         private bool checkValidationResult( object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors )
-        { 
+        {
             return true;
         }
 
@@ -119,7 +121,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             string payload = JsonConvert.SerializeObject( heartbeatMsg );
 
             var message = new MqttApplicationMessageBuilder()
-            .WithTopic( ( _options.Type == EdgeType.Gatway ) ? _scadaConnTopic : _deviceConnTopic )
+            .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _scadaConnTopic : _deviceConnTopic )
             .WithPayload( payload )
             .WithAtLeastOnceQoS()
             .WithRetainFlag( true )
@@ -170,10 +172,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             {
                 if ( _mqttClient != null && _mqttClient.IsConnected )
                     return;
-                /*{
-                    Task t = _mqttClient.StopAsync();
-                    t.Wait();
-                }*/
 
                 if ( Options == null )
                     return;
@@ -193,7 +191,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     Topic = string.Format( MQTTTopic.ScadaConnTopic, Options.ScadaId )
                 };
 
-                string clientId = "EdgeAgent_" + DateTime.Now.ToString( "HHmmssfff" );
+                string clientId = "EdgeAgent_" + Guid.NewGuid().ToString( "N" );
                 var ob = new MqttClientOptionsBuilder();
                 ob.WithClientId( clientId )
                 .WithCredentials( Options.MQTT.Username, Options.MQTT.Password )
@@ -240,7 +238,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 string payload = JsonConvert.SerializeObject( disconnectMsg );
 
                 var message = new MqttApplicationMessageBuilder()
-                    .WithTopic( ( _options.Type == EdgeType.Gatway ) ? _scadaConnTopic : _deviceConnTopic )
+                    .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _scadaConnTopic : _deviceConnTopic )
                     .WithPayload( payload )
                     .WithAtLeastOnceQoS()
                     .WithRetainFlag( true )
@@ -269,13 +267,13 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 switch ( action )
                 {
                     case ActionType.Create:
-                        result = Converter.ConvertCreateOrUpdateConfig( edgeConfig, ref payload, _options.Heartbeat );
+                        result = Converter.ConvertCreateOrUpdateConfig( Options.ScadaId, edgeConfig, ref payload, _options.Heartbeat );
                         break;
                     case ActionType.Update:
-                        result = Converter.ConvertCreateOrUpdateConfig( edgeConfig, ref payload, _options.Heartbeat );
+                        result = Converter.ConvertCreateOrUpdateConfig( Options.ScadaId, edgeConfig, ref payload, _options.Heartbeat );
                         break;
                     case ActionType.Delete:
-                        result = Converter.ConvertDeleteConfig( edgeConfig, ref payload );
+                        result = Converter.ConvertDeleteConfig( Options.ScadaId, edgeConfig, ref payload );
                         break;
                 }
 
@@ -306,25 +304,28 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 if ( data == null )
                     return false;
 
-                string payload = string.Empty;
-                bool result = Converter.ConvertData( data, ref payload );
+                List<string> payloads = new List<string>();
+                bool result = Converter.ConvertData( data, ref payloads );
                 if ( result )
                 {
-                    if ( _mqttClient.IsConnected == false && _recoverHelper != null )
+                    foreach ( var payload in payloads )
                     {
-                        // keep data for MQTT connected
-                        _recoverHelper.Write( payload );
-                        return false;
+                        if ( _mqttClient.IsConnected == false && _recoverHelper != null )
+                        {
+                            // keep data for MQTT connected
+                            _recoverHelper.Write( payload );
+                            return false;
+                        }
+
+                        var message = new MqttApplicationMessageBuilder()
+                        .WithTopic( _dataTopic )
+                        .WithPayload( payload )
+                        .WithAtLeastOnceQoS()
+                        .WithRetainFlag( false )
+                        .Build();
+
+                        _mqttClient.PublishAsync( message );
                     }
-
-                    var message = new MqttApplicationMessageBuilder()
-                    .WithTopic( _dataTopic )
-                    .WithPayload( payload )
-                    .WithAtLeastOnceQoS()
-                    .WithRetainFlag( false )
-                    .Build();
-
-                    _mqttClient.PublishAsync( message );
                 }
 
                 //_logger.Info( "Send Data: {0}", payload );
@@ -384,41 +385,51 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 if ( jObj == null || jObj["d"] == null )
                     return;
 
+                dynamic obj = jObj as dynamic;
                 if ( jObj["d"]["Cmd"] != null )
                 {
-                    string cmd = ( string ) jObj["d"]["Cmd"];
-
-                    var message = new BaseMessage();
-                    switch ( cmd )
+                    switch ( (string) obj.d.Cmd )
                     {
                         case "WV":
-                            message = JsonConvert.DeserializeObject<WriteValueCommandMessage>( payload );
-                            MessageReceived( sender, new MessageReceivedEventArgs( MessageType.WriteValue, message ) );
+                            WriteValueCommand wvcMsg = new WriteValueCommand();
+                            foreach ( JProperty devObj in obj.d.Val )
+                            {
+                                WriteValueCommand.Device device = new WriteValueCommand.Device();
+                                device.Id = devObj.Name;
+                                foreach ( JProperty tagObj in devObj.Value )
+                                {
+                                    WriteValueCommand.Tag tag = new WriteValueCommand.Tag();
+                                    tag.Name = tagObj.Name;
+                                    tag.Value = tagObj.Value;
+                                    device.TagList.Add( tag );
+                                }
+                                wvcMsg.DeviceList.Add( device );
+                            }
+                            //message = JsonConvert.DeserializeObject<WriteValueCommandMessage>( payload );
+                            MessageReceived( sender, new MessageReceivedEventArgs( MessageType.WriteValue, wvcMsg ) );
                             break;
                         case "WC":
-                            MessageReceived( sender, new MessageReceivedEventArgs( MessageType.WriteConfig, message ) );
+                            //MessageReceived( sender, new MessageReceivedEventArgs( MessageType.WriteConfig, message ) );
                             break;
-                        case "DOn":
-                            message = JsonConvert.DeserializeObject<DataOnCommandMessage>( payload );
-                            MessageReceived( sender, new MessageReceivedEventArgs( MessageType.DataOn, message ) );
-                            break;
-                        case "DOf":
-                            message = JsonConvert.DeserializeObject<DataOffCommandMessage>( payload );
-                            MessageReceived( sender, new MessageReceivedEventArgs( MessageType.DataOff, message ) );
+                        case "TSyn":
+                            TimeSyncCommand tscMsg = new TimeSyncCommand();
+                            DateTime miniDateTime = new DateTime( 1970, 1, 1, 0, 0, 0, 0 );
+                            tscMsg.UTCTime = miniDateTime.AddSeconds( obj.d.UTC.Value );
+                            MessageReceived( sender, new MessageReceivedEventArgs( MessageType.TimeSync, tscMsg ) );
                             break;
                     }
                 }
                 else if ( jObj["d"]["Cfg"] != null )
                 {
-                    string cmd = ( string ) jObj["d"]["Cfg"];
-
-                    var message = JsonConvert.DeserializeObject<ConfigAckMessage>( payload );
-                    MessageReceived( sender, new MessageReceivedEventArgs( MessageType.ConfigAck, message ) );
+                    ConfigAck ackMsg = new ConfigAck();
+                    ackMsg.Result = Convert.ToBoolean( obj.d.Cfg.Value );
+                    MessageReceived( this, new MessageReceivedEventArgs( MessageType.ConfigAck, ackMsg ) );
                 }
             }
             catch ( Exception ex )
             {
                 //_logger.Error( ex.ToString() );
+                Console.WriteLine( ex.ToString() );
             }
         }
 
@@ -430,14 +441,19 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
                 if ( string.IsNullOrEmpty( _options.ScadaId ) == false )
                 {
+                    string scadaCmdTopic = string.Format( "/wisepaas/scada/{0}/cmd", _options.ScadaId );
+                    string deviceCmdTopic = string.Format( "/wisepaas/scada/{0}/{1}/cmd", _options.ScadaId, _options.DeviceId );
+
                     _configTopic = string.Format( "/wisepaas/scada/{0}/cfg", _options.ScadaId );
                     _dataTopic = string.Format( "/wisepaas/scada/{0}/data", _options.ScadaId );
-                    _scadaConnTopic = string.Format( "/wisepaas/scada/{0}/conn",_options.ScadaId );
+                    _scadaConnTopic = string.Format( "/wisepaas/scada/{0}/conn", _options.ScadaId );
                     _deviceConnTopic = string.Format( "/wisepaas/scada/{0}/{1}/conn", _options.ScadaId, _options.DeviceId );
-                    _scadaCmdTopic = string.Format( "/wisepaas/scada/{0}/cmd", _options.ScadaId );
-                    _deviceCmdTopic = string.Format( "/wisepaas/scada/{0}/{1}/cmd", _options.ScadaId, _options.DeviceId );
                     _ackTopic = string.Format( "/wisepaas/scada/{0}/ack", _options.ScadaId );
                     _cfgAckTopic = string.Format( "/wisepaas/scada/{0}/cfgack", _options.ScadaId );
+                    if ( _options.Type == EdgeType.Gateway )
+                        _cmdTopic = scadaCmdTopic;
+                    else
+                        _cmdTopic = deviceCmdTopic;
                 }
 
                 if ( _options.Heartbeat > 0 )
@@ -450,23 +466,17 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 }
 
                 if ( Connected != null )
-                    Connected( sender, new EdgeAgentConnectedEventArgs( e.IsSessionPresent ) );
+                    Connected( this, new EdgeAgentConnectedEventArgs( e.IsSessionPresent ) );
 
                 // subscribe
-                string cmdTopic = string.Empty;
-                if ( _options.Type == EdgeType.Gatway )
-                    cmdTopic = _scadaCmdTopic;
-                else
-                    cmdTopic = _deviceCmdTopic;
-
-                _mqttClient.SubscribeAsync( new TopicFilterBuilder().WithTopic( cmdTopic ).WithAtLeastOnceQoS().Build() );
+                _mqttClient.SubscribeAsync( new TopicFilterBuilder().WithTopic( _cmdTopic ).WithAtLeastOnceQoS().Build() );
                 _mqttClient.SubscribeAsync( new TopicFilterBuilder().WithTopic( _ackTopic ).WithAtLeastOnceQoS().Build() );
 
                 // publish
                 ConnectMessage connectMsg = new ConnectMessage();
                 string payload = JsonConvert.SerializeObject( connectMsg );
                 var message = new MqttApplicationMessageBuilder()
-                .WithTopic( ( _options.Type == EdgeType.Gatway ) ? _scadaConnTopic : _deviceConnTopic )
+                .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _scadaConnTopic : _deviceConnTopic )
                 .WithPayload( payload )
                 .WithAtLeastOnceQoS()
                 .WithRetainFlag( true )
@@ -490,7 +500,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 //_logger.Info( "MQTT Disonnected !" );
                 Console.WriteLine( "Disonnected" );
                 if ( Disconnected != null )
-                    Disconnected( sender, new DisconnectedEventArgs( e.ClientWasConnected, e.Exception ) );
+                    Disconnected( this, new DisconnectedEventArgs( e.ClientWasConnected, e.Exception ) );
 
                 // refetch MQTT credential from DCCS
                 if ( _options.ConnectType == ConnectType.DCCS )

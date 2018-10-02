@@ -20,17 +20,15 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
     public enum EdgeType
     {
-        Gatway = 0,
+        Gateway = 0,
         Device = 1
     }
 
     public enum MessageType
     {
-        DataOn = 0,
-        DataOff,
-        WriteValue,
+        WriteValue = 0,
         WriteConfig,
-        //TimeSync,
+        TimeSync,
         ConfigAck
     }
 

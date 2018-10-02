@@ -15,7 +15,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
         public Converter()
         { }
 
-        public static bool ConvertCreateOrUpdateConfig( EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL )
+        public static bool ConvertCreateOrUpdateConfig( string scadaId, EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL )
         {
             try
             {
@@ -28,7 +28,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
                 ConfigMessage.ScadaObject scadaObj = new ConfigMessage.ScadaObject()
                 {
-                    Id = config.Scada.Id,
+                    Id = scadaId,
                     Name = config.Scada.Name,
                     Description = (config.Scada.Description),
                     PrimaryIP = config.Scada.PrimaryIP,
@@ -153,7 +153,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                         scadaObj.DeviceList.Add( device.Id, deviceObj );
                     }
                 }
-                msg.D.ScadaList.Add( config.Scada.Id, scadaObj );
+                msg.D.ScadaList.Add( scadaId, scadaObj );
 
                 payload = JsonConvert.SerializeObject( msg, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore } );
                 return true;
@@ -166,7 +166,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
         }
 
 
-        public static bool ConvertDeleteConfig( EdgeConfig config, ref string payload )
+        public static bool ConvertDeleteConfig( string scadaId, EdgeConfig config, ref string payload )
         {
             try
             {
@@ -225,7 +225,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                         scadaObj.DeviceList.Add( device.Id, deviceObj );
                     }
                 }
-                msg.D.ScadaList.Add( config.Scada.Id, scadaObj );
+                msg.D.ScadaList.Add( scadaId, scadaObj );
 
                 payload = JsonConvert.SerializeObject( msg, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore } );
                 return true;
@@ -237,26 +237,40 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             }
         }
 
-        public static bool ConvertData( EdgeData data, ref string payload )
+        public static bool ConvertData( EdgeData data, ref List<string> payloads )
         {
             try
             {
                 if ( data == null )
                     return false;
 
-                DataMessage msg = new DataMessage();
-                msg.Timestamp = data.Timestamp.ToUniversalTime();
-                foreach ( var device in data.DeviceList )
+                // split message by limited count
+                int count = 0;
+                var list = data.TagList.OrderBy( t => t.DeviceId ).ToList();
+                DataMessage msg = null;
+                for ( int i = 0; i < list.Count; i++ )
                 {
-                    Dictionary<string, object> tags = new Dictionary<string, object>();
-                    foreach ( var tag in device.TagList )
-                    {
-                        tags.Add( tag.Name, tag.Value );
-                    }
-                    msg.D.Add( device.Id, tags );
-                }
+                    var tag = list[i];
 
-                payload = JsonConvert.SerializeObject( msg );
+                    if ( msg == null )
+                        msg = new DataMessage();
+
+                    if ( msg.D.ContainsKey( tag.DeviceId ) == false )
+                        msg.D[tag.DeviceId] = new Dictionary<string, object>();
+                    
+                    ( ( Dictionary<string, object> ) msg.D[tag.DeviceId] ).Add( tag.TagName, tag.Value );
+                    count++;
+
+                    if ( count == Limit.DataMaxTagCount || i == list.Count - 1 )
+                    {
+                        msg.Timestamp = data.Timestamp.ToUniversalTime();
+                        payloads.Add( JsonConvert.SerializeObject( msg ) );
+
+                        count = 0;
+                        msg = null;
+                    }
+                }
+             
                 return true;
             }
             catch ( Exception ex )

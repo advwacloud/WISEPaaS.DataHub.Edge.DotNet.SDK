@@ -17,7 +17,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
 
         public class ScadaConfig
         {
-            public string Id { get; set; }
             public string Name { get; set; }
             public string Description { get; set; }
             public string PrimaryIP { get; set; }
@@ -30,7 +29,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
 
             public ScadaConfig()
             {
-                Id = string.Empty;
             }
         }
 

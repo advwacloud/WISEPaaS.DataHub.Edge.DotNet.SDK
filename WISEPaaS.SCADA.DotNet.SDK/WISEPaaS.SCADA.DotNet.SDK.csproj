@@ -79,7 +79,6 @@
     <Compile Include="Common\Converter.cs" />
     <Compile Include="Common\Const.cs" />
     <Compile Include="Common\DataRecoverHelper.cs" />
-    <Compile Include="Common\Extensions.cs" />
     <Compile Include="Common\GZippedJson.cs" />
     <Compile Include="EdgeAgent.cs" />
     <Compile Include="Common\Enum.cs" />
@@ -92,12 +91,11 @@
     <Compile Include="Model\MQTTMessage\BaseMessage.cs" />
     <Compile Include="Model\Edge\EdgeAgentOptions.cs" />
     <Compile Include="Model\MQTTMessage\ConfigMessage.cs" />
-    <Compile Include="Model\MQTTMessage\ConfigAckMessage.cs" />
+    <Compile Include="Model\Edge\ConfigAck.cs" />
     <Compile Include="Model\MQTTMessage\DataMessage.cs" />
     <Compile Include="Model\MQTTMessage\DeviceStatusMessage.cs" />
-    <Compile Include="Model\MQTTMessage\WriteValueCommandMessage.cs" />
-    <Compile Include="Model\MQTTMessage\DataOnCommandMessage.cs" />
-    <Compile Include="Model\MQTTMessage\DataOffCommandMessage.cs" />
+    <Compile Include="Model\Edge\TimeSyncCommand.cs" />
+    <Compile Include="Model\Edge\WriteValueCommand.cs" />
     <Compile Include="Model\MQTTMessage\HeartbeatMessage.cs" />
     <Compile Include="Model\MQTTMessage\ConnectMessage.cs" />
     <Compile Include="Model\MQTTMessage\DisconnectMessage.cs" />
