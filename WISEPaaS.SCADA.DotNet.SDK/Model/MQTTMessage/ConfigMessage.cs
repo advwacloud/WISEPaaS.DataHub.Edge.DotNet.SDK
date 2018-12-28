@@ -128,6 +128,13 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
             [JsonProperty( PropertyName = "LLA" )]
             public double? LLAlarmLimit { get; set; }
 
+            [JsonProperty( PropertyName = "SCALE" )]
+            public int? ScalingType { get; set; }
+            [JsonProperty( PropertyName = "SF1" )]
+            public double? ScalingFactor1 { get; set; }
+            [JsonProperty( PropertyName = "SF2" )]
+            public double? ScalingFactor2 { get; set; }
+
             public AnalogTagObject()
             {
             }

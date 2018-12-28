@@ -82,6 +82,10 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
             public int? LLPriority { get; set; }
             public double? LLAlarmLimit { get; set; }
 
+            public int? ScalingType { get; set; }
+            public double? ScalingFactor1 { get; set; }
+            public double? ScalingFactor2 { get; set; }
+
             public AnalogTagConfig()
             {
             }

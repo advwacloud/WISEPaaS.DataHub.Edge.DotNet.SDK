@@ -71,7 +71,10 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                                     SpanLow = analogTag.SpanLow,
                                     EngineerUnit = analogTag.EngineerUnit,
                                     IntegerDisplayFormat = analogTag.IntegerDisplayFormat,
-                                    FractionDisplayFormat = analogTag.FractionDisplayFormat
+                                    FractionDisplayFormat = analogTag.FractionDisplayFormat,
+                                    ScalingType = analogTag.ScalingType,
+                                    ScalingFactor1 = analogTag.ScalingFactor1,
+                                    ScalingFactor2 = analogTag.ScalingFactor2
                                 };
                                 if ( analogTag.AlarmStatus == true )
                                 {
