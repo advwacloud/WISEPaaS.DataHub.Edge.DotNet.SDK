@@ -15,7 +15,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
         public Converter()
         { }
 
-        public static bool ConvertCreateOrUpdateConfig( string scadaId, EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL )
+        public static bool ConvertWholeConfig( ActionType action, string scadaId, EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL )
         {
             try
             {
@@ -23,14 +23,14 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     return false;
 
                 ConfigMessage msg = new ConfigMessage();
-                msg.D.Action = ActionType.Create;
+                msg.D.Action = action;
                 msg.D.ScadaList = new Dictionary<string, ConfigMessage.ScadaObject>();
 
                 ConfigMessage.ScadaObject scadaObj = new ConfigMessage.ScadaObject()
                 {
                     Id = scadaId,
                     Name = config.Scada.Name,
-                    Description = (config.Scada.Description),
+                    Description = ( config.Scada.Description ),
                     PrimaryIP = config.Scada.PrimaryIP,
                     BackupIP = config.Scada.BackupIP,
                     PrimaryPort = config.Scada.PrimaryPort,
@@ -51,7 +51,8 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                             Description = device.Description,
                             IP = device.IP,
                             Port = device.Port,
-                            ComPortNumber = device.ComPortNumber
+                            ComPortNumber = device.ComPortNumber,
+                            RetentionPolicyName = device.RetentionPolicyName
                         };
 
 
@@ -139,8 +140,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 return false;
             }
         }
-
-
+        
         public static bool ConvertDeleteConfig( string scadaId, EdgeConfig config, ref string payload )
         {
             try
@@ -274,131 +274,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             catch ( Exception ex )
             {
                 Console.WriteLine( ex.ToString() );
-                return false;
-            }
-        }
-
-        public static bool ConvertDelsertConfig(string scadaId, EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL)
-        {
-            try
-            {
-                if (config == null)
-                    return false;
-
-                ConfigMessage msg = new ConfigMessage();
-                msg.D.Action = ActionType.Delsert;
-                msg.D.ScadaList = new Dictionary<string, ConfigMessage.ScadaObject>();
-
-                ConfigMessage.ScadaObject scadaObj = new ConfigMessage.ScadaObject()
-                {
-                    Id = scadaId,
-                    Name = config.Scada.Name,
-                    Description = (config.Scada.Description),
-                    PrimaryIP = config.Scada.PrimaryIP,
-                    BackupIP = config.Scada.BackupIP,
-                    PrimaryPort = config.Scada.PrimaryPort,
-                    BackupPort = config.Scada.BackupPort,
-                    Heartbeat = heartbeat / 1000,
-                    Type = SCADAConfigType.SCADA
-                };
-
-                if (config.Scada.DeviceList != null)
-                {
-                    scadaObj.DeviceList = new Dictionary<string, ConfigMessage.DeviceObject>();
-                    foreach (var device in config.Scada.DeviceList)
-                    {
-                        ConfigMessage.DeviceObject deviceObj = new ConfigMessage.DeviceObject()
-                        {
-                            Name = device.Name,
-                            Type = device.Type,
-                            Description = device.Description,
-                            IP = device.IP,
-                            Port = device.Port,
-                            ComPortNumber = device.ComPortNumber
-                        };
-
-
-                        if (device.AnalogTagList != null)
-                        {
-                            foreach (var analogTag in device.AnalogTagList)
-                            {
-                                ConfigMessage.AnalogTagObject analogTagObject = new ConfigMessage.AnalogTagObject()
-                                {
-                                    Type = TagType.Analog,
-                                    Description = analogTag.Description,
-                                    ReadOnly = (analogTag.ReadOnly != null) ? Convert.ToInt32(analogTag.ReadOnly) : (int?)null,
-                                    ArraySize = analogTag.ArraySize,
-                                    SpanHigh = analogTag.SpanHigh,
-                                    SpanLow = analogTag.SpanLow,
-                                    EngineerUnit = analogTag.EngineerUnit,
-                                    IntegerDisplayFormat = analogTag.IntegerDisplayFormat,
-                                    FractionDisplayFormat = analogTag.FractionDisplayFormat,
-                                    ScalingType = analogTag.ScalingType,
-                                    ScalingFactor1 = analogTag.ScalingFactor1,
-                                    ScalingFactor2 = analogTag.ScalingFactor2
-                                };
-
-                                if (deviceObj.TagList == null)
-                                    deviceObj.TagList = new Dictionary<string, ConfigMessage.TagObject>();
-                                deviceObj.TagList.Add(analogTag.Name, analogTagObject);
-                            }
-                        }
-
-                        if (device.DiscreteTagList != null)
-                        {
-                            foreach (var discreteTag in device.DiscreteTagList)
-                            {
-                                ConfigMessage.DiscreteTagObject discreteTagObject = new ConfigMessage.DiscreteTagObject()
-                                {
-                                    Type = TagType.Discrete,
-                                    Description = discreteTag.Description,
-                                    ReadOnly = (discreteTag.ReadOnly != null) ? Convert.ToInt32(discreteTag.ReadOnly) : (int?)null,
-                                    ArraySize = discreteTag.ArraySize,
-                                    State0 = discreteTag.State0,
-                                    State1 = discreteTag.State1,
-                                    State2 = discreteTag.State2,
-                                    State3 = discreteTag.State3,
-                                    State4 = discreteTag.State4,
-                                    State5 = discreteTag.State5,
-                                    State6 = discreteTag.State6,
-                                    State7 = discreteTag.State7
-                                };
-
-                                if (deviceObj.TagList == null)
-                                    deviceObj.TagList = new Dictionary<string, ConfigMessage.TagObject>();
-                                deviceObj.TagList.Add(discreteTag.Name, discreteTagObject);
-                            }
-                        }
-
-                        if (device.TextTagList != null)
-                        {
-                            foreach (var textTag in device.TextTagList)
-                            {
-                                ConfigMessage.TextTagObject textTagObject = new ConfigMessage.TextTagObject()
-                                {
-                                    Type = TagType.Text,
-                                    Description = textTag.Description,
-                                    ReadOnly = Convert.ToInt32(textTag.ReadOnly),
-                                    ArraySize = textTag.ArraySize
-                                };
-
-                                if (deviceObj.TagList == null)
-                                    deviceObj.TagList = new Dictionary<string, ConfigMessage.TagObject>();
-                                deviceObj.TagList.Add(textTag.Name, textTagObject);
-                            }
-                        }
-
-                        scadaObj.DeviceList.Add(device.Id, deviceObj);
-                    }
-                }
-                msg.D.ScadaList.Add(scadaId, scadaObj);
-
-                payload = JsonConvert.SerializeObject(msg, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
                 return false;
             }
         }

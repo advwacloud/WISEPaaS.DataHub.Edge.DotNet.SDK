@@ -267,16 +267,12 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 switch ( action )
                 {
                     case ActionType.Create:
-                        result = Converter.ConvertCreateOrUpdateConfig( Options.ScadaId, edgeConfig, ref payload, _options.Heartbeat );
-                        break;
                     case ActionType.Update:
-                        result = Converter.ConvertCreateOrUpdateConfig( Options.ScadaId, edgeConfig, ref payload, _options.Heartbeat );
+                    case ActionType.Delsert:
+                        result = Converter.ConvertWholeConfig( action, Options.ScadaId, edgeConfig, ref payload, _options.Heartbeat );
                         break;
                     case ActionType.Delete:
                         result = Converter.ConvertDeleteConfig( Options.ScadaId, edgeConfig, ref payload );
-                        break;
-                    case ActionType.Delsert:
-                        result = Converter.ConvertDelsertConfig(Options.ScadaId, edgeConfig, ref payload, _options.Heartbeat);
                         break;
                 }
 
@@ -391,7 +387,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 dynamic obj = jObj as dynamic;
                 if ( jObj["d"]["Cmd"] != null )
                 {
-                    switch ( (string) obj.d.Cmd )
+                    switch ( ( string ) obj.d.Cmd )
                     {
                         case "WV":
                             WriteValueCommand wvcMsg = new WriteValueCommand();
