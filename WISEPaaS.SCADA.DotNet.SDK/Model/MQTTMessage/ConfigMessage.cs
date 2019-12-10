@@ -111,23 +111,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
             [JsonProperty( PropertyName = "FDF" )]
             public int? FractionDisplayFormat { get; set; }
 
-            [JsonProperty( PropertyName = "HHP" )]
-            public int? HHPriority { get; set; }
-            [JsonProperty( PropertyName = "HHA" )]
-            public double? HHAlarmLimit { get; set; }
-            [JsonProperty( PropertyName = "HiP" )]
-            public int? HighPriority { get; set; }
-            [JsonProperty( PropertyName = "HiA" )]
-            public double? HighAlarmLimit { get; set; }
-            [JsonProperty( PropertyName = "LoP" )]
-            public int? LowPriority { get; set; }
-            [JsonProperty( PropertyName = "LoA" )]
-            public double? LowAlarmLimit { get; set; }
-            [JsonProperty( PropertyName = "LLP" )]
-            public int? LLPriority { get; set; }
-            [JsonProperty( PropertyName = "LLA" )]
-            public double? LLAlarmLimit { get; set; }
-
             [JsonProperty( PropertyName = "SCALE" )]
             public int? ScalingType { get; set; }
             [JsonProperty( PropertyName = "SF1" )]
@@ -158,24 +141,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
             public string State6 { get; set; }
             [JsonProperty( PropertyName = "S7" )]
             public string State7 { get; set; }
-
-            [JsonProperty( PropertyName = "S0P" )]
-            public int? State0AlarmPriority { get; set; }
-            [JsonProperty( PropertyName = "S1P" )]
-            public int? State1AlarmPriority { get; set; }
-            [JsonProperty( PropertyName = "S2P" )]
-            public int? State2AlarmPriority { get; set; }
-            [JsonProperty( PropertyName = "S3P" )]
-            public int? State3AlarmPriority { get; set; }
-            [JsonProperty( PropertyName = "S4P" )]
-            public int? State4AlarmPriority { get; set; }
-            [JsonProperty( PropertyName = "S5P" )]
-            public int? State5AlarmPriority { get; set; }
-            [JsonProperty( PropertyName = "S6P" )]
-            public int? State6AlarmPriority { get; set; }
-            [JsonProperty( PropertyName = "S7P" )]
-            public int? State7AlarmPriority { get; set; }
-
+            
             public DiscreteTagObject()
             {
             }

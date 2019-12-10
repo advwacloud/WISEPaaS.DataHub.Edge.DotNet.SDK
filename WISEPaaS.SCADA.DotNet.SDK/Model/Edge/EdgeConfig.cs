@@ -57,8 +57,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
             public string Description { get; set; }
             public bool? ReadOnly { get; set; }
             public int? ArraySize { get; set; }
-            public bool? AlarmStatus { get; set; }
-            public bool? NeedLog { get; set; }
 
             public TagConfig()
             {
@@ -73,14 +71,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
             public string EngineerUnit { get; set; }
             public int? IntegerDisplayFormat { get; set; }
             public int? FractionDisplayFormat { get; set; }
-            public int? HHPriority { get; set; }
-            public double? HHAlarmLimit { get; set; }
-            public int? HighPriority { get; set; }
-            public double? HighAlarmLimit { get; set; }
-            public int? LowPriority { get; set; }
-            public double? LowAlarmLimit { get; set; }
-            public int? LLPriority { get; set; }
-            public double? LLAlarmLimit { get; set; }
 
             public int? ScalingType { get; set; }
             public double? ScalingFactor1 { get; set; }
@@ -101,15 +91,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
             public string State5 { get; set; }
             public string State6 { get; set; }
             public string State7 { get; set; }
-            public int? State0AlarmPriority { get; set; }
-            public int? State1AlarmPriority { get; set; }
-            public int? State2AlarmPriority { get; set; }
-            public int? State3AlarmPriority { get; set; }
-            public int? State4AlarmPriority { get; set; }
-            public int? State5AlarmPriority { get; set; }
-            public int? State6AlarmPriority { get; set; }
-            public int? State7AlarmPriority { get; set; }
-
+ 
             public DiscreteTagConfig()
             {
             }
