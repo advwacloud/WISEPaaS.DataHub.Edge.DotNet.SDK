@@ -40,8 +40,9 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                         }
                     }
                     break;
-                /*case MessageType.WriteConfig:
-                    break;*/
+                case MessageType.WriteConfig:
+                    Console.WriteLine("UTC Time: {0}", e.Message.ToString());
+                    break;
                 case MessageType.TimeSync:  // when received this message
                     TimeSyncCommand tscMsg = ( TimeSyncCommand ) e.Message;
                     Console.WriteLine( "UTC Time: {0}", tscMsg.UTCTime.ToString() );
@@ -200,20 +201,11 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                         Description = "ATag " + j,
                         ReadOnly = false,
                         ArraySize = 0,
-                        AlarmStatus = false,
                         SpanHigh = 1000,
                         SpanLow = 0,
                         EngineerUnit = string.Empty,
                         IntegerDisplayFormat = 4,
-                        FractionDisplayFormat = 2,
-                        HHPriority = 0,
-                        HHAlarmLimit = 0,
-                        HighPriority = 0,
-                        HighAlarmLimit = 0,
-                        LowPriority = 0,
-                        LowAlarmLimit = 0,
-                        LLPriority = 0,
-                        LLAlarmLimit = 0
+                        FractionDisplayFormat = 2
                     };
                     device.AnalogTagList.Add( analogTag );
                 }
@@ -225,7 +217,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                         Description = "DTag " + j,
                         ReadOnly = false,
                         ArraySize = 0,
-                        AlarmStatus = false,
                         State0 = "0",
                         State1 = "1",
                         State2 = string.Empty,
@@ -233,15 +224,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                         State4 = string.Empty,
                         State5 = string.Empty,
                         State6 = string.Empty,
-                        State7 = string.Empty,
-                        State0AlarmPriority = 0,
-                        State1AlarmPriority = 0,
-                        State2AlarmPriority = 0,
-                        State3AlarmPriority = 0,
-                        State4AlarmPriority = 0,
-                        State5AlarmPriority = 0,
-                        State6AlarmPriority = 0,
-                        State7AlarmPriority = 0
+                        State7 = string.Empty
                     };
                     device.DiscreteTagList.Add( discreteTag );
                 }
@@ -252,10 +235,25 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                         Name = "TTag" + j,
                         Description = "TTag " + j,
                         ReadOnly = false,
-                        ArraySize = 0,
-                        AlarmStatus = false
+                        ArraySize = 0
                     };
                     device.TextTagList.Add( textTag );
+                }
+                for ( int j = 1; j <= numAArrayTagCount.Value; j++ )
+                {
+                    EdgeConfig.AnalogTagConfig arrayTag = new EdgeConfig.AnalogTagConfig()
+                    {
+                        Name = "ArrayTag" + j,
+                        Description = "ArrayTag " + j,
+                        ReadOnly = false,
+                        ArraySize = 10,
+                        SpanHigh = 1000,
+                        SpanLow = 0,
+                        EngineerUnit = string.Empty,
+                        IntegerDisplayFormat = 4,
+                        FractionDisplayFormat = 2
+                    };
+                    device.AnalogTagList.Add( arrayTag );
                 }
 
                 config.Scada.DeviceList.Add( device );
@@ -270,7 +268,18 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                 return;
 
             timer1.Interval = ( int ) numDataFreq.Value * 1000;
-            timer1.Enabled = true;
+            timer1.Enabled = !timer1.Enabled;
+
+            if ( timer1.Enabled == true )
+            {
+                btnSendData.Text = "Stop";
+                btnSendData.BackColor = Color.Red;
+            }
+            else
+            {
+                btnSendData.Text = "Start to send Data";
+                btnSendData.BackColor = Color.Gray;
+            }
         }
 
         private void timer1_Tick( object sender, EventArgs e )
@@ -327,6 +336,19 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                         Value = "TEST " + j.ToString()
                     };
                     data.TagList.Add( tTag );
+                }
+                for ( int j = 1; j <= numAArrayTagCount.Value; j++ )
+                {
+                    Dictionary<string, object> dic = new Dictionary<string, object>();
+                    for ( int k = 0; k < 10; k++ )
+                        dic.Add( k.ToString(), random.Next( 100 ) );
+                    EdgeData.Tag arrTag = new EdgeData.Tag()
+                    {
+                        DeviceId = "Device" + i,
+                        TagName = "ArrayTag" + j,
+                        Value = dic
+                    };
+                    data.TagList.Add( arrTag );
                 }
             }
             data.Timestamp = DateTime.Now;
@@ -387,20 +409,11 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                         Description = "ATag " + j,
                         ReadOnly = false,
                         ArraySize = 0,
-                        AlarmStatus = false,
                         SpanHigh = 1000,
                         SpanLow = 0,
                         EngineerUnit = string.Empty,
                         IntegerDisplayFormat = 4,
-                        FractionDisplayFormat = 2,
-                        HHPriority = 0,
-                        HHAlarmLimit = 0,
-                        HighPriority = 0,
-                        HighAlarmLimit = 0,
-                        LowPriority = 0,
-                        LowAlarmLimit = 0,
-                        LLPriority = 0,
-                        LLAlarmLimit = 0
+                        FractionDisplayFormat = 2
                     };
                     device.AnalogTagList.Add( analogTag );
                 }
@@ -412,7 +425,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                         Description = "DTag " + j,
                         ReadOnly = false,
                         ArraySize = 0,
-                        AlarmStatus = true,
                         State0 = "0",
                         State1 = "1",
                         State2 = string.Empty,
@@ -420,15 +432,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                         State4 = string.Empty,
                         State5 = string.Empty,
                         State6 = string.Empty,
-                        State7 = string.Empty,
-                        State0AlarmPriority = 0,
-                        State1AlarmPriority = 0,
-                        State2AlarmPriority = 0,
-                        State3AlarmPriority = 0,
-                        State4AlarmPriority = 0,
-                        State5AlarmPriority = 0,
-                        State6AlarmPriority = 0,
-                        State7AlarmPriority = 0
+                        State7 = string.Empty
                     };
                     device.DiscreteTagList.Add( discreteTag );
                 }
@@ -439,8 +443,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                         Name = "TTag" + j,
                         Description = "TTag " + j,
                         ReadOnly = false,
-                        ArraySize = 0,
-                        AlarmStatus = false
+                        ArraySize = 0
                     };
                     device.TextTagList.Add( textTag );
                 }
@@ -532,6 +535,102 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
             }
 
             bool result = _edgeAgent.UploadConfig( ActionType.Delete, config ).Result;
+        }
+
+        private void btnDelsertConfig_Click(object sender, EventArgs e)
+        {
+            if (_edgeAgent == null)
+                return;
+
+            EdgeConfig config = new EdgeConfig();
+            config.Scada = new EdgeConfig.ScadaConfig()
+            {
+                Name = "TEST_SCADA",
+                Description = "For Test"
+            };
+
+            config.Scada.DeviceList = new List<EdgeConfig.DeviceConfig>();
+            for (int i = 1; i <= numDeviceCount.Value; i++)
+            {
+                EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
+                {
+                    Id = "Device" + i,
+                    Name = "Device " + i,
+                    Type = "Smart Device",
+                    Description = "Device " + i,
+                };
+
+                device.AnalogTagList = new List<EdgeConfig.AnalogTagConfig>();
+                device.DiscreteTagList = new List<EdgeConfig.DiscreteTagConfig>();
+                device.TextTagList = new List<EdgeConfig.TextTagConfig>();
+
+                for (int j = 1; j <= numATagCount.Value; j++)
+                {
+                    EdgeConfig.AnalogTagConfig analogTag = new EdgeConfig.AnalogTagConfig()
+                    {
+                        Name = "ATag" + j,
+                        Description = "ATag " + j,
+                        ReadOnly = false,
+                        ArraySize = 0,
+                        SpanHigh = 1000,
+                        SpanLow = 0,
+                        EngineerUnit = string.Empty,
+                        IntegerDisplayFormat = 4,
+                        FractionDisplayFormat = 2
+                    };
+                    device.AnalogTagList.Add(analogTag);
+                }
+                for (int j = 1; j <= numDTagCount.Value; j++)
+                {
+                    EdgeConfig.DiscreteTagConfig discreteTag = new EdgeConfig.DiscreteTagConfig()
+                    {
+                        Name = "DTag" + j,
+                        Description = "DTag " + j,
+                        ReadOnly = false,
+                        ArraySize = 0,
+                        State0 = "0",
+                        State1 = "1",
+                        State2 = string.Empty,
+                        State3 = string.Empty,
+                        State4 = string.Empty,
+                        State5 = string.Empty,
+                        State6 = string.Empty,
+                        State7 = string.Empty
+                    };
+                    device.DiscreteTagList.Add(discreteTag);
+                }
+                for (int j = 1; j <= numTTagCount.Value; j++)
+                {
+                    EdgeConfig.TextTagConfig textTag = new EdgeConfig.TextTagConfig()
+                    {
+                        Name = "TTag" + j,
+                        Description = "TTag " + j,
+                        ReadOnly = false,
+                        ArraySize = 0
+                    };
+                    device.TextTagList.Add(textTag);
+                }
+                for ( int j = 1; j <= numAArrayTagCount.Value; j++ )
+                {
+                    EdgeConfig.AnalogTagConfig arrayTag = new EdgeConfig.AnalogTagConfig()
+                    {
+                        Name = "ArrayTag" + j,
+                        Description = "ArrayTag " + j,
+                        ReadOnly = false,
+                        ArraySize = 10,
+                        SpanHigh = 1000,
+                        SpanLow = 0,
+                        EngineerUnit = string.Empty,
+                        IntegerDisplayFormat = 4,
+                        FractionDisplayFormat = 2
+                    };
+                    device.AnalogTagList.Add( arrayTag );
+                }
+
+                config.Scada.DeviceList.Add(device);
+            }
+
+            bool result = _edgeAgent.UploadConfig(ActionType.Delsert, config).Result;
         }
     }
 }

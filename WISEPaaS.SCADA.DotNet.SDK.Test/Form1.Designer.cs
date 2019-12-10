@@ -30,6 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.numAArrayTagCount = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnDelsertConfig = new System.Windows.Forms.Button();
+            this.lblDataFreq = new System.Windows.Forms.Label();
+            this.numDataFreq = new System.Windows.Forms.NumericUpDown();
             this.numTTagCount = new System.Windows.Forms.NumericUpDown();
             this.lblTTagCount = new System.Windows.Forms.Label();
             this.numDTagCount = new System.Windows.Forms.NumericUpDown();
@@ -67,9 +72,9 @@
             this.lblDeviceCount = new System.Windows.Forms.Label();
             this.numDeviceCount = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.lblDataFreq = new System.Windows.Forms.Label();
-            this.numDataFreq = new System.Windows.Forms.NumericUpDown();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numAArrayTagCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numDataFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTTagCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDTagCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numATagCount)).BeginInit();
@@ -77,11 +82,13 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDeviceCount)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numDataFreq)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.numAArrayTagCount);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.btnDelsertConfig);
             this.groupBox2.Controls.Add(this.lblDataFreq);
             this.groupBox2.Controls.Add(this.numDataFreq);
             this.groupBox2.Controls.Add(this.numTTagCount);
@@ -109,9 +116,71 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(812, 481);
+            this.groupBox2.Size = new System.Drawing.Size(812, 555);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
+            // 
+            // numAArrayTagCount
+            // 
+            this.numAArrayTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.numAArrayTagCount.Location = new System.Drawing.Point(26, 505);
+            this.numAArrayTagCount.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.numAArrayTagCount.Name = "numAArrayTagCount";
+            this.numAArrayTagCount.Size = new System.Drawing.Size(119, 29);
+            this.numAArrayTagCount.TabIndex = 55;
+            this.numAArrayTagCount.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label1.Location = new System.Drawing.Point(22, 482);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(194, 20);
+            this.label1.TabIndex = 54;
+            this.label1.Text = "Analog Array Tag Count:";
+            // 
+            // btnDelsertConfig
+            // 
+            this.btnDelsertConfig.Location = new System.Drawing.Point(661, 427);
+            this.btnDelsertConfig.Margin = new System.Windows.Forms.Padding(5);
+            this.btnDelsertConfig.Name = "btnDelsertConfig";
+            this.btnDelsertConfig.Size = new System.Drawing.Size(134, 69);
+            this.btnDelsertConfig.TabIndex = 53;
+            this.btnDelsertConfig.Text = "Delsert Config";
+            this.btnDelsertConfig.UseVisualStyleBackColor = true;
+            this.btnDelsertConfig.Click += new System.EventHandler(this.btnDelsertConfig_Click);
+            // 
+            // lblDataFreq
+            // 
+            this.lblDataFreq.AutoSize = true;
+            this.lblDataFreq.Location = new System.Drawing.Point(521, 417);
+            this.lblDataFreq.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDataFreq.Name = "lblDataFreq";
+            this.lblDataFreq.Size = new System.Drawing.Size(127, 20);
+            this.lblDataFreq.TabIndex = 51;
+            this.lblDataFreq.Text = "Data Frequency";
+            // 
+            // numDataFreq
+            // 
+            this.numDataFreq.Location = new System.Drawing.Point(522, 440);
+            this.numDataFreq.Name = "numDataFreq";
+            this.numDataFreq.Size = new System.Drawing.Size(98, 29);
+            this.numDataFreq.TabIndex = 52;
+            this.numDataFreq.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // numTTagCount
             // 
@@ -520,33 +589,11 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // lblDataFreq
-            // 
-            this.lblDataFreq.AutoSize = true;
-            this.lblDataFreq.Location = new System.Drawing.Point(521, 417);
-            this.lblDataFreq.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblDataFreq.Name = "lblDataFreq";
-            this.lblDataFreq.Size = new System.Drawing.Size(127, 20);
-            this.lblDataFreq.TabIndex = 51;
-            this.lblDataFreq.Text = "Data Frequency";
-            // 
-            // numDataFreq
-            // 
-            this.numDataFreq.Location = new System.Drawing.Point(522, 440);
-            this.numDataFreq.Name = "numDataFreq";
-            this.numDataFreq.Size = new System.Drawing.Size(98, 29);
-            this.numDataFreq.TabIndex = 52;
-            this.numDataFreq.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(812, 481);
+            this.ClientSize = new System.Drawing.Size(812, 555);
             this.Controls.Add(this.groupBox2);
             this.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Margin = new System.Windows.Forms.Padding(5);
@@ -555,6 +602,8 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numAArrayTagCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numDataFreq)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTTagCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDTagCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numATagCount)).EndInit();
@@ -564,7 +613,6 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDeviceCount)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numDataFreq)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -611,7 +659,9 @@
         private System.Windows.Forms.Label lblATagCount;
         private System.Windows.Forms.Label lblDataFreq;
         private System.Windows.Forms.NumericUpDown numDataFreq;
-
+        private System.Windows.Forms.Button btnDelsertConfig;
+        private System.Windows.Forms.NumericUpDown numAArrayTagCount;
+        private System.Windows.Forms.Label label1;
     }
 }
 
