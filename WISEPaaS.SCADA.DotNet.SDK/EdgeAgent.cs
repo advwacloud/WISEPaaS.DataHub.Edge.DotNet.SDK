@@ -275,6 +275,9 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     case ActionType.Delete:
                         result = Converter.ConvertDeleteConfig( Options.ScadaId, edgeConfig, ref payload );
                         break;
+                    case ActionType.Delsert:
+                        result = Converter.ConvertDelsertConfig(Options.ScadaId, edgeConfig, ref payload, _options.Heartbeat);
+                        break;
                 }
 
                 if ( result )
