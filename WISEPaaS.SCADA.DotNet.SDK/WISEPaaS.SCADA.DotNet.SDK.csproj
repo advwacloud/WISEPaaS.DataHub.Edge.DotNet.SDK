@@ -80,6 +80,7 @@
     <Compile Include="Common\Const.cs" />
     <Compile Include="Common\DataRecoverHelper.cs" />
     <Compile Include="Common\GZippedJson.cs" />
+    <Compile Include="Common\JsonConverter.cs" />
     <Compile Include="EdgeAgent.cs" />
     <Compile Include="Common\Enum.cs" />
     <Compile Include="Model\Edge\EdgeDeviceStatus.cs" />

@@ -131,7 +131,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 }
                 msg.D.ScadaList.Add( scadaId, scadaObj );
 
-                payload = JsonConvert.SerializeObject( msg, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore } );
+                payload = JsonConverter.SerializeObject( msg );
                 return true;
             }
             catch ( Exception ex )
@@ -202,7 +202,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 }
                 msg.D.ScadaList.Add( scadaId, scadaObj );
 
-                payload = JsonConvert.SerializeObject( msg, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore } );
+                payload = JsonConverter.SerializeObject( msg );
                 return true;
             }
             catch ( Exception ex )
