@@ -41,7 +41,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
             public string Description { get; set; }
             public string IP { get; set; }
             public int? Port { get; set; }
-
+            public string RetentionPolicyName { get; set; }
             public List<AnalogTagConfig> AnalogTagList { get; set; }
             public List<DiscreteTagConfig> DiscreteTagList { get; set; }
             public List<TextTagConfig> TextTagList { get; set; }

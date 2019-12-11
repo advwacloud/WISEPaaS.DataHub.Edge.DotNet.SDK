@@ -72,6 +72,8 @@
             this.lblDeviceCount = new System.Windows.Forms.Label();
             this.numDeviceCount = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.lblRPName = new System.Windows.Forms.Label();
+            this.txtRPName = new System.Windows.Forms.TextBox();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAArrayTagCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDataFreq)).BeginInit();
@@ -86,6 +88,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lblRPName);
+            this.groupBox2.Controls.Add(this.txtRPName);
             this.groupBox2.Controls.Add(this.numAArrayTagCount);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.btnDelsertConfig);
@@ -589,6 +593,24 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // lblRPName
+            // 
+            this.lblRPName.AutoSize = true;
+            this.lblRPName.Location = new System.Drawing.Point(184, 350);
+            this.lblRPName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblRPName.Name = "lblRPName";
+            this.lblRPName.Size = new System.Drawing.Size(181, 20);
+            this.lblRPName.TabIndex = 56;
+            this.lblRPName.Text = "Retention Policy Name";
+            // 
+            // txtRPName
+            // 
+            this.txtRPName.Location = new System.Drawing.Point(185, 374);
+            this.txtRPName.Margin = new System.Windows.Forms.Padding(4);
+            this.txtRPName.Name = "txtRPName";
+            this.txtRPName.Size = new System.Drawing.Size(180, 29);
+            this.txtRPName.TabIndex = 57;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
@@ -662,6 +684,8 @@
         private System.Windows.Forms.Button btnDelsertConfig;
         private System.Windows.Forms.NumericUpDown numAArrayTagCount;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblRPName;
+        private System.Windows.Forms.TextBox txtRPName;
     }
 }
 

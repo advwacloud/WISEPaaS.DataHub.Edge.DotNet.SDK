@@ -96,6 +96,10 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
             [JsonProperty( PropertyName = "PNbr" )]
             public int? ComPortNumber { get; set; }
 
+            [JsonProperty( PropertyName = "RP" )]
+            [DefaultValue( "" )]
+            public string RetentionPolicyName { get; set; }
+
             [JsonProperty( PropertyName = "Tag" )]
             public Dictionary<string, TagObject> TagList { get; set; }
 
