@@ -17,8 +17,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
 
         public class ScadaConfig
         {
-            public string Name { get; set; }
-            public string Description { get; set; }
             public string PrimaryIP { get; set; }
             public string BackupIP { get; set; }
             public int? PrimaryPort { get; set; }

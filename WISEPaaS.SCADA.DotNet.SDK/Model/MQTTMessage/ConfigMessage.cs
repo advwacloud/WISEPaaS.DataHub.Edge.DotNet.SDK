@@ -34,18 +34,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
 
         public class ScadaObject
         {
-            [JsonProperty( PropertyName = "ID" )]
-            [DefaultValue( "" )]
-            public string Id { get; set; }
-
-            [JsonProperty( PropertyName = "Name" )]
-            [DefaultValue( "" )]
-            public string Name { get; set; }
-
-            [JsonProperty( PropertyName = "Desc" )]
-            [DefaultValue( "" )]
-            public string Description { get; set; }
-
             [JsonProperty( PropertyName = "PIP" )]
             [DefaultValue( "" )]
             public string PrimaryIP { get; set; }

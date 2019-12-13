@@ -28,9 +28,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
                 ConfigMessage.ScadaObject scadaObj = new ConfigMessage.ScadaObject()
                 {
-                    Id = scadaId,
-                    Name = config.Scada.Name,
-                    Description = ( config.Scada.Description ),
                     PrimaryIP = config.Scada.PrimaryIP,
                     BackupIP = config.Scada.BackupIP,
                     PrimaryPort = config.Scada.PrimaryPort,

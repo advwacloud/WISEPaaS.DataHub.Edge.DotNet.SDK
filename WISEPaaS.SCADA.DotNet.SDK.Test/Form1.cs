@@ -172,12 +172,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Scada = new EdgeConfig.ScadaConfig()
-            {
-                Name = "TEST_SCADA",
-                Description = "For Test"
-            };
-
+            config.Scada = new EdgeConfig.ScadaConfig();
             config.Scada.DeviceList = new List<EdgeConfig.DeviceConfig>();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
@@ -383,12 +378,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Scada = new EdgeConfig.ScadaConfig()
-            {
-                Name = "TEST_SCADA",
-                Description = "For Test"
-            };
-
+            config.Scada = new EdgeConfig.ScadaConfig();
             config.Scada.DeviceList = new List<EdgeConfig.DeviceConfig>();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
@@ -544,12 +534,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Scada = new EdgeConfig.ScadaConfig()
-            {
-                Name = "TEST_SCADA",
-                Description = "For Test"
-            };
-
+            config.Scada = new EdgeConfig.ScadaConfig();
             config.Scada.DeviceList = new List<EdgeConfig.DeviceConfig>();
             for (int i = 1; i <= numDeviceCount.Value; i++)
             {
