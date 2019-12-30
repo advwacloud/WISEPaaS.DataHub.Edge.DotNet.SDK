@@ -69,9 +69,12 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             _mqttClient.Connected += mqttClient_Connected;
             _mqttClient.Disconnected += mqttClient_Disconnected;
 
-            _heartbeatTimer = new Timer();
-            _heartbeatTimer.Interval = _options.Heartbeat;
-            _heartbeatTimer.Elapsed += _heartbeatTimer_Elapsed;
+            if( _options.Heartbeat > 0 )
+            {
+                _heartbeatTimer = new Timer();
+                _heartbeatTimer.Interval = _options.Heartbeat;
+                _heartbeatTimer.Elapsed += _heartbeatTimer_Elapsed;
+            }
 
             if ( options.DataRecover )
             {
@@ -455,15 +458,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                         _cmdTopic = deviceCmdTopic;
                 }
 
-                if ( _options.Heartbeat > 0 )
-                {
-                    if ( _heartbeatTimer == null )
-                        _heartbeatTimer = new Timer();
-
-                    _heartbeatTimer.Enabled = false;
-                    _heartbeatTimer.Interval = _options.Heartbeat;
-                }
-
                 if ( Connected != null )
                     Connected( this, new EdgeAgentConnectedEventArgs( e.IsSessionPresent ) );
 
@@ -484,7 +478,8 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 _mqttClient.PublishAsync( message );
 
                 // start heartbeat timer
-                _heartbeatTimer.Enabled = true;
+                if ( _heartbeatTimer != null )
+                    _heartbeatTimer.Enabled = true;
             }
             catch ( Exception ex )
             {
@@ -506,7 +501,8 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                     _getCredentialFromDCCS();
 
                 // stop heartbeat timer
-                _heartbeatTimer.Enabled = false;
+                if ( _heartbeatTimer != null )
+                    _heartbeatTimer.Enabled = false;
             }
             catch ( Exception ex )
             {
