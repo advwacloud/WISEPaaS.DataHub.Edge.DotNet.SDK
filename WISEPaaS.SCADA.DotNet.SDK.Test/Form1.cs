@@ -544,6 +544,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                     Name = "Device " + i,
                     Type = "Smart Device",
                     Description = "Device " + i,
+                    RetentionPolicyName = txtRPName.Text
                 };
 
                 device.AnalogTagList = new List<EdgeConfig.AnalogTagConfig>();
