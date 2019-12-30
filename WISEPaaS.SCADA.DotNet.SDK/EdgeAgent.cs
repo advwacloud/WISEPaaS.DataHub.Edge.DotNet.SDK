@@ -26,7 +26,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
     {
         public const int DEAFAULT_HEARTBEAT_INTERVAL = 60000;
         public const int DEAFAULT_DATARECOVER_INTERVAL = 3000;
-        public const int DEAFAULT_DATARECOVER_COUNT = 1;
+        public const int DEAFAULT_DATARECOVER_COUNT = 10;
 
         private ManagedMqttClient _mqttClient;
         private DataRecoverHelper _recoverHelper;
