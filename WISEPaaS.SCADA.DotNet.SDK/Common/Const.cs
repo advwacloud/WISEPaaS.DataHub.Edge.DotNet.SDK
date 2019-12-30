@@ -18,11 +18,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK
         public const string CfgAckTopic = "/wisepaas/scada/{0}/cfgack";
     }
 
-    public class DataRecover
-    {
-        public const string DatabaseFileName = "recover.sqlite";
-    }
-
     public class Limit
     {
         public const int DataMaxTagCount = 100;

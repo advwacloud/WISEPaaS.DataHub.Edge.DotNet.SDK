@@ -22,12 +22,19 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
         private string _dbFilePath;
         private object _lockObj;
+        private SQLiteConnection _conn;
 
         public DataRecoverHelper()
         {
-            _dbFilePath = Path.Combine( Directory.GetCurrentDirectory(), DataRecover.DatabaseFileName );
-            _connString = "data source=" + _dbFilePath;
             _lockObj = new object();
+
+            _dbFilePath = Path.Combine( Directory.GetCurrentDirectory(), dbFileName );
+            _connString = "data source=" + _dbFilePath;
+            _conn = new SQLiteConnection( _connString );
+            if ( File.Exists( _dbFilePath ) == false )
+                _conn.Execute( @"CREATE TABLE Data (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, message TEXT NOT NULL)" );
+
+            _conn.Execute( @"VACUUM" ); // release storage 
         }
 
         public bool DataAvailable()
@@ -40,17 +47,9 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
                 lock ( _lockObj )
                 {
-                    using ( var _conn = new SQLiteConnection( _connString ) )
-                    {
-                        var list = _conn.Query<DataModel>( "SELECT * FROM Data LIMIT 1" );
-                        if ( list != null && list.Count() > 0 )
-                            result = true;
-                    }
-
-                    if ( result == false )
-                    {
-                        File.Delete( _dbFilePath );
-                    }
+                    var list = _conn.Query<DataModel>( "SELECT * FROM Data LIMIT 1" );
+                    if ( list != null && list.Count() > 0 )
+                        result = true;
                 }
             }
             catch ( Exception ex )
@@ -66,15 +65,12 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
             try
             {
-                using ( var conn = new SQLiteConnection( _connString ) )
+                var models = _conn.Query<DataModel>( "SELECT * FROM Data LIMIT @Count", new { Count = count } );
+                var idList = models.Select( x => x.Id ).ToArray();
+                if ( idList.Count() > 0 )
                 {
-                    var models = conn.Query<DataModel>( "SELECT * FROM Data LIMIT @Count", new { Count = count } );
-                    var idList = models.Select( x => x.Id ).ToArray();
-                    if ( idList.Count() > 0 )
-                    {
-                        conn.Execute( "DELETE FROM Data WHERE id IN @Ids", new { Ids = idList } );
-                        messages = models.Select( x => Compression.DecompressFromBase64String( x.Message ) ).ToList();
-                    }
+                    _conn.Execute( "DELETE FROM Data WHERE id IN @Ids", new { Ids = idList } );
+                    messages = models.Select( x => Compression.DecompressFromBase64String( x.Message ) ).ToList();
                 }
             }
             catch ( Exception ex )
@@ -87,21 +83,12 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
         public bool Write( string message )
         {
-            bool result = false;
             try
             {
                 if ( string.IsNullOrEmpty( message ) )
                     return false;
 
-                int n = 0;
-                using ( var conn = new SQLiteConnection( _connString ) )
-                {
-                    if ( File.Exists( _dbFilePath ) == false )
-                    {
-                        conn.Execute( @"CREATE TABLE Data (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, message TEXT NOT NULL)" );
-                    }
-                    n = conn.Execute( "INSERT INTO Data (message) VALUES (@Message)", new { Message = Compression.CompressToBase64String( message ) } );
-                }
+                int n  = _conn.Execute( "INSERT INTO Data (message) VALUES (@Message)", new { Message = Compression.CompressToBase64String( message ) } );
                 if ( n == 1 )
                     return true;
             }
@@ -109,7 +96,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             {
                 Console.WriteLine( ex );
             }
-            return result;
+            return false;
         }
     }
 }
