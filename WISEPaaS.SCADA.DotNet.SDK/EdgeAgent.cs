@@ -82,7 +82,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 _dataRecoverTimer = new Timer();
                 _dataRecoverTimer.Interval = DEAFAULT_DATARECOVER_INTERVAL;
                 _dataRecoverTimer.Elapsed += _dataRecoverTimer_Elapsed;
-                _dataRecoverTimer.Enabled = true;
             }
 
             MqttTcpChannel.CustomCertificateValidationCallback = ( x509Certificate, x509Chain, sslPolicyErrors, mqttClientTcpOptions ) => { return true; };
@@ -477,9 +476,12 @@ namespace WISEPaaS.SCADA.DotNet.SDK
 
                 _mqttClient.PublishAsync( message );
 
-                // start heartbeat timer
+                // start heartbeat and recover timer
                 if ( _heartbeatTimer != null )
                     _heartbeatTimer.Enabled = true;
+
+                if ( _dataRecoverTimer != null )
+                    _dataRecoverTimer.Enabled = true;
             }
             catch ( Exception ex )
             {
@@ -500,9 +502,12 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 if ( _options.ConnectType == ConnectType.DCCS )
                     _getCredentialFromDCCS();
 
-                // stop heartbeat timer
+                // stop heartbeat and recover timer
                 if ( _heartbeatTimer != null )
                     _heartbeatTimer.Enabled = false;
+
+                if ( _dataRecoverTimer != null )
+                    _dataRecoverTimer.Enabled = false;
             }
             catch ( Exception ex )
             {
