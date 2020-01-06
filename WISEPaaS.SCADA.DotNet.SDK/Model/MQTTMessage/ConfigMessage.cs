@@ -85,7 +85,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Model
             public int? ComPortNumber { get; set; }
 
             [JsonProperty( PropertyName = "RP" )]
-            [DefaultValue( "" )]
+            [DefaultValue( null )]
             public string RetentionPolicyName { get; set; }
 
             [JsonProperty( PropertyName = "Tag" )]

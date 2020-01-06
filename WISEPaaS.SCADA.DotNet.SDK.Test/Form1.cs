@@ -385,7 +385,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
                 {
                     Id = "Device" + i,
-                    Description = "Device " + i,
+                    Description = "Device " + i
                 };
 
                 device.AnalogTagList = new List<EdgeConfig.AnalogTagConfig>();
