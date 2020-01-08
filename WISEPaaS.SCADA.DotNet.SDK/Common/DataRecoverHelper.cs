@@ -31,10 +31,24 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             _dbFilePath = Path.Combine( Directory.GetCurrentDirectory(), dbFileName );
             _connString = "data source=" + _dbFilePath;
             _conn = new SQLiteConnection( _connString );
-            if ( File.Exists( _dbFilePath ) == false )
-                _conn.Execute( @"CREATE TABLE Data (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, message TEXT NOT NULL)" );
 
-            _conn.Execute( @"VACUUM" ); // release storage 
+            if ( !File.Exists( _dbFilePath ) )
+                _conn.Execute( @"CREATE TABLE Data (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, message TEXT NOT NULL)" );   // create table "Data"
+
+            _conn.Open();
+            _conn.Execute( @"VACUUM" ); // release storage
+        }
+
+        ~DataRecoverHelper()
+        {
+            try
+            {
+                _conn.Close();
+            }
+            catch ( Exception ex )
+            {
+                Console.WriteLine( ex.ToString() );
+            }
         }
 
         public bool DataAvailable()
@@ -42,9 +56,6 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             bool result = false;
             try
             {
-                if ( File.Exists( _dbFilePath ) == false )
-                    return false;
-
                 lock ( _lockObj )
                 {
                     var list = _conn.Query<DataModel>( "SELECT * FROM Data LIMIT 1" );
@@ -81,20 +92,27 @@ namespace WISEPaaS.SCADA.DotNet.SDK
             return messages;
         }
 
-        public bool Write( string message )
+        public bool Write( List<string> messages )
         {
-            try
+            using ( var trans = _conn.BeginTransaction() )
             {
-                if ( string.IsNullOrEmpty( message ) )
-                    return false;
+                try
+                {
+                    foreach ( string message in messages )
+                    {
+                        if ( string.IsNullOrEmpty( message ) )
+                            continue;
 
-                int n  = _conn.Execute( "INSERT INTO Data (message) VALUES (@Message)", new { Message = Compression.CompressToBase64String( message ) } );
-                if ( n == 1 )
+                        _conn.Execute( "INSERT INTO Data (message) VALUES (@Message)", new { Message = Compression.CompressToBase64String( message ) }, trans );
+                    }
+                    trans.Commit();
                     return true;
-            }
-            catch ( Exception ex )
-            {
-                Console.WriteLine( ex );
+                }
+                catch ( Exception ex )
+                {
+                    Console.WriteLine( ex );
+                    trans.Rollback();
+                }
             }
             return false;
         }

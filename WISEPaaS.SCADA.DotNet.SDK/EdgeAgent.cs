@@ -309,35 +309,35 @@ namespace WISEPaaS.SCADA.DotNet.SDK
                 bool result = Converter.ConvertData( data, ref payloads );
                 if ( result )
                 {
+                    if ( _mqttClient.IsConnected == false )
+                    {
+                        // keep data for MQTT connected
+                        _recoverHelper.Write( payloads );
+                        return false;
+                    }
+
                     foreach ( var payload in payloads )
                     {
-                        if ( _mqttClient.IsConnected == false && _recoverHelper != null )
-                        {
-                            // keep data for MQTT connected
-                            _recoverHelper.Write( payload );
-                            return false;
-                        }
-
                         var message = new MqttApplicationMessageBuilder()
-                        .WithTopic( _dataTopic )
-                        .WithPayload( payload )
-                        .WithAtLeastOnceQoS()
-                        .WithRetainFlag( false )
-                        .Build();
+                            .WithTopic( _dataTopic )
+                            .WithPayload( payload )
+                            .WithAtLeastOnceQoS()
+                            .WithRetainFlag( false )
+                            .Build();
 
                         _mqttClient.PublishAsync( message );
                     }
+
+                    //_logger.Info( "Send Data: {0}", payload );
+                    return true;
                 }
-
-                //_logger.Info( "Send Data: {0}", payload );
-
-                return result;
             }
             catch ( Exception ex )
             {
+                Console.WriteLine( ex );
                 //_logger.Error( ex.ToString() );
-                return false;
             }
+            return false;
         }
 
         private bool _sendDeviceStatus( EdgeDeviceStatus deviceStatus )
