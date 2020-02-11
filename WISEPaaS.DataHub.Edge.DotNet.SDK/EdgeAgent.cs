@@ -18,9 +18,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using WISEPaaS.SCADA.DotNet.SDK.Model;
+using WISEPaaS.DataHub.Edge.DotNet.SDK.Model;
 
-namespace WISEPaaS.SCADA.DotNet.SDK
+namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 {
     public class EdgeAgent
     {

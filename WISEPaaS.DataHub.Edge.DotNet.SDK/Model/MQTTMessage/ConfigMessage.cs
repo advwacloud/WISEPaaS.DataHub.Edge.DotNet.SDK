@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
-namespace WISEPaaS.SCADA.DotNet.SDK.Model
+namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 {
     public class ConfigMessage : BaseMessage
     {

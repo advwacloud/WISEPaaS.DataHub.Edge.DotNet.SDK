@@ -7,8 +7,8 @@
     <ProjectGuid>{8CA541C5-E3FA-42C6-888F-098E69B28346}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WISEPaaS.SCADA.DotNet.SDK</RootNamespace>
-    <AssemblyName>WISEPaaS.SCADA.DotNet.SDK</AssemblyName>
+    <RootNamespace>WISEPaaS.DataHub.Edge.DotNet.SDK</RootNamespace>
+    <AssemblyName>WISEPaaS.DataHub.Edge.DotNet.SDK</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

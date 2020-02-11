@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WISEPaaS.SCADA.DotNet.SDK
+namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 {
     public class Compression
     {

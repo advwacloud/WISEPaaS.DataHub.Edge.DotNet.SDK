@@ -6,9 +6,9 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WISEPaaS.SCADA.DotNet.SDK.Model;
+using WISEPaaS.DataHub.Edge.DotNet.SDK.Model;
 
-namespace WISEPaaS.SCADA.DotNet.SDK
+namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 {
     public class Converter
     {
