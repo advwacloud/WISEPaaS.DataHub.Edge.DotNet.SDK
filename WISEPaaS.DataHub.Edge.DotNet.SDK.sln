@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WISEPaaS.SCADA.DotNet.SDK", "WISEPaaS.SCADA.DotNet.SDK\WISEPaaS.SCADA.DotNet.SDK.csproj", "{8CA541C5-E3FA-42C6-888F-098E69B28346}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WISEPaaS.DataHub.Edge.DotNet.SDK", "WISEPaaS.DataHub.Edge.DotNet.SDK\WISEPaaS.DataHub.Edge.DotNet.SDK.csproj", "{8CA541C5-E3FA-42C6-888F-098E69B28346}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WISEPaaS.SCADA.DotNet.SDK.Test", "WISEPaaS.SCADA.DotNet.SDK.Test\WISEPaaS.SCADA.DotNet.SDK.Test.csproj", "{2A5D3F4D-79F9-43E0-9600-22E1C20DBA48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WISEPaaS.DataHub.Edge.DotNet.SDK.Test", "WISEPaaS.DataHub.Edge.DotNet.SDK.Test\WISEPaaS.DataHub.Edge.DotNet.SDK.Test.csproj", "{2A5D3F4D-79F9-43E0-9600-22E1C20DBA48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

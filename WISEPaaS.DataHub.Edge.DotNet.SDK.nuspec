@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
-    <id>WISEPaaS.SCADA.DotNet.SDK</id>
+    <id>WISEPaaS.DataHub.Edge.DotNet.SDK</id>
     <version>1.0.7</version>
-    <title>WISEPaaS.SCADA.DotNet.SDK</title>
+    <title>WISEPaaS.DataHub.Edge.DotNet.SDK</title>
     <authors>Steven Li</authors>
     <owners>Steven Li</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
-    <projectUrl>https://nuget.org/packages/WISEPaaS.SCADA.DotNet.SDK</projectUrl>
-    <iconUrl>https://advwacloud.github.io/WISEPaaS.SCADA.DotNet.SDK/icon.png</iconUrl>
-    <description>The WISEPaaS.SCADA.DotNet.SDK package allows developers to write C# applications which access the WISE-PaaS Platform via MQTT or MQTT over the Secure WebSocket Protocol.</description>
-    <summary>The WISEPaaS.SCADA.DotNet.SDK package allows developers to write C# applications which access the WISE-PaaS Platform via MQTT or MQTT over the Secure WebSocket Protocol.</summary>
+    <projectUrl>https://nuget.org/packages/WISEPaaS.DataHub.Edge.DotNet.SDK</projectUrl>
+    <iconUrl>https://advwacloud.github.io/WISEPaaS.DataHub.Edge.DotNet.SDK/icon.png</iconUrl>
+    <description>The WISEPaaS.DataHub.Edge.DotNet.SDK package allows developers to write C# applications which access the WISE-PaaS/DataHub platform via MQTT or MQTT over the secure websocket protocol.</description>
+    <summary>The WISEPaaS.DataHub.Edge.DotNet.SDK package allows developers to write C# applications which access the WISE-PaaS/DataHub platform via MQTT or MQTT over the secure websocket protocol.</summary>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright  2018</copyright>
+    <copyright>Copyright  2020</copyright>
     <language>en-US</language>
     <dependencies>
       <group targetFramework=".NETFramework4.5.2">

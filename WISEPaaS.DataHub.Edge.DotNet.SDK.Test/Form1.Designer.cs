@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblRPName = new System.Windows.Forms.Label();
+            this.txtRPName = new System.Windows.Forms.TextBox();
             this.numAArrayTagCount = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.btnDelsertConfig = new System.Windows.Forms.Button();
@@ -72,8 +74,6 @@
             this.lblDeviceCount = new System.Windows.Forms.Label();
             this.numDeviceCount = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.lblRPName = new System.Windows.Forms.Label();
-            this.txtRPName = new System.Windows.Forms.TextBox();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAArrayTagCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDataFreq)).BeginInit();
@@ -123,6 +123,24 @@
             this.groupBox2.Size = new System.Drawing.Size(812, 555);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
+            // 
+            // lblRPName
+            // 
+            this.lblRPName.AutoSize = true;
+            this.lblRPName.Location = new System.Drawing.Point(184, 350);
+            this.lblRPName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblRPName.Name = "lblRPName";
+            this.lblRPName.Size = new System.Drawing.Size(181, 20);
+            this.lblRPName.TabIndex = 56;
+            this.lblRPName.Text = "Retention Policy Name";
+            // 
+            // txtRPName
+            // 
+            this.txtRPName.Location = new System.Drawing.Point(185, 374);
+            this.txtRPName.Margin = new System.Windows.Forms.Padding(4);
+            this.txtRPName.Name = "txtRPName";
+            this.txtRPName.Size = new System.Drawing.Size(180, 29);
+            this.txtRPName.TabIndex = 57;
             // 
             // numAArrayTagCount
             // 
@@ -177,6 +195,11 @@
             // numDataFreq
             // 
             this.numDataFreq.Location = new System.Drawing.Point(522, 440);
+            this.numDataFreq.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
             this.numDataFreq.Name = "numDataFreq";
             this.numDataFreq.Size = new System.Drawing.Size(98, 29);
             this.numDataFreq.TabIndex = 52;
@@ -592,24 +615,6 @@
             // 
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // lblRPName
-            // 
-            this.lblRPName.AutoSize = true;
-            this.lblRPName.Location = new System.Drawing.Point(184, 350);
-            this.lblRPName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblRPName.Name = "lblRPName";
-            this.lblRPName.Size = new System.Drawing.Size(181, 20);
-            this.lblRPName.TabIndex = 56;
-            this.lblRPName.Text = "Retention Policy Name";
-            // 
-            // txtRPName
-            // 
-            this.txtRPName.Location = new System.Drawing.Point(185, 374);
-            this.txtRPName.Margin = new System.Windows.Forms.Padding(4);
-            this.txtRPName.Name = "txtRPName";
-            this.txtRPName.Size = new System.Drawing.Size(180, 29);
-            this.txtRPName.TabIndex = 57;
             // 
             // Form1
             // 

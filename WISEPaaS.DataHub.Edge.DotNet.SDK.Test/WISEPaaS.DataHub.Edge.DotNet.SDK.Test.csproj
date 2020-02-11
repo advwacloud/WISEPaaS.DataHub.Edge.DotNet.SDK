@@ -98,7 +98,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WISEPaaS.SCADA.DotNet.SDK\WISEPaaS.SCADA.DotNet.SDK.csproj">
+    <ProjectReference Include="..\WISEPaaS.DataHub.Edge.DotNet.SDK\WISEPaaS.DataHub.Edge.DotNet.SDK.csproj">
       <Project>{8ca541c5-e3fa-42c6-888f-098e69b28346}</Project>
       <Name>WISEPaaS.SCADA.DotNet.SDK</Name>
     </ProjectReference>
