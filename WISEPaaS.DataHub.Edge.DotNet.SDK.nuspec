@@ -2,14 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>WISEPaaS.DataHub.Edge.DotNet.SDK</id>
-    <version>1.0.7</version>
+    <version>1.0.9</version>
     <title>WISEPaaS.DataHub.Edge.DotNet.SDK</title>
     <authors>Steven Li</authors>
     <owners>Steven Li</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <license type="expression">MIT</license>
     <projectUrl>https://nuget.org/packages/WISEPaaS.DataHub.Edge.DotNet.SDK</projectUrl>
-    <iconUrl>https://advwacloud.github.io/WISEPaaS.DataHub.Edge.DotNet.SDK/icon.png</iconUrl>
+	<icon>images\icon.png</icon>
     <description>The WISEPaaS.DataHub.Edge.DotNet.SDK package allows developers to write C# applications which access the WISE-PaaS/DataHub platform via MQTT or MQTT over the secure websocket protocol.</description>
     <summary>The WISEPaaS.DataHub.Edge.DotNet.SDK package allows developers to write C# applications which access the WISE-PaaS/DataHub platform via MQTT or MQTT over the secure websocket protocol.</summary>
     <releaseNotes></releaseNotes>
@@ -17,16 +17,17 @@
     <language>en-US</language>
     <dependencies>
       <group targetFramework=".NETFramework4.5.2">
-        <dependency id="Newtonsoft.Json" version="11.0.1" />
-        <dependency id="MQTTnet" version="2.7.0" />
+        <dependency id="Newtonsoft.Json" version="12.0.3" />
+        <dependency id="MQTTnet" version="2.7.5" />
         <dependency id="Dapper" version="1.50.4" />
-        <dependency id="System.Data.SQLite.Core" version="1.0.108" />
+        <dependency id="System.Data.SQLite.Core" version="1.0.112.0" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src=".\WISEPaaS.SCADA.DotNet.SDK\bin\Release\WISEPaaS.SCADA.DotNet.SDK.dll" target="lib\net452\WISEPaaS.SCADA.DotNet.SDK.dll" />
-    <file src=".\WISEPaaS.SCADA.DotNet.SDK\x64\SQLite.Interop.dll" target="x64\SQLite.Interop.dll" />
-    <file src=".\WISEPaaS.SCADA.DotNet.SDK\x86\SQLite.Interop.dll" target="x86\SQLite.Interop.dll" />
+	<file src="icon.png" target="images\" />
+    <file src=".\WISEPaaS.DataHub.Edge.DotNet.SDK\bin\Release\WISEPaaS.DataHub.Edge.DotNet.SDK.dll" target="lib\net452\WISEPaaS.DataHub.Edge.DotNet.SDK.dll" />
+    <file src=".\WISEPaaS.DataHub.Edge.DotNet.SDK\x64\SQLite.Interop.dll" target="x64\SQLite.Interop.dll" />
+    <file src=".\WISEPaaS.DataHub.Edge.DotNet.SDK\x86\SQLite.Interop.dll" target="x86\SQLite.Interop.dll" />
   </files>
 </package>
