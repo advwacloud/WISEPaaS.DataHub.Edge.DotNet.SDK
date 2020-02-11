@@ -6,10 +6,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using WISEPaaS.SCADA.DotNet.SDK;
-using WISEPaaS.SCADA.DotNet.SDK.Model;
+using WISEPaaS.DataHub.Edge.DotNet.SDK;
+using WISEPaaS.DataHub.Edge.DotNet.SDK.Model;
 
-namespace WISEPaaS.SCADA.DotNet.SDK.Test
+namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
 {
     public partial class Form1 : Form
     {
@@ -80,7 +80,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
 
         private void btnConnect_Click( object sender, EventArgs e )
         {
-            if ( string.IsNullOrEmpty( txtScadaId.Text ) )
+            if ( string.IsNullOrEmpty( txtNodeId.Text ) )
             {
                 MessageBox.Show( "SCADA ID can not be null !" );
                 return;
@@ -92,7 +92,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                 {
                     AutoReconnect = true,
                     ReconnectInterval = 1000,
-                    ScadaId = txtScadaId.Text.Trim(),
+                    NodeId = txtNodeId.Text.Trim(),
                     Heartbeat = 60000,   // default is 60 seconds,
                     DataRecover = true,
                     ConnectType = ( string.IsNullOrEmpty( txtDCCSKey.Text ) == false ) ? ConnectType.DCCS : ConnectType.MQTT,
@@ -128,7 +128,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
             }
             else
             {
-                _edgeAgent.Options.ScadaId = txtScadaId.Text.Trim();
+                _edgeAgent.Options.NodeId = txtNodeId.Text.Trim();
                 _edgeAgent.Options.ConnectType = ( string.IsNullOrEmpty( txtDCCSKey.Text ) == false ) ? ConnectType.DCCS : ConnectType.MQTT;
                 _edgeAgent.Options.UseSecure = ckbSecure.Checked;
                 switch ( _edgeAgent.Options.ConnectType )
@@ -172,8 +172,8 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Scada = new EdgeConfig.ScadaConfig();
-            config.Scada.DeviceList = new List<EdgeConfig.DeviceConfig>();
+            config.Node = new EdgeConfig.NodeConfig();
+            config.Node.DeviceList = new List<EdgeConfig.DeviceConfig>();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
@@ -252,7 +252,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                     device.AnalogTagList.Add( arrayTag );
                 }
 
-                config.Scada.DeviceList.Add( device );
+                config.Node.DeviceList.Add( device );
             }
 
             bool result = _edgeAgent.UploadConfig( ActionType.Create, config ).Result;
@@ -378,8 +378,8 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Scada = new EdgeConfig.ScadaConfig();
-            config.Scada.DeviceList = new List<EdgeConfig.DeviceConfig>();
+            config.Node = new EdgeConfig.NodeConfig();
+            config.Node.DeviceList = new List<EdgeConfig.DeviceConfig>();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
@@ -439,7 +439,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                     device.TextTagList.Add( textTag );
                 }
 
-                config.Scada.DeviceList.Add( device );
+                config.Node.DeviceList.Add( device );
             }
 
             bool result = _edgeAgent.UploadConfig( ActionType.Update, config ).Result;
@@ -451,7 +451,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Scada = new EdgeConfig.ScadaConfig();
+            config.Node = new EdgeConfig.NodeConfig();
 
             bool result = _edgeAgent.UploadConfig( ActionType.Delete, config ).Result;
         }
@@ -462,9 +462,9 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Scada = new EdgeConfig.ScadaConfig();
+            config.Node = new EdgeConfig.NodeConfig();
 
-            config.Scada.DeviceList = new List<EdgeConfig.DeviceConfig>();
+            config.Node.DeviceList = new List<EdgeConfig.DeviceConfig>();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
@@ -472,7 +472,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                     Id = "Device" + i
                 };
 
-                config.Scada.DeviceList.Add( device );
+                config.Node.DeviceList.Add( device );
             }
 
             bool result = _edgeAgent.UploadConfig( ActionType.Delete, config ).Result;
@@ -484,9 +484,9 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Scada = new EdgeConfig.ScadaConfig();
+            config.Node = new EdgeConfig.NodeConfig();
 
-            config.Scada.DeviceList = new List<EdgeConfig.DeviceConfig>();
+            config.Node.DeviceList = new List<EdgeConfig.DeviceConfig>();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
@@ -522,7 +522,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                     device.TextTagList.Add( textTag );
                 }
 
-                config.Scada.DeviceList.Add( device );
+                config.Node.DeviceList.Add( device );
             }
 
             bool result = _edgeAgent.UploadConfig( ActionType.Delete, config ).Result;
@@ -534,8 +534,8 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Scada = new EdgeConfig.ScadaConfig();
-            config.Scada.DeviceList = new List<EdgeConfig.DeviceConfig>();
+            config.Node = new EdgeConfig.NodeConfig();
+            config.Node.DeviceList = new List<EdgeConfig.DeviceConfig>();
             for (int i = 1; i <= numDeviceCount.Value; i++)
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
@@ -614,7 +614,7 @@ namespace WISEPaaS.SCADA.DotNet.SDK.Test
                     device.AnalogTagList.Add( arrayTag );
                 }
 
-                config.Scada.DeviceList.Add(device);
+                config.Node.DeviceList.Add(device);
             }
 
             bool result = _edgeAgent.UploadConfig(ActionType.Delsert, config).Result;

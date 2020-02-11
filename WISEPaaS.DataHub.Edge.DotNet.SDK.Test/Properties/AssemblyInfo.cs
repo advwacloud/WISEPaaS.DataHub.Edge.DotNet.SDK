@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 組件的一般資訊是由下列的屬性集控制。
 // 變更這些屬性的值即可修改組件的相關
 // 資訊。
-[assembly: AssemblyTitle( "WISEPaaS.SCADA.DotNet.SDK.Test" )]
+[assembly: AssemblyTitle( "WISEPaaS.DataHub.Edge.DotNet.SDK.Test" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
-[assembly: AssemblyProduct( "WISEPaaS.SCADA.DotNet.SDK.Test" )]
+[assembly: AssemblyProduct( "WISEPaaS.DataHub.Edge.DotNet.SDK.Test" )]
 [assembly: AssemblyCopyright( "Copyright ©  2018" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]

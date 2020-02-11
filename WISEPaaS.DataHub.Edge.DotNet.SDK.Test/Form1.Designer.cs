@@ -1,4 +1,4 @@
-﻿namespace WISEPaaS.SCADA.DotNet.SDK.Test
+﻿namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
 {
     partial class Form1
     {
@@ -63,11 +63,11 @@
             this.btnDeleteAllConfig = new System.Windows.Forms.Button();
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.ckbSecure = new System.Windows.Forms.CheckBox();
-            this.lblScadaId = new System.Windows.Forms.Label();
+            this.lblNodeId = new System.Windows.Forms.Label();
             this.btnUpdateConfig = new System.Windows.Forms.Button();
             this.btnDeviceStatus = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.txtScadaId = new System.Windows.Forms.TextBox();
+            this.txtNodeId = new System.Windows.Forms.TextBox();
             this.btnSendData = new System.Windows.Forms.Button();
             this.btnUploadConfig = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
@@ -107,11 +107,11 @@
             this.groupBox2.Controls.Add(this.btnDeleteAllConfig);
             this.groupBox2.Controls.Add(this.btnDisconnect);
             this.groupBox2.Controls.Add(this.ckbSecure);
-            this.groupBox2.Controls.Add(this.lblScadaId);
+            this.groupBox2.Controls.Add(this.lblNodeId);
             this.groupBox2.Controls.Add(this.btnUpdateConfig);
             this.groupBox2.Controls.Add(this.btnDeviceStatus);
             this.groupBox2.Controls.Add(this.lblStatus);
-            this.groupBox2.Controls.Add(this.txtScadaId);
+            this.groupBox2.Controls.Add(this.txtNodeId);
             this.groupBox2.Controls.Add(this.btnSendData);
             this.groupBox2.Controls.Add(this.btnUploadConfig);
             this.groupBox2.Controls.Add(this.btnConnect);
@@ -503,15 +503,15 @@
             this.ckbSecure.Text = "Secure";
             this.ckbSecure.UseVisualStyleBackColor = true;
             // 
-            // lblScadaId
+            // lblNodeId
             // 
-            this.lblScadaId.AutoSize = true;
-            this.lblScadaId.Location = new System.Drawing.Point(21, 285);
-            this.lblScadaId.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblScadaId.Name = "lblScadaId";
-            this.lblScadaId.Size = new System.Drawing.Size(84, 20);
-            this.lblScadaId.TabIndex = 25;
-            this.lblScadaId.Text = "SCADA ID";
+            this.lblNodeId.AutoSize = true;
+            this.lblNodeId.Location = new System.Drawing.Point(21, 285);
+            this.lblNodeId.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblNodeId.Name = "lblNodeId";
+            this.lblNodeId.Size = new System.Drawing.Size(72, 20);
+            this.lblNodeId.TabIndex = 25;
+            this.lblNodeId.Text = "Node ID";
             // 
             // btnUpdateConfig
             // 
@@ -548,13 +548,13 @@
             this.lblStatus.Text = "DISCONNECTED";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // txtScadaId
+            // txtNodeId
             // 
-            this.txtScadaId.Location = new System.Drawing.Point(22, 309);
-            this.txtScadaId.Margin = new System.Windows.Forms.Padding(4);
-            this.txtScadaId.Name = "txtScadaId";
-            this.txtScadaId.Size = new System.Drawing.Size(309, 29);
-            this.txtScadaId.TabIndex = 27;
+            this.txtNodeId.Location = new System.Drawing.Point(22, 309);
+            this.txtNodeId.Margin = new System.Windows.Forms.Padding(4);
+            this.txtNodeId.Name = "txtNodeId";
+            this.txtNodeId.Size = new System.Drawing.Size(309, 29);
+            this.txtNodeId.TabIndex = 27;
             // 
             // btnSendData
             // 
@@ -674,8 +674,8 @@
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Label lblPort;
         private System.Windows.Forms.TextBox txtPort;
-        private System.Windows.Forms.Label lblScadaId;
-        private System.Windows.Forms.TextBox txtScadaId;
+        private System.Windows.Forms.Label lblNodeId;
+        private System.Windows.Forms.TextBox txtNodeId;
         private System.Windows.Forms.Label lblDeviceCount;
         private System.Windows.Forms.NumericUpDown numDeviceCount;
         private System.Windows.Forms.NumericUpDown numTTagCount;
