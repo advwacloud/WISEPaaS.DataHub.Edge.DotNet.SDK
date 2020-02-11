@@ -8,24 +8,24 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 {
     public class EdgeConfig
     {
-        public ScadaConfig Scada { get; set; }
+        public NodeConfig Node { get; set; }
 
         public EdgeConfig()
         {
-            Scada = new ScadaConfig();
+            Node = new NodeConfig();
         }
 
-        public class ScadaConfig
+        public class NodeConfig
         {
             public string PrimaryIP { get; set; }
             public string BackupIP { get; set; }
             public int? PrimaryPort { get; set; }
             public int? BackupPort { get; set; }
-            public SCADAConfigType? Type { get; set; }
+            public NodeConfigType? Type { get; set; }
 
             public List<DeviceConfig> DeviceList { get; set; }
 
-            public ScadaConfig()
+            public NodeConfig()
             {
             }
         }

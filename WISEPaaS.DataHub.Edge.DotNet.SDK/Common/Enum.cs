@@ -32,9 +32,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         ConfigAck
     }
 
-    public enum SCADAConfigType
+    public enum NodeConfigType
     {
-        SCADA = 1,
+        Node = 1,
         Gateway = 2,
         VirtualGroup = 3
     }

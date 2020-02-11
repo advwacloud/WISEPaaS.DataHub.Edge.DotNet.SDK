@@ -35,7 +35,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
         private string _configTopic;
         private string _dataTopic;
-        private string _scadaConnTopic;
+        private string _nodeConnTopic;
         private string _deviceConnTopic;
         private string _cmdTopic;
         private string _ackTopic;
@@ -123,7 +123,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             string payload = JsonConvert.SerializeObject( heartbeatMsg );
 
             var message = new MqttApplicationMessageBuilder()
-            .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _scadaConnTopic : _deviceConnTopic )
+            .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _nodeConnTopic : _deviceConnTopic )
             .WithPayload( payload )
             .WithAtLeastOnceQoS()
             .WithRetainFlag( true )
@@ -190,7 +190,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     Payload = Encoding.UTF8.GetBytes( payload ),
                     QualityOfServiceLevel = MqttQualityOfServiceLevel.AtLeastOnce,
                     Retain = true,
-                    Topic = string.Format( MQTTTopic.ScadaConnTopic, Options.ScadaId )
+                    Topic = string.Format( MQTTTopic.NodeConnTopic, Options.NodeId )
                 };
 
                 string clientId = "EdgeAgent_" + Guid.NewGuid().ToString( "N" );
@@ -240,7 +240,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 string payload = JsonConvert.SerializeObject( disconnectMsg );
 
                 var message = new MqttApplicationMessageBuilder()
-                    .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _scadaConnTopic : _deviceConnTopic )
+                    .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _nodeConnTopic : _deviceConnTopic )
                     .WithPayload( payload )
                     .WithAtLeastOnceQoS()
                     .WithRetainFlag( true )
@@ -271,10 +271,10 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     case ActionType.Create:
                     case ActionType.Update:
                     case ActionType.Delsert:
-                        result = Converter.ConvertWholeConfig( action, Options.ScadaId, edgeConfig, ref payload, _options.Heartbeat );
+                        result = Converter.ConvertWholeConfig( action, Options.NodeId, edgeConfig, ref payload, _options.Heartbeat );
                         break;
                     case ActionType.Delete:
-                        result = Converter.ConvertDeleteConfig( Options.ScadaId, edgeConfig, ref payload );
+                        result = Converter.ConvertDeleteConfig( Options.NodeId, edgeConfig, ref payload );
                         break;
                 }
 
@@ -355,7 +355,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 if ( result )
                 {
                     var message = new MqttApplicationMessageBuilder()
-                    .WithTopic( _scadaConnTopic )
+                    .WithTopic( _nodeConnTopic )
                     .WithPayload( payload )
                     .WithAtLeastOnceQoS()
                     .WithRetainFlag( true )
@@ -440,19 +440,19 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             {
                 //_logger.Info( "MQTT Connect Success !" );
 
-                if ( string.IsNullOrEmpty( _options.ScadaId ) == false )
+                if ( string.IsNullOrEmpty( _options.NodeId ) == false )
                 {
-                    string scadaCmdTopic = string.Format( "/wisepaas/scada/{0}/cmd", _options.ScadaId );
-                    string deviceCmdTopic = string.Format( "/wisepaas/scada/{0}/{1}/cmd", _options.ScadaId, _options.DeviceId );
+                    string nodeCmdTopic = string.Format( MQTTTopic.NodeCmdTopic, _options.NodeId );
+                    string deviceCmdTopic = string.Format( MQTTTopic.DeviceCmdTopic, _options.NodeId, _options.DeviceId );
 
-                    _configTopic = string.Format( "/wisepaas/scada/{0}/cfg", _options.ScadaId );
-                    _dataTopic = string.Format( "/wisepaas/scada/{0}/data", _options.ScadaId );
-                    _scadaConnTopic = string.Format( "/wisepaas/scada/{0}/conn", _options.ScadaId );
-                    _deviceConnTopic = string.Format( "/wisepaas/scada/{0}/{1}/conn", _options.ScadaId, _options.DeviceId );
-                    _ackTopic = string.Format( "/wisepaas/scada/{0}/ack", _options.ScadaId );
-                    _cfgAckTopic = string.Format( "/wisepaas/scada/{0}/cfgack", _options.ScadaId );
+                    _configTopic = string.Format( MQTTTopic.ConfigTopic, _options.NodeId );
+                    _dataTopic = string.Format( MQTTTopic.DataTopic, _options.NodeId );
+                    _nodeConnTopic = string.Format( MQTTTopic.NodeConnTopic, _options.NodeId );
+                    _deviceConnTopic = string.Format( MQTTTopic.DeviceConnTopic, _options.NodeId, _options.DeviceId );
+                    _ackTopic = string.Format( MQTTTopic.AckTopic, _options.NodeId );
+                    _cfgAckTopic = string.Format( MQTTTopic.CfgAckTopic, _options.NodeId );
                     if ( _options.Type == EdgeType.Gateway )
-                        _cmdTopic = scadaCmdTopic;
+                        _cmdTopic = nodeCmdTopic;
                     else
                         _cmdTopic = deviceCmdTopic;
                 }
@@ -468,7 +468,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 ConnectMessage connectMsg = new ConnectMessage();
                 string payload = JsonConvert.SerializeObject( connectMsg );
                 var message = new MqttApplicationMessageBuilder()
-                .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _scadaConnTopic : _deviceConnTopic )
+                .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _nodeConnTopic : _deviceConnTopic )
                 .WithPayload( payload )
                 .WithAtLeastOnceQoS()
                 .WithRetainFlag( true )

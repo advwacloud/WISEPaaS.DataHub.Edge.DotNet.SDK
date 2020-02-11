@@ -24,7 +24,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             public ActionType Action { get; set; }
 
             [JsonProperty( PropertyName = "Scada" )]
-            public Dictionary<string, ScadaObject> ScadaList { get; set; }
+            public Dictionary<string, NodeObject> NodeList { get; set; }
 
             public DObject()
             {
@@ -32,7 +32,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             }
         }
 
-        public class ScadaObject
+        public class NodeObject
         {
             [JsonProperty( PropertyName = "PIP" )]
             [DefaultValue( "" )]
@@ -52,12 +52,12 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             public int? Heartbeat { get; set; }
 
             [JsonProperty( PropertyName = "Type" )]
-            public SCADAConfigType? Type { get; set; }
+            public NodeConfigType? Type { get; set; }
 
             [JsonProperty( PropertyName = "Device" )]
             public Dictionary<string, DeviceObject> DeviceList { get; set; }
 
-            public ScadaObject()
+            public NodeObject()
             {
             }
         }

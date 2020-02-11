@@ -15,7 +15,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         public Converter()
         { }
 
-        public static bool ConvertWholeConfig( ActionType action, string scadaId, EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL )
+        public static bool ConvertWholeConfig( ActionType action, string nodeId, EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL )
         {
             try
             {
@@ -24,22 +24,22 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
                 ConfigMessage msg = new ConfigMessage();
                 msg.D.Action = action;
-                msg.D.ScadaList = new Dictionary<string, ConfigMessage.ScadaObject>();
+                msg.D.NodeList = new Dictionary<string, ConfigMessage.NodeObject>();
 
-                ConfigMessage.ScadaObject scadaObj = new ConfigMessage.ScadaObject()
+                ConfigMessage.NodeObject nodeObj = new ConfigMessage.NodeObject()
                 {
-                    PrimaryIP = config.Scada.PrimaryIP,
-                    BackupIP = config.Scada.BackupIP,
-                    PrimaryPort = config.Scada.PrimaryPort,
-                    BackupPort = config.Scada.BackupPort,
+                    PrimaryIP = config.Node.PrimaryIP,
+                    BackupIP = config.Node.BackupIP,
+                    PrimaryPort = config.Node.PrimaryPort,
+                    BackupPort = config.Node.BackupPort,
                     Heartbeat = heartbeat / 1000,
-                    Type = SCADAConfigType.SCADA
+                    Type = NodeConfigType.Node
                 };
 
-                if ( config.Scada.DeviceList != null )
+                if ( config.Node.DeviceList != null )
                 {
-                    scadaObj.DeviceList = new Dictionary<string, ConfigMessage.DeviceObject>();
-                    foreach ( var device in config.Scada.DeviceList )
+                    nodeObj.DeviceList = new Dictionary<string, ConfigMessage.DeviceObject>();
+                    foreach ( var device in config.Node.DeviceList )
                     {
                         ConfigMessage.DeviceObject deviceObj = new ConfigMessage.DeviceObject()
                         {
@@ -123,10 +123,10 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                             }
                         }
 
-                        scadaObj.DeviceList.Add( device.Id, deviceObj );
+                        nodeObj.DeviceList.Add( device.Id, deviceObj );
                     }
                 }
-                msg.D.ScadaList.Add( scadaId, scadaObj );
+                msg.D.NodeList.Add( nodeId, nodeObj );
 
                 payload = JsonConverter.SerializeObject( msg );
                 return true;
@@ -138,7 +138,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
         }
         
-        public static bool ConvertDeleteConfig( string scadaId, EdgeConfig config, ref string payload )
+        public static bool ConvertDeleteConfig( string nodeId, EdgeConfig config, ref string payload )
         {
             try
             {
@@ -147,14 +147,14 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
                 ConfigMessage msg = new ConfigMessage();
                 msg.D.Action = ActionType.Delete;
-                msg.D.ScadaList = new Dictionary<string, ConfigMessage.ScadaObject>();
+                msg.D.NodeList = new Dictionary<string, ConfigMessage.NodeObject>();
 
-                ConfigMessage.ScadaObject scadaObj = new ConfigMessage.ScadaObject();
+                ConfigMessage.NodeObject nodeObj = new ConfigMessage.NodeObject();
 
-                if ( config.Scada.DeviceList != null )
+                if ( config.Node.DeviceList != null )
                 {
-                    scadaObj.DeviceList = new Dictionary<string, ConfigMessage.DeviceObject>();
-                    foreach ( var device in config.Scada.DeviceList )
+                    nodeObj.DeviceList = new Dictionary<string, ConfigMessage.DeviceObject>();
+                    foreach ( var device in config.Node.DeviceList )
                     {
                         ConfigMessage.DeviceObject deviceObj = new ConfigMessage.DeviceObject();
 
@@ -194,10 +194,10 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                             }
                         }
 
-                        scadaObj.DeviceList.Add( device.Id, deviceObj );
+                        nodeObj.DeviceList.Add( device.Id, deviceObj );
                     }
                 }
-                msg.D.ScadaList.Add( scadaId, scadaObj );
+                msg.D.NodeList.Add( nodeId, nodeObj );
 
                 payload = JsonConverter.SerializeObject( msg );
                 return true;

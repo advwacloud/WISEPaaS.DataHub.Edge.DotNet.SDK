@@ -10,7 +10,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
     {
         public bool AutoReconnect { get; set; }
         public int ReconnectInterval { get; set; }
-        public string ScadaId { get; set; }
+        public string NodeId { get; set; }
         public string DeviceId { get; set; }
         public EdgeType Type { get; set; }
         public int Heartbeat { get; set; }
@@ -25,7 +25,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
         {
             AutoReconnect = false;
             ReconnectInterval = 1000;
-            ScadaId = string.Empty;
+            NodeId = string.Empty;
             DeviceId = string.Empty;
             Type = EdgeType.Gateway;
             Heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL;
