@@ -28,10 +28,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
                 ConfigMessage.NodeObject nodeObj = new ConfigMessage.NodeObject()
                 {
-                    PrimaryIP = config.Node.PrimaryIP,
-                    BackupIP = config.Node.BackupIP,
-                    PrimaryPort = config.Node.PrimaryPort,
-                    BackupPort = config.Node.BackupPort,
                     Heartbeat = heartbeat / 1000,
                     Type = NodeConfigType.Node
                 };
@@ -46,9 +42,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                             Name = device.Name,
                             Type = device.Type,
                             Description = device.Description,
-                            IP = device.IP,
-                            Port = device.Port,
-                            ComPortNumber = device.ComPortNumber,
                             RetentionPolicyName = device.RetentionPolicyName
                         };
 

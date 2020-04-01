@@ -34,20 +34,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 
         public class NodeObject
         {
-            [JsonProperty( PropertyName = "PIP" )]
-            [DefaultValue( "" )]
-            public string PrimaryIP { get; set; }
-
-            [JsonProperty( PropertyName = "BIP" )]
-            [DefaultValue( "" )]
-            public string BackupIP { get; set; }
-
-            [JsonProperty( PropertyName = "PPort" )]
-            public int? PrimaryPort { get; set; }
-
-            [JsonProperty( PropertyName = "BPort" )]
-            public int? BackupPort { get; set; }
-
             [JsonProperty( PropertyName = "Hbt" )]
             public int? Heartbeat { get; set; }
 
@@ -73,16 +59,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             [JsonProperty( PropertyName = "Desc" )]
             [DefaultValue( "" )]
             public string Description { get; set; }
-
-            [JsonProperty( PropertyName = "IP" )]
-            [DefaultValue( "" )]
-            public string IP { get; set; }
-
-            [JsonProperty( PropertyName = "Port" )]
-            public int? Port { get; set; }
-
-            [JsonProperty( PropertyName = "PNbr" )]
-            public int? ComPortNumber { get; set; }
 
             [JsonProperty( PropertyName = "RP" )]
             [DefaultValue( null )]

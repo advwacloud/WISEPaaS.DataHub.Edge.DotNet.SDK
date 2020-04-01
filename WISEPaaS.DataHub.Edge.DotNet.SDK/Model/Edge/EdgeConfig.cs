@@ -17,12 +17,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 
         public class NodeConfig
         {
-            public string PrimaryIP { get; set; }
-            public string BackupIP { get; set; }
-            public int? PrimaryPort { get; set; }
-            public int? BackupPort { get; set; }
             public NodeConfigType? Type { get; set; }
-
             public List<DeviceConfig> DeviceList { get; set; }
 
             public NodeConfig()
@@ -34,11 +29,8 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
         {
             public string Id { get; set; }
             public string Name { get; set; }
-            public int? ComPortNumber { get; set; }
             public string Type { get; set; }
             public string Description { get; set; }
-            public string IP { get; set; }
-            public int? Port { get; set; }
             public string RetentionPolicyName { get; set; }
             public List<AnalogTagConfig> AnalogTagList { get; set; }
             public List<DiscreteTagConfig> DiscreteTagList { get; set; }
