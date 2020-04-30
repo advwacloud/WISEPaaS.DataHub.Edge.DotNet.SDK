@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>WISEPaaS.DataHub.Edge.DotNet.SDK</id>
-    <version>1.0.9</version>
+    <version>1.0.11</version>
     <title>WISEPaaS.DataHub.Edge.DotNet.SDK</title>
     <authors>Steven Li</authors>
     <owners>Steven Li</owners>
@@ -21,6 +21,7 @@
         <dependency id="MQTTnet" version="2.7.5" />
         <dependency id="Dapper" version="1.50.4" />
         <dependency id="System.Data.SQLite.Core" version="1.0.112.0" />
+		<dependency id="NLog" version="4.7.0" />
       </group>
     </dependencies>
   </metadata>
@@ -29,5 +30,7 @@
     <file src=".\WISEPaaS.DataHub.Edge.DotNet.SDK\bin\Release\WISEPaaS.DataHub.Edge.DotNet.SDK.dll" target="lib\net452\WISEPaaS.DataHub.Edge.DotNet.SDK.dll" />
     <file src=".\WISEPaaS.DataHub.Edge.DotNet.SDK\x64\SQLite.Interop.dll" target="x64\SQLite.Interop.dll" />
     <file src=".\WISEPaaS.DataHub.Edge.DotNet.SDK\x86\SQLite.Interop.dll" target="x86\SQLite.Interop.dll" />
+	<file src=".\WISEPaaS.DataHub.Edge.DotNet.SDK\NLog.config" target="content\NLog.config" />
+	<file src="install.ps1" target="tools" />
   </files>
 </package>
