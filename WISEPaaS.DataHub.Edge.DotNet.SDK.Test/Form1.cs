@@ -82,7 +82,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
         {
             if ( string.IsNullOrEmpty( txtNodeId.Text ) )
             {
-                MessageBox.Show( "SCADA ID can not be null !" );
+                MessageBox.Show( "NodeID can not be null !" );
                 return;
             }
 

@@ -6,6 +6,7 @@ using MQTTnet.Protocol;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using NLog;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         private ManagedMqttClient _mqttClient;
         private DataRecoverHelper _recoverHelper;
 
-        //private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         private string _configTopic;
         private string _dataTopic;
@@ -136,6 +137,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         {
             try
             {
+                _logger.Info( "Fetch MQTT Credentials form DCCS API !" );
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
                 ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback( checkValidationResult );
 
@@ -164,6 +166,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
+                _logger.Error( "Fetch MQTT Credentials Error ! " + ex.ToString() );
                 return false;
             }
         }
@@ -225,7 +228,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
-                //_logger.Error( ex.ToString() );
+                _logger.Error( "Connect Error ! " + ex.ToString() );
             }
         }
 
@@ -250,7 +253,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
-                //_logger.Error( ex.ToString() );
+                _logger.Error( "Disconnect Error ! " + ex.ToString() );
             }
         }
 
@@ -293,7 +296,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
-                //_logger.Error( ex.ToString() );
+                _logger.Error( "Upload Config Error ! " + ex.ToString() );
                 return false;
             }
         }
@@ -334,8 +337,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
-                Console.WriteLine( ex );
-                //_logger.Error( ex.ToString() );
+                _logger.Error( "Send Data Error ! " + ex.ToString() );
             }
             return false;
         }
@@ -367,7 +369,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
-                //_logger.Error( ex.ToString() );
+                _logger.Error( "Send Device Status Error ! " + ex.ToString() );
                 return false;
             }
         }
@@ -429,8 +431,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
-                //_logger.Error( ex.ToString() );
-                Console.WriteLine( ex.ToString() );
+                _logger.Error( "Message Received Error ! " + ex.ToString() );
             }
         }
 
@@ -438,7 +439,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         {
             try
             {
-                //_logger.Info( "MQTT Connect Success !" );
+                _logger.Info( "MQTT Connect Success !" );
 
                 if ( string.IsNullOrEmpty( _options.NodeId ) == false )
                 {
@@ -457,12 +458,12 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                         _cmdTopic = deviceCmdTopic;
                 }
 
-                if ( Connected != null )
-                    Connected( this, new EdgeAgentConnectedEventArgs( e.IsSessionPresent ) );
-
                 // subscribe
                 _mqttClient.SubscribeAsync( new TopicFilterBuilder().WithTopic( _cmdTopic ).WithAtLeastOnceQoS().Build() );
                 _mqttClient.SubscribeAsync( new TopicFilterBuilder().WithTopic( _ackTopic ).WithAtLeastOnceQoS().Build() );
+
+                if ( Connected != null )
+                    Connected( this, new EdgeAgentConnectedEventArgs( e.IsSessionPresent ) );
 
                 // publish
                 ConnectMessage connectMsg = new ConnectMessage();
@@ -485,7 +486,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
-                //_logger.Error( ex.ToString() );
+                _logger.Error( "MQTT Connected Error ! " + ex.ToString() );
             }
         }
 
@@ -493,8 +494,8 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         {
             try
             {
-                //_logger.Info( "MQTT Disonnected !" );
-                Console.WriteLine( "Disonnected" );
+                _logger.Info( "MQTT Connection Disonnected !" );
+
                 if ( Disconnected != null )
                     Disconnected( this, new DisconnectedEventArgs( e.ClientWasConnected, e.Exception ) );
 
