@@ -512,7 +512,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
-                //_logger.Error( ex.ToString() );
+                _logger.Error( "MQTT Disconnected Error ! " + ex.ToString() );
             }
         }
 
