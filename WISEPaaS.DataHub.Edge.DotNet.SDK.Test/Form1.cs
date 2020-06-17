@@ -352,18 +352,20 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
             return data;
         }
 
+        bool devStatus = true;
         private void btnDeviceStatus_Click( object sender, EventArgs e )
         {
             if ( _edgeAgent == null )
                 return;
 
+            devStatus = !devStatus;
             EdgeDeviceStatus deviceStatus = new EdgeDeviceStatus();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
                 EdgeDeviceStatus.Device device = new EdgeDeviceStatus.Device()
                 {
                     Id = "Device" + i,
-                    Status = Status.Online
+                    Status = (Status)Convert.ToInt32( devStatus )
                 };
                 deviceStatus.DeviceList.Add( device );
             }

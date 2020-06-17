@@ -144,7 +144,7 @@
             // 
             // numAArrayTagCount
             // 
-            this.numAArrayTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.numAArrayTagCount.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.numAArrayTagCount.Location = new System.Drawing.Point(26, 505);
             this.numAArrayTagCount.Maximum = new decimal(new int[] {
             999999,
@@ -163,7 +163,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label1.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label1.Location = new System.Drawing.Point(22, 482);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
@@ -211,7 +211,7 @@
             // 
             // numTTagCount
             // 
-            this.numTTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.numTTagCount.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.numTTagCount.Location = new System.Drawing.Point(364, 438);
             this.numTTagCount.Maximum = new decimal(new int[] {
             999999,
@@ -230,7 +230,7 @@
             // lblTTagCount
             // 
             this.lblTTagCount.AutoSize = true;
-            this.lblTTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblTTagCount.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblTTagCount.Location = new System.Drawing.Point(360, 415);
             this.lblTTagCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTTagCount.Name = "lblTTagCount";
@@ -240,7 +240,7 @@
             // 
             // numDTagCount
             // 
-            this.numDTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.numDTagCount.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.numDTagCount.Location = new System.Drawing.Point(185, 438);
             this.numDTagCount.Maximum = new decimal(new int[] {
             999999,
@@ -259,7 +259,7 @@
             // lblDTagCount
             // 
             this.lblDTagCount.AutoSize = true;
-            this.lblDTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblDTagCount.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblDTagCount.Location = new System.Drawing.Point(181, 415);
             this.lblDTagCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDTagCount.Name = "lblDTagCount";
@@ -269,7 +269,7 @@
             // 
             // numATagCount
             // 
-            this.numATagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.numATagCount.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.numATagCount.Location = new System.Drawing.Point(25, 438);
             this.numATagCount.Maximum = new decimal(new int[] {
             999999,
@@ -288,7 +288,7 @@
             // lblATagCount
             // 
             this.lblATagCount.AutoSize = true;
-            this.lblATagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblATagCount.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblATagCount.Location = new System.Drawing.Point(22, 415);
             this.lblATagCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblATagCount.Name = "lblATagCount";
@@ -539,7 +539,7 @@
             // 
             this.lblStatus.BackColor = System.Drawing.Color.Gray;
             this.lblStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblStatus.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblStatus.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblStatus.Location = new System.Drawing.Point(443, 27);
             this.lblStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStatus.Name = "lblStatus";
@@ -602,6 +602,11 @@
             // numDeviceCount
             // 
             this.numDeviceCount.Location = new System.Drawing.Point(22, 374);
+            this.numDeviceCount.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
             this.numDeviceCount.Name = "numDeviceCount";
             this.numDeviceCount.Size = new System.Drawing.Size(120, 29);
             this.numDeviceCount.TabIndex = 31;
@@ -622,7 +627,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(812, 555);
             this.Controls.Add(this.groupBox2);
-            this.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Form1";
             this.Text = "Form1";
