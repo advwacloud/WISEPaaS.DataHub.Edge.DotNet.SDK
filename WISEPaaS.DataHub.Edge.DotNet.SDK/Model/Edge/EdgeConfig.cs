@@ -22,6 +22,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 
             public NodeConfig()
             {
+                DeviceList = new List<DeviceConfig>();
             }
         }
 
@@ -38,6 +39,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 
             public DeviceConfig()
             {
+                AnalogTagList = new List<AnalogTagConfig>();
+                DiscreteTagList = new List<DiscreteTagConfig>();
+                TextTagList = new List<TextTagConfig>();
             }
         }
 
