@@ -21,14 +21,14 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
         public class DObject
         {
             [JsonProperty( PropertyName = "Action" )]
-            public ActionType Action { get; set; }
+            public ConfigActionType Action { get; set; }
 
             [JsonProperty( PropertyName = "Scada" )]
             public Dictionary<string, NodeObject> NodeList { get; set; }
 
             public DObject()
             {
-                Action = ActionType.Create;
+                Action = ConfigActionType.Create;
             }
         }
 

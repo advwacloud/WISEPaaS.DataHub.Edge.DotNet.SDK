@@ -255,7 +255,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 config.Node.DeviceList.Add( device );
             }
 
-            bool result = _edgeAgent.UploadConfig( ActionType.Create, config ).Result;
+            bool result = _edgeAgent.UploadConfig( ConfigActionType.Create, config ).Result;
         }
 
         private void btnSendData_Click( object sender, EventArgs e )
@@ -444,7 +444,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 config.Node.DeviceList.Add( device );
             }
 
-            bool result = _edgeAgent.UploadConfig( ActionType.Update, config ).Result;
+            bool result = _edgeAgent.UploadConfig( ConfigActionType.Update, config ).Result;
         }
 
         private void btnDeleteAllConfig_Click( object sender, EventArgs e )
@@ -455,7 +455,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
             EdgeConfig config = new EdgeConfig();
             config.Node = new EdgeConfig.NodeConfig();
 
-            bool result = _edgeAgent.UploadConfig( ActionType.Delete, config ).Result;
+            bool result = _edgeAgent.UploadConfig( ConfigActionType.Delete, config ).Result;
         }
 
         private void btnDeleteDevices_Click( object sender, EventArgs e )
@@ -477,7 +477,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 config.Node.DeviceList.Add( device );
             }
 
-            bool result = _edgeAgent.UploadConfig( ActionType.Delete, config ).Result;
+            bool result = _edgeAgent.UploadConfig( ConfigActionType.Delete, config ).Result;
         }
 
         private void btnDeleteTags_Click( object sender, EventArgs e )
@@ -527,7 +527,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 config.Node.DeviceList.Add( device );
             }
 
-            bool result = _edgeAgent.UploadConfig( ActionType.Delete, config ).Result;
+            bool result = _edgeAgent.UploadConfig( ConfigActionType.Delete, config ).Result;
         }
 
         private void btnDelsertConfig_Click(object sender, EventArgs e)
@@ -619,7 +619,30 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 config.Node.DeviceList.Add(device);
             }
 
-            bool result = _edgeAgent.UploadConfig(ActionType.Delsert, config).Result;
+            bool result = _edgeAgent.UploadConfig(ConfigActionType.Delsert, config).Result;
+        }
+
+        private void btnUpdateData_Click( object sender, EventArgs e )
+        {
+            try
+            {
+                if ( _edgeAgent == null )
+                    return;
+
+                EdgeUpdateData data = new EdgeUpdateData();
+                data.TagList.Add( new EdgeUpdateData.Tag()
+                {
+                    DeviceId = "Device1",
+                    TagName = "ATag1",
+                    Value = 2,
+                    Timestamp = new DateTime( 2020, 7, 19, 23, 33, 26, 295 )
+                } );
+                _edgeAgent.UpdateData( data );
+            }
+            catch ( Exception ex )
+            {
+
+            }
         }
     }
 }

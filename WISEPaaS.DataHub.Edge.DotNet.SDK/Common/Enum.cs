@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -58,11 +61,21 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         Success = 1
     }
 
-    public enum ActionType
+    public enum ConfigActionType
     {
         Create = 1,
         Update = 2,
         Delete = 3,
         Delsert = 4
     }
+
+    public enum DataAdjustActionType
+    {
+        [EnumMember( Value = "update" )]
+        Update,
+        [EnumMember( Value = "upsert" )]
+        Upsert,
+        [EnumMember( Value = "delete" )]
+        Delete
+    };
 }

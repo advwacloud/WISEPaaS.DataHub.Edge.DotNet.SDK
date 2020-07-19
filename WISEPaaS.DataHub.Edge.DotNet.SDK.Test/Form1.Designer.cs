@@ -74,6 +74,7 @@
             this.lblDeviceCount = new System.Windows.Forms.Label();
             this.numDeviceCount = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnUpdateData = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAArrayTagCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDataFreq)).BeginInit();
@@ -88,6 +89,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnUpdateData);
             this.groupBox2.Controls.Add(this.lblRPName);
             this.groupBox2.Controls.Add(this.txtRPName);
             this.groupBox2.Controls.Add(this.numAArrayTagCount);
@@ -621,6 +623,17 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // btnUpdateData
+            // 
+            this.btnUpdateData.Location = new System.Drawing.Point(508, 317);
+            this.btnUpdateData.Margin = new System.Windows.Forms.Padding(5);
+            this.btnUpdateData.Name = "btnUpdateData";
+            this.btnUpdateData.Size = new System.Drawing.Size(134, 69);
+            this.btnUpdateData.TabIndex = 58;
+            this.btnUpdateData.Text = "Update Data";
+            this.btnUpdateData.UseVisualStyleBackColor = true;
+            this.btnUpdateData.Click += new System.EventHandler(this.btnUpdateData_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
@@ -696,6 +709,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblRPName;
         private System.Windows.Forms.TextBox txtRPName;
+        private System.Windows.Forms.Button btnUpdateData;
     }
 }
 

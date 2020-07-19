@@ -41,6 +41,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         private string _cmdTopic;
         private string _ackTopic;
         private string _cfgAckTopic;
+        private string _dataAdustTopic;
 
         private Timer _heartbeatTimer;
         private Timer _dataRecoverTimer;
@@ -96,7 +97,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             return true;
         }
 
-        private void _dataRecoverTimer_Elapsed( object sender, ElapsedEventArgs e )
+        private async void _dataRecoverTimer_Elapsed( object sender, ElapsedEventArgs e )
         {
             if ( _mqttClient.IsConnected == false )
                 return;
@@ -113,15 +114,15 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     .WithRetainFlag( false )
                     .Build();
 
-                    _mqttClient.PublishAsync( message );
+                    await _mqttClient.PublishAsync( message );
                 }
             }
         }
 
-        private void _heartbeatTimer_Elapsed( object sender, ElapsedEventArgs e )
+        private async void _heartbeatTimer_Elapsed( object sender, ElapsedEventArgs e )
         {
             HeartbeatMessage heartbeatMsg = new HeartbeatMessage();
-            string payload = JsonConvert.SerializeObject( heartbeatMsg );
+            string payload = JsonConverter.SerializeObject( heartbeatMsg );
 
             var message = new MqttApplicationMessageBuilder()
             .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _nodeConnTopic : _deviceConnTopic )
@@ -130,7 +131,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             .WithRetainFlag( true )
             .Build();
 
-            _mqttClient.PublishAsync( message );
+            await _mqttClient.PublishAsync( message );
         }
 
         private bool _getCredentialFromDCCS()
@@ -171,7 +172,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
         }
 
-        private void _connect()
+        private async Task _connect()
         {
             try
             {
@@ -187,7 +188,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 }
 
                 LastWillMessage lastWillMsg = new LastWillMessage();
-                string payload = JsonConvert.SerializeObject( lastWillMsg );
+                string payload = JsonConverter.SerializeObject( lastWillMsg );
                 MqttApplicationMessage msg = new MqttApplicationMessage()
                 {
                     Payload = Encoding.UTF8.GetBytes( payload ),
@@ -224,7 +225,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 .WithClientOptions( ob.Build() )
                 .Build();
 
-                _mqttClient.StartAsync( mob );
+                await _mqttClient.StartAsync( mob );
             }
             catch ( Exception ex )
             {
@@ -232,7 +233,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
         }
 
-        private void _disconnect()
+        private async Task _disconnect()
         {
             try
             {
@@ -240,7 +241,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     return;
 
                 DisconnectMessage disconnectMsg = new DisconnectMessage();
-                string payload = JsonConvert.SerializeObject( disconnectMsg );
+                string payload = JsonConverter.SerializeObject( disconnectMsg );
 
                 var message = new MqttApplicationMessageBuilder()
                     .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _nodeConnTopic : _deviceConnTopic )
@@ -249,7 +250,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     .WithRetainFlag( true )
                     .Build();
 
-                _mqttClient.PublishAsync( message ).ContinueWith( t => _mqttClient.StopAsync() );
+                await _mqttClient.PublishAsync( message ).ContinueWith( t => _mqttClient.StopAsync() );
             }
             catch ( Exception ex )
             {
@@ -257,7 +258,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
         }
 
-        private bool _uploadConfig( ActionType action, EdgeConfig edgeConfig )
+        private async Task<bool> _uploadConfig( ConfigActionType action, EdgeConfig edgeConfig )
         {
             try
             {
@@ -271,12 +272,12 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 bool result = false;
                 switch ( action )
                 {
-                    case ActionType.Create:
-                    case ActionType.Update:
-                    case ActionType.Delsert:
+                    case ConfigActionType.Create:
+                    case ConfigActionType.Update:
+                    case ConfigActionType.Delsert:
                         result = Converter.ConvertWholeConfig( action, Options.NodeId, edgeConfig, ref payload, _options.Heartbeat );
                         break;
-                    case ActionType.Delete:
+                    case ConfigActionType.Delete:
                         result = Converter.ConvertDeleteConfig( Options.NodeId, edgeConfig, ref payload );
                         break;
                 }
@@ -290,7 +291,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     .WithRetainFlag( false )
                     .Build();
 
-                    _mqttClient.PublishAsync( message );
+                    await _mqttClient.PublishAsync( message );
                 }
                 return result;
             }
@@ -301,7 +302,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
         }
 
-        private bool _sendData( EdgeData data )
+        private async Task<bool> _sendData( EdgeData data )
         {
             try
             {
@@ -328,7 +329,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                             .WithRetainFlag( false )
                             .Build();
 
-                        _mqttClient.PublishAsync( message );
+                        await _mqttClient.PublishAsync( message );
                     }
 
                     //_logger.Info( "Send Data: {0}", payload );
@@ -342,7 +343,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             return false;
         }
 
-        private bool _sendDeviceStatus( EdgeDeviceStatus deviceStatus )
+        private async Task<bool> _sendDeviceStatus( EdgeDeviceStatus deviceStatus )
         {
             try
             {
@@ -363,15 +364,15 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     .WithRetainFlag( true )
                     .Build();
 
-                    _mqttClient.PublishAsync( message );
+                    await _mqttClient.PublishAsync( message );
+                    return true;
                 }
-                return result;
             }
             catch ( Exception ex )
             {
                 _logger.Error( "Send Device Status Error ! " + ex.ToString() );
-                return false;
             }
+            return false;
         }
 
         private void mqttClient_MessageReceived( object sender, MqttApplicationMessageReceivedEventArgs e )
@@ -435,7 +436,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
         }
 
-        private void mqttClient_Connected( object sender, MqttClientConnectedEventArgs e )
+        private async void mqttClient_Connected( object sender, MqttClientConnectedEventArgs e )
         {
             try
             {
@@ -452,6 +453,8 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     _deviceConnTopic = string.Format( MQTTTopic.DeviceConnTopic, _options.NodeId, _options.DeviceId );
                     _ackTopic = string.Format( MQTTTopic.AckTopic, _options.NodeId );
                     _cfgAckTopic = string.Format( MQTTTopic.CfgAckTopic, _options.NodeId );
+                    _dataAdustTopic = string.Format( MQTTTopic.DataAdjustTopic, _options.NodeId );
+
                     if ( _options.Type == EdgeType.Gateway )
                         _cmdTopic = nodeCmdTopic;
                     else
@@ -459,15 +462,15 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 }
 
                 // subscribe
-                _mqttClient.SubscribeAsync( new TopicFilterBuilder().WithTopic( _cmdTopic ).WithAtLeastOnceQoS().Build() );
-                _mqttClient.SubscribeAsync( new TopicFilterBuilder().WithTopic( _ackTopic ).WithAtLeastOnceQoS().Build() );
+                await _mqttClient.SubscribeAsync( new TopicFilterBuilder().WithTopic( _cmdTopic ).WithAtLeastOnceQoS().Build() );
+                await _mqttClient.SubscribeAsync( new TopicFilterBuilder().WithTopic( _ackTopic ).WithAtLeastOnceQoS().Build() );
 
                 if ( Connected != null )
                     Connected( this, new EdgeAgentConnectedEventArgs( e.IsSessionPresent ) );
 
                 // publish
                 ConnectMessage connectMsg = new ConnectMessage();
-                string payload = JsonConvert.SerializeObject( connectMsg );
+                string payload = JsonConverter.SerializeObject( connectMsg );
                 var message = new MqttApplicationMessageBuilder()
                 .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _nodeConnTopic : _deviceConnTopic )
                 .WithPayload( payload )
@@ -475,7 +478,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 .WithRetainFlag( true )
                 .Build();
 
-                _mqttClient.PublishAsync( message );
+                await _mqttClient.PublishAsync( message );
 
                 // start heartbeat and recover timer
                 if ( _heartbeatTimer != null )
@@ -516,6 +519,38 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
         }
 
+        private async Task<bool> _updateData( EdgeUpdateData data, bool upsert = false )
+        {
+            try
+            {
+                if ( _mqttClient.IsConnected == false )
+                    return false;
+
+                if ( data == null )
+                    return false;
+
+                string payload = string.Empty;
+                bool result = Converter.ConvertUpdateData( data, upsert, ref payload );
+                if ( result )
+                {
+                    var message = new MqttApplicationMessageBuilder()
+                        .WithTopic( _dataAdustTopic )
+                        .WithPayload( payload )
+                        .WithAtLeastOnceQoS()
+                        .WithRetainFlag( false )
+                        .Build();
+
+                    await _mqttClient.PublishAsync( message );
+                    return true;
+                }
+            }
+            catch ( Exception ex )
+            {
+                _logger.Error( "Update Data Error ! " + ex.ToString() );
+            }
+            return false;
+        }
+
         #endregion
 
         #region >>> Public Method <<<
@@ -530,7 +565,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             return Task.Run( () => _disconnect() );
         }
 
-        public Task<bool> UploadConfig( ActionType action, EdgeConfig edgeConfig )
+        public Task<bool> UploadConfig( ConfigActionType action, EdgeConfig edgeConfig )
         {
             return Task.Run( () => _uploadConfig( action, edgeConfig ) );
         }
@@ -543,6 +578,11 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         public Task<bool> SendDeviceStatus( EdgeDeviceStatus deviceStatus )
         {
             return Task.Run( () => _sendDeviceStatus( deviceStatus ) );
+        }
+
+        public Task<bool> UpdateData( EdgeUpdateData data, bool upsert = false )
+        {
+            return Task.Run( () => _updateData( data, upsert ) );
         }
 
         #endregion

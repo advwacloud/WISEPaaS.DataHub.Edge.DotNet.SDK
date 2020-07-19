@@ -15,7 +15,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         public Converter()
         { }
 
-        public static bool ConvertWholeConfig( ActionType action, string nodeId, EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL )
+        public static bool ConvertWholeConfig( ConfigActionType action, string nodeId, EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL )
         {
             try
             {
@@ -139,7 +139,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     return false;
 
                 ConfigMessage msg = new ConfigMessage();
-                msg.D.Action = ActionType.Delete;
+                msg.D.Action = ConfigActionType.Delete;
                 msg.D.NodeList = new Dictionary<string, ConfigMessage.NodeObject>();
 
                 ConfigMessage.NodeObject nodeObj = new ConfigMessage.NodeObject();
@@ -229,7 +229,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     if ( count == Limit.DataMaxTagCount || i == list.Count - 1 )
                     {
                         msg.Timestamp = data.Timestamp.ToUniversalTime();
-                        payloads.Add( JsonConvert.SerializeObject( msg ) );
+                        payloads.Add( JsonConverter.SerializeObject( msg ) );
 
                         count = 0;
                         msg = null;
@@ -258,7 +258,38 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 {
                     msg.D.DeviceList.Add( device.Id, ( int ) device.Status );
                 }
-                payload = JsonConvert.SerializeObject( msg );
+                payload = JsonConverter.SerializeObject( msg );
+                return true;
+            }
+            catch ( Exception ex )
+            {
+                Console.WriteLine( ex.ToString() );
+                return false;
+            }
+        }
+
+        public static bool ConvertUpdateData( EdgeUpdateData data, bool upsert, ref string payload )
+        {
+            try
+            {
+                if ( data == null )
+                    return false;
+
+                DataAdjustMessage msg = new DataAdjustMessage();
+                DataAdjustActionType action = ( upsert == true ) ? DataAdjustActionType.Upsert : DataAdjustActionType.Update;
+                msg.D.Action = action;
+                foreach ( var tag in data.TagList )
+                {
+                    msg.D.TagList.Add( new DataAdjustMessage.TagObject()
+                    {
+                        DeviceId = tag.DeviceId,
+                        TagName = tag.TagName,
+                        Value = tag.Value,
+                        Index = tag.Index,
+                        Timestamp = tag.Timestamp.ToUniversalTime()
+                } );
+                }
+                payload = JsonConverter.SerializeObject( msg );
                 return true;
             }
             catch ( Exception ex )
