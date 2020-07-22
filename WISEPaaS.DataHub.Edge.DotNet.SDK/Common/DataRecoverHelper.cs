@@ -28,7 +28,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         {
             _lockObj = new object();
 
-            _dbFilePath = Path.Combine( Directory.GetCurrentDirectory(), dbFileName );
+            _dbFilePath = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, dbFileName );
             _connString = "data source=" + _dbFilePath;
             _conn = new SQLiteConnection( _connString );
 
