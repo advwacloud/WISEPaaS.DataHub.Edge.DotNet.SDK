@@ -93,7 +93,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                     AutoReconnect = true,
                     ReconnectInterval = 1000,
                     NodeId = txtNodeId.Text.Trim(),
-                    Heartbeat = 60000,   // default is 60 seconds,
+                    Heartbeat = Convert.ToInt32(numHeartbeat.Value) * 1000,   // default is 60 seconds,
                     DataRecover = true,
                     ConnectType = ( string.IsNullOrEmpty( txtDCCSKey.Text ) == false ) ? ConnectType.DCCS : ConnectType.MQTT,
                     UseSecure = ckbSecure.Checked
@@ -255,7 +255,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 config.Node.DeviceList.Add( device );
             }
 
-            bool result = _edgeAgent.UploadConfig( ConfigActionType.Create, config ).Result;
+            bool result = _edgeAgent.UploadConfig( ActionType.Create, config ).Result;
         }
 
         private void btnSendData_Click( object sender, EventArgs e )
@@ -444,7 +444,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 config.Node.DeviceList.Add( device );
             }
 
-            bool result = _edgeAgent.UploadConfig( ConfigActionType.Update, config ).Result;
+            bool result = _edgeAgent.UploadConfig( ActionType.Update, config ).Result;
         }
 
         private void btnDeleteAllConfig_Click( object sender, EventArgs e )
@@ -455,7 +455,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
             EdgeConfig config = new EdgeConfig();
             config.Node = new EdgeConfig.NodeConfig();
 
-            bool result = _edgeAgent.UploadConfig( ConfigActionType.Delete, config ).Result;
+            bool result = _edgeAgent.UploadConfig( ActionType.Delete, config ).Result;
         }
 
         private void btnDeleteDevices_Click( object sender, EventArgs e )
@@ -477,7 +477,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 config.Node.DeviceList.Add( device );
             }
 
-            bool result = _edgeAgent.UploadConfig( ConfigActionType.Delete, config ).Result;
+            bool result = _edgeAgent.UploadConfig( ActionType.Delete, config ).Result;
         }
 
         private void btnDeleteTags_Click( object sender, EventArgs e )
@@ -527,7 +527,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 config.Node.DeviceList.Add( device );
             }
 
-            bool result = _edgeAgent.UploadConfig( ConfigActionType.Delete, config ).Result;
+            bool result = _edgeAgent.UploadConfig( ActionType.Delete, config ).Result;
         }
 
         private void btnDelsertConfig_Click(object sender, EventArgs e)
@@ -619,7 +619,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 config.Node.DeviceList.Add(device);
             }
 
-            bool result = _edgeAgent.UploadConfig(ConfigActionType.Delsert, config).Result;
+            bool result = _edgeAgent.UploadConfig(ActionType.Delsert, config).Result;
         }
 
         private void btnUpdateData_Click( object sender, EventArgs e )
