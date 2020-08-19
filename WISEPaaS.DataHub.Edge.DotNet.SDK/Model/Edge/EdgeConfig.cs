@@ -66,10 +66,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             public int? IntegerDisplayFormat { get; set; }
             public int? FractionDisplayFormat { get; set; }
 
-            public int? ScalingType { get; set; }
-            public double? ScalingFactor1 { get; set; }
-            public double? ScalingFactor2 { get; set; }
-
             public AnalogTagConfig()
             {
             }

@@ -106,15 +106,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             [JsonProperty( PropertyName = "FDF" )]
             public int? FractionDisplayFormat { get; set; }
 
-            [JsonProperty( PropertyName = "SCALE" )]
-            public int? ScalingType { get; set; }
-
-            [JsonProperty( PropertyName = "SF1" )]
-            public double? ScalingFactor1 { get; set; }
-
-            [JsonProperty( PropertyName = "SF2" )]
-            public double? ScalingFactor2 { get; set; }
-
             public AnalogTagObject()
             {
             }

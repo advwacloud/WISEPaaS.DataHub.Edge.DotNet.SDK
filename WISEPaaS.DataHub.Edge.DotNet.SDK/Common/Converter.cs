@@ -63,10 +63,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                                     SpanLow = analogTag.SpanLow,
                                     EngineerUnit = analogTag.EngineerUnit,
                                     IntegerDisplayFormat = analogTag.IntegerDisplayFormat,
-                                    FractionDisplayFormat = analogTag.FractionDisplayFormat,
-                                    ScalingType = analogTag.ScalingType,
-                                    ScalingFactor1 = analogTag.ScalingFactor1,
-                                    ScalingFactor2 = analogTag.ScalingFactor2
+                                    FractionDisplayFormat = analogTag.FractionDisplayFormat
                                 };
 
                                 if ( deviceObj.TagList == null )
