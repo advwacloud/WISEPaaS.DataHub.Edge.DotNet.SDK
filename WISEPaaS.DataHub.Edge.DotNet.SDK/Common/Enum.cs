@@ -61,7 +61,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         Success = 1
     }
 
-    public enum ConfigActionType
+    public enum ActionType
     {
         Create = 1,
         Update = 2,

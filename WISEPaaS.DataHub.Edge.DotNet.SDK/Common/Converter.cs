@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -12,10 +13,12 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 {
     public class Converter
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+
         public Converter()
         { }
 
-        public static bool ConvertWholeConfig( ConfigActionType action, string nodeId, EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL )
+        public static bool ConvertWholeConfig( ActionType action, string nodeId, EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL )
         {
             try
             {
@@ -126,7 +129,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
-                Console.WriteLine( ex.ToString() );
+                _logger.Error( "Convert Config Payload Error ! " + ex.ToString() );
                 return false;
             }
         }
@@ -139,7 +142,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     return false;
 
                 ConfigMessage msg = new ConfigMessage();
-                msg.D.Action = ConfigActionType.Delete;
+                msg.D.Action = ActionType.Delete;
                 msg.D.NodeList = new Dictionary<string, ConfigMessage.NodeObject>();
 
                 ConfigMessage.NodeObject nodeObj = new ConfigMessage.NodeObject();
@@ -197,7 +200,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
-                Console.WriteLine( ex.ToString() );
+                _logger.Error( "Convert Config Payload Error ! " + ex.ToString() );
                 return false;
             }
         }
@@ -240,7 +243,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
-                Console.WriteLine( ex.ToString() );
+                _logger.Error( "Convert Data Payload Error ! " + ex.ToString() );
                 return false;
             }
         }
@@ -263,7 +266,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
-                Console.WriteLine( ex.ToString() );
+                _logger.Error( "Convert DeviceStatus Payload Error ! " + ex.ToString() );
                 return false;
             }
         }
@@ -294,7 +297,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             catch ( Exception ex )
             {
-                Console.WriteLine( ex.ToString() );
+                _logger.Error( "Convert Update Data Payload Error ! " + ex.ToString() );
                 return false;
             }
         }

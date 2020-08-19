@@ -258,7 +258,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
         }
 
-        private async Task<bool> _uploadConfig( ConfigActionType action, EdgeConfig edgeConfig )
+        private async Task<bool> _uploadConfig( ActionType action, EdgeConfig edgeConfig )
         {
             try
             {
@@ -272,12 +272,12 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 bool result = false;
                 switch ( action )
                 {
-                    case ConfigActionType.Create:
-                    case ConfigActionType.Update:
-                    case ConfigActionType.Delsert:
+                    case ActionType.Create:
+                    case ActionType.Update:
+                    case ActionType.Delsert:
                         result = Converter.ConvertWholeConfig( action, Options.NodeId, edgeConfig, ref payload, _options.Heartbeat );
                         break;
-                    case ConfigActionType.Delete:
+                    case ActionType.Delete:
                         result = Converter.ConvertDeleteConfig( Options.NodeId, edgeConfig, ref payload );
                         break;
                 }
@@ -565,7 +565,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             return Task.Run( () => _disconnect() );
         }
 
-        public Task<bool> UploadConfig( ConfigActionType action, EdgeConfig edgeConfig )
+        public Task<bool> UploadConfig( ActionType action, EdgeConfig edgeConfig )
         {
             return Task.Run( () => _uploadConfig( action, edgeConfig ) );
         }
