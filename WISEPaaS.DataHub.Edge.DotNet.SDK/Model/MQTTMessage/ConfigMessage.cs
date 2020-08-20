@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 
 namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 {
@@ -144,7 +146,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             [JsonProperty( PropertyName = "S7" )]
             [DefaultValue( "" )]
             public string State7 { get; set; }
-            
+
             public DiscreteTagObject()
             {
             }
@@ -156,5 +158,35 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             {
             }
         }
+
+        public class TagObjectConverter : CustomCreationConverter<TagObject>
+        {
+            public override TagObject Create( Type objectType )
+            {
+                throw new NotImplementedException();
+            }
+
+            public override object ReadJson( JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer )
+            {
+                JObject jo = JObject.Load( reader );
+                ConfigMessage.TagObject tagObj = new TagObject();
+                switch ( jo["Type"].ToObject<TagType>() )
+                {
+                    case TagType.Analog:
+                        tagObj = new AnalogTagObject();
+                        break;
+                    case TagType.Discrete:
+                        tagObj = new DiscreteTagObject();
+                        break;
+                    case TagType.Text:
+                        tagObj = new TextTagObject();
+                        break;
+                }
+                serializer.Populate( jo.CreateReader(), tagObj );
+                return tagObj;
+            }
+        }
     }
+
+    
 }

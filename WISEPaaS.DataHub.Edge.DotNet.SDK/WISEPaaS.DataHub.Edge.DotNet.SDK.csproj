@@ -88,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ConfigCacheHelper.cs" />
     <Compile Include="Common\Converter.cs" />
     <Compile Include="Common\Const.cs" />
     <Compile Include="Common\DataRecoverHelper.cs" />

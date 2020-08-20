@@ -387,14 +387,23 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
                 {
                     Id = "Device" + i,
-                    Description = "Device " + i
                 };
 
                 device.AnalogTagList = new List<EdgeConfig.AnalogTagConfig>();
                 device.DiscreteTagList = new List<EdgeConfig.DiscreteTagConfig>();
                 device.TextTagList = new List<EdgeConfig.TextTagConfig>();
 
-                for ( int j = 1; j <= numATagCount.Value; j++ )
+                EdgeConfig.AnalogTagConfig analogTag = new EdgeConfig.AnalogTagConfig()
+                {
+                    Name = "ATag1",
+                    ReadOnly = false,
+                    SpanHigh = 9999,
+                    IntegerDisplayFormat = 5,
+                    FractionDisplayFormat = 3
+                };
+                device.AnalogTagList.Add( analogTag );
+
+                /*for ( int j = 1; j <= numATagCount.Value; j++ )
                 {
                     EdgeConfig.AnalogTagConfig analogTag = new EdgeConfig.AnalogTagConfig()
                     {
@@ -439,7 +448,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                         ArraySize = 0
                     };
                     device.TextTagList.Add( textTag );
-                }
+                }*/
 
                 config.Node.DeviceList.Add( device );
             }

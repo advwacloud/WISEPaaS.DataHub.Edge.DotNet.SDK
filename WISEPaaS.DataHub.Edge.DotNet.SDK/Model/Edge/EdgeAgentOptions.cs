@@ -13,7 +13,12 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
         public string NodeId { get; set; }
         public string DeviceId { get; set; }
         public EdgeType Type { get; set; }
-        public int Heartbeat { get; set; }
+        private int _heartbeat;
+        public int Heartbeat
+        {
+            get { return _heartbeat; }
+            set { _heartbeat = ( value < EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL ) ? EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL : value; }
+        }
         public bool DataRecover { get; set; }
         public ConnectType ConnectType { get; set; }
         public bool UseSecure { get; set; }

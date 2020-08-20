@@ -18,16 +18,16 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         public Converter()
         { }
 
-        public static bool ConvertWholeConfig( ActionType action, string nodeId, EdgeConfig config, ref string payload, int heartbeat = EdgeAgent.DEAFAULT_HEARTBEAT_INTERVAL )
+        public static string ConvertWholeConfig( ActionType action, string nodeId, int heartbeat, EdgeConfig config, ref ConfigMessage configMessage )
         {
+            string payload = string.Empty;
             try
             {
                 if ( config == null )
-                    return false;
+                    return payload;
 
-                ConfigMessage msg = new ConfigMessage();
-                msg.D.Action = action;
-                msg.D.NodeList = new Dictionary<string, ConfigMessage.NodeObject>();
+                configMessage.D.Action = action;
+                configMessage.D.NodeList = new Dictionary<string, ConfigMessage.NodeObject>();
 
                 ConfigMessage.NodeObject nodeObj = new ConfigMessage.NodeObject()
                 {
@@ -119,28 +119,27 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                         nodeObj.DeviceList.Add( device.Id, deviceObj );
                     }
                 }
-                msg.D.NodeList.Add( nodeId, nodeObj );
+                configMessage.D.NodeList.Add( nodeId, nodeObj );
 
-                payload = JsonConverter.SerializeObject( msg );
-                return true;
+                payload = JsonConverter.SerializeObject( configMessage );
             }
             catch ( Exception ex )
             {
                 _logger.Error( "Convert Config Payload Error ! " + ex.ToString() );
-                return false;
             }
+            return payload;
         }
         
-        public static bool ConvertDeleteConfig( string nodeId, EdgeConfig config, ref string payload )
+        public static string ConvertDeleteConfig( string nodeId, EdgeConfig config, ref ConfigMessage configMessage )
         {
+            string payload = string.Empty;
             try
             {
                 if ( config == null )
-                    return false;
-
-                ConfigMessage msg = new ConfigMessage();
-                msg.D.Action = ActionType.Delete;
-                msg.D.NodeList = new Dictionary<string, ConfigMessage.NodeObject>();
+                    return payload;
+                
+                configMessage.D.Action = ActionType.Delete;
+                configMessage.D.NodeList = new Dictionary<string, ConfigMessage.NodeObject>();
 
                 ConfigMessage.NodeObject nodeObj = new ConfigMessage.NodeObject();
 
@@ -190,16 +189,15 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                         nodeObj.DeviceList.Add( device.Id, deviceObj );
                     }
                 }
-                msg.D.NodeList.Add( nodeId, nodeObj );
+                configMessage.D.NodeList.Add( nodeId, nodeObj );
 
-                payload = JsonConverter.SerializeObject( msg );
-                return true;
+                payload = JsonConverter.SerializeObject( configMessage );
             }
             catch ( Exception ex )
             {
                 _logger.Error( "Convert Config Payload Error ! " + ex.ToString() );
-                return false;
             }
+            return payload;
         }
 
         public static bool ConvertData( EdgeData data, ref List<string> payloads )

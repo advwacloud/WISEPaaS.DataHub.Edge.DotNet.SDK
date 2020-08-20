@@ -17,5 +17,10 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 DefaultValueHandling = DefaultValueHandling.Ignore
             } );
         }
+
+        public static T DeserializeObject<T>( string message )
+        {
+            return JsonConvert.DeserializeObject<T>( message );
+        }
     }
 }

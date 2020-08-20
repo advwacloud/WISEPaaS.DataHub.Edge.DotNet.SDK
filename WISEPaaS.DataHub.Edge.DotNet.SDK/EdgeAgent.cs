@@ -31,6 +31,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
         private ManagedMqttClient _mqttClient;
         private DataRecoverHelper _recoverHelper;
+        private ConfigCacheHelper _configCacheHelper;
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -46,13 +47,8 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         private Timer _heartbeatTimer;
         private Timer _dataRecoverTimer;
 
-        private EdgeAgentOptions _options;
-        public EdgeAgentOptions Options
-        {
-            get { return _options; }
-            set { _options = value; }
-        }
-
+        public EdgeAgentOptions Options;
+      
         public bool IsConnected
         {
             get { return _mqttClient.IsConnected; }
@@ -64,6 +60,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
         public EdgeAgent( EdgeAgentOptions options )
         {
+            _configCacheHelper = new ConfigCacheHelper();
+            _configCacheHelper.LoadConfigFromFile();
+
             Options = options;
             _mqttClient = new MqttFactory().CreateManagedMqttClient() as ManagedMqttClient;
 
@@ -71,10 +70,10 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             _mqttClient.Connected += mqttClient_Connected;
             _mqttClient.Disconnected += mqttClient_Disconnected;
 
-            if( _options.Heartbeat > 0 )
+            if( Options.Heartbeat > 0 )
             {
                 _heartbeatTimer = new Timer();
-                _heartbeatTimer.Interval = _options.Heartbeat;
+                _heartbeatTimer.Interval = Options.Heartbeat;
                 _heartbeatTimer.Elapsed += _heartbeatTimer_Elapsed;
             }
 
@@ -125,7 +124,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             string payload = JsonConverter.SerializeObject( heartbeatMsg );
 
             var message = new MqttApplicationMessageBuilder()
-            .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _nodeConnTopic : _deviceConnTopic )
+            .WithTopic( ( Options.Type == EdgeType.Gateway ) ? _nodeConnTopic : _deviceConnTopic )
             .WithPayload( payload )
             .WithAtLeastOnceQoS()
             .WithRetainFlag( true )
@@ -244,7 +243,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 string payload = JsonConverter.SerializeObject( disconnectMsg );
 
                 var message = new MqttApplicationMessageBuilder()
-                    .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _nodeConnTopic : _deviceConnTopic )
+                    .WithTopic( ( Options.Type == EdgeType.Gateway ) ? _nodeConnTopic : _deviceConnTopic )
                     .WithPayload( payload )
                     .WithAtLeastOnceQoS()
                     .WithRetainFlag( true )
@@ -269,20 +268,28 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     return false;
 
                 string payload = string.Empty;
-                bool result = false;
+                ConfigMessage msg = new ConfigMessage();
                 switch ( action )
                 {
                     case ActionType.Create:
+                        payload = Converter.ConvertWholeConfig( action, Options.NodeId, Options.Heartbeat, edgeConfig, ref msg );
+                        _configCacheHelper.InsertConfigCache( msg );
+                        break;
                     case ActionType.Update:
+                        payload = Converter.ConvertWholeConfig( action, Options.NodeId, Options.Heartbeat, edgeConfig, ref msg );
+                        _configCacheHelper.UpsertConfigCache( msg );
+                        break;
                     case ActionType.Delsert:
-                        result = Converter.ConvertWholeConfig( action, Options.NodeId, edgeConfig, ref payload, _options.Heartbeat );
+                        payload = Converter.ConvertWholeConfig( action, Options.NodeId, Options.Heartbeat, edgeConfig, ref msg );
+                        _configCacheHelper.InsertConfigCache( msg );
                         break;
                     case ActionType.Delete:
-                        result = Converter.ConvertDeleteConfig( Options.NodeId, edgeConfig, ref payload );
+                        payload = Converter.ConvertDeleteConfig( Options.NodeId, edgeConfig, ref msg );
+                        _configCacheHelper.DeleteConfigCache( msg );
                         break;
                 }
 
-                if ( result )
+                if ( payload != null && payload != string.Empty )
                 {
                     var message = new MqttApplicationMessageBuilder()
                     .WithTopic( _configTopic )
@@ -293,7 +300,10 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
                     await _mqttClient.PublishAsync( message );
                 }
-                return result;
+
+                _configCacheHelper.SaveConfigToFile();
+
+                return true;
             }
             catch ( Exception ex )
             {
@@ -442,20 +452,20 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             {
                 _logger.Info( "MQTT Connect Success !" );
 
-                if ( string.IsNullOrEmpty( _options.NodeId ) == false )
+                if ( string.IsNullOrEmpty( Options.NodeId ) == false )
                 {
-                    string nodeCmdTopic = string.Format( MQTTTopic.NodeCmdTopic, _options.NodeId );
-                    string deviceCmdTopic = string.Format( MQTTTopic.DeviceCmdTopic, _options.NodeId, _options.DeviceId );
+                    string nodeCmdTopic = string.Format( MQTTTopic.NodeCmdTopic, Options.NodeId );
+                    string deviceCmdTopic = string.Format( MQTTTopic.DeviceCmdTopic, Options.NodeId, Options.DeviceId );
 
-                    _configTopic = string.Format( MQTTTopic.ConfigTopic, _options.NodeId );
-                    _dataTopic = string.Format( MQTTTopic.DataTopic, _options.NodeId );
-                    _nodeConnTopic = string.Format( MQTTTopic.NodeConnTopic, _options.NodeId );
-                    _deviceConnTopic = string.Format( MQTTTopic.DeviceConnTopic, _options.NodeId, _options.DeviceId );
-                    _ackTopic = string.Format( MQTTTopic.AckTopic, _options.NodeId );
-                    _cfgAckTopic = string.Format( MQTTTopic.CfgAckTopic, _options.NodeId );
-                    _dataAdustTopic = string.Format( MQTTTopic.DataAdjustTopic, _options.NodeId );
+                    _configTopic = string.Format( MQTTTopic.ConfigTopic, Options.NodeId );
+                    _dataTopic = string.Format( MQTTTopic.DataTopic, Options.NodeId );
+                    _nodeConnTopic = string.Format( MQTTTopic.NodeConnTopic, Options.NodeId );
+                    _deviceConnTopic = string.Format( MQTTTopic.DeviceConnTopic, Options.NodeId, Options.DeviceId );
+                    _ackTopic = string.Format( MQTTTopic.AckTopic, Options.NodeId );
+                    _cfgAckTopic = string.Format( MQTTTopic.CfgAckTopic, Options.NodeId );
+                    _dataAdustTopic = string.Format( MQTTTopic.DataAdjustTopic, Options.NodeId );
 
-                    if ( _options.Type == EdgeType.Gateway )
+                    if ( Options.Type == EdgeType.Gateway )
                         _cmdTopic = nodeCmdTopic;
                     else
                         _cmdTopic = deviceCmdTopic;
@@ -472,7 +482,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 ConnectMessage connectMsg = new ConnectMessage();
                 string payload = JsonConverter.SerializeObject( connectMsg );
                 var message = new MqttApplicationMessageBuilder()
-                .WithTopic( ( _options.Type == EdgeType.Gateway ) ? _nodeConnTopic : _deviceConnTopic )
+                .WithTopic( ( Options.Type == EdgeType.Gateway ) ? _nodeConnTopic : _deviceConnTopic )
                 .WithPayload( payload )
                 .WithAtLeastOnceQoS()
                 .WithRetainFlag( true )
@@ -503,7 +513,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     Disconnected( this, new DisconnectedEventArgs( e.ClientWasConnected, e.Exception ) );
 
                 // refetch MQTT credential from DCCS
-                if ( _options.ConnectType == ConnectType.DCCS )
+                if ( Options.ConnectType == ConnectType.DCCS )
                     _getCredentialFromDCCS();
 
                 // stop heartbeat and recover timer

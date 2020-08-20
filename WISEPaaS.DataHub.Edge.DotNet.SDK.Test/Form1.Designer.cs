@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblHeartbeat = new System.Windows.Forms.Label();
+            this.numHeartbeat = new System.Windows.Forms.NumericUpDown();
             this.btnUpdateData = new System.Windows.Forms.Button();
             this.lblRPName = new System.Windows.Forms.Label();
             this.txtRPName = new System.Windows.Forms.TextBox();
@@ -75,9 +77,8 @@
             this.lblDeviceCount = new System.Windows.Forms.Label();
             this.numDeviceCount = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.lblHeartbeat = new System.Windows.Forms.Label();
-            this.numHeartbeat = new System.Windows.Forms.NumericUpDown();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numHeartbeat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAArrayTagCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDataFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTTagCount)).BeginInit();
@@ -87,7 +88,6 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDeviceCount)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numHeartbeat)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -130,6 +130,38 @@
             this.groupBox2.Size = new System.Drawing.Size(812, 555);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
+            // 
+            // lblHeartbeat
+            // 
+            this.lblHeartbeat.AutoSize = true;
+            this.lblHeartbeat.Location = new System.Drawing.Point(238, 482);
+            this.lblHeartbeat.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblHeartbeat.Name = "lblHeartbeat";
+            this.lblHeartbeat.Size = new System.Drawing.Size(85, 20);
+            this.lblHeartbeat.TabIndex = 59;
+            this.lblHeartbeat.Text = "Heartbeat";
+            // 
+            // numHeartbeat
+            // 
+            this.numHeartbeat.Location = new System.Drawing.Point(239, 505);
+            this.numHeartbeat.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.numHeartbeat.Minimum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.numHeartbeat.Name = "numHeartbeat";
+            this.numHeartbeat.Size = new System.Drawing.Size(98, 29);
+            this.numHeartbeat.TabIndex = 60;
+            this.numHeartbeat.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
             // 
             // btnUpdateData
             // 
@@ -639,38 +671,6 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // lblHeartbeat
-            // 
-            this.lblHeartbeat.AutoSize = true;
-            this.lblHeartbeat.Location = new System.Drawing.Point(238, 482);
-            this.lblHeartbeat.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblHeartbeat.Name = "lblHeartbeat";
-            this.lblHeartbeat.Size = new System.Drawing.Size(85, 20);
-            this.lblHeartbeat.TabIndex = 59;
-            this.lblHeartbeat.Text = "Heartbeat";
-            // 
-            // numHeartbeat
-            // 
-            this.numHeartbeat.Location = new System.Drawing.Point(239, 505);
-            this.numHeartbeat.Maximum = new decimal(new int[] {
-            99999,
-            0,
-            0,
-            0});
-            this.numHeartbeat.Minimum = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            this.numHeartbeat.Name = "numHeartbeat";
-            this.numHeartbeat.Size = new System.Drawing.Size(98, 29);
-            this.numHeartbeat.TabIndex = 60;
-            this.numHeartbeat.Value = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
@@ -684,6 +684,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numHeartbeat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAArrayTagCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDataFreq)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTTagCount)).EndInit();
@@ -695,7 +696,6 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDeviceCount)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numHeartbeat)).EndInit();
             this.ResumeLayout(false);
 
         }
