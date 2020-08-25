@@ -69,7 +69,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         Delsert = 4
     }
 
-    public enum DataAdjustActionType
+    public enum DataManipulateActionType
     {
         [EnumMember( Value = "update" )]
         Update,

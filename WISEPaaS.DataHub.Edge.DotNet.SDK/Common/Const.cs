@@ -16,7 +16,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         public const string DeviceCmdTopic = "/wisepaas/scada/{0}/{1}/cmd";
         public const string AckTopic = "/wisepaas/scada/{0}/ack";
         public const string CfgAckTopic = "/wisepaas/scada/{0}/cfgack";
-        public const string DataAdjustTopic = "/wisepaas/scada/{0}/data/adjust";
+        public const string DataManipulateTopic = "/wisepaas/scada/{0}/data/manipulate";
     }
 
     public class Limit

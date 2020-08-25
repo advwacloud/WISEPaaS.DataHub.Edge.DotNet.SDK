@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 {
-    public class DataAdjustMessage : BaseMessage
+    public class DataManipulateMessage : BaseMessage
     {
         [JsonProperty( PropertyName = "d" )]
         public DObject D { get; set; }
 
-        public DataAdjustMessage()
+        public DataManipulateMessage()
         {
             D = new DObject();
         }
@@ -24,7 +24,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             [JsonProperty( PropertyName = "action" )]
             [JsonConverter( typeof( StringEnumConverter ) )]
             [DefaultValue( "" )]
-            public DataAdjustActionType Action { get; set; }
+            public DataManipulateActionType Action { get; set; }
 
             [JsonProperty( PropertyName = "tags" )]
             public HashSet<TagObject> TagList { get; set; }

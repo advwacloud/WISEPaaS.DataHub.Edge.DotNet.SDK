@@ -42,7 +42,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         private string _cmdTopic;
         private string _ackTopic;
         private string _cfgAckTopic;
-        private string _dataAdustTopic;
+        private string _dataManipulateTopic;
 
         private Timer _heartbeatTimer;
         private Timer _dataRecoverTimer;
@@ -272,20 +272,20 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 switch ( action )
                 {
                     case ActionType.Create:
-                        payload = Converter.ConvertWholeConfig( action, Options.NodeId, Options.Heartbeat, edgeConfig, ref msg );
-                        _configCacheHelper.InsertConfigCache( msg );
+                        payload = Converter.ConvertWholeConfig( action, Options.NodeId, Options.Heartbeat, edgeConfig );
+                        _configCacheHelper.InsertConfigCache( edgeConfig );
                         break;
                     case ActionType.Update:
-                        payload = Converter.ConvertWholeConfig( action, Options.NodeId, Options.Heartbeat, edgeConfig, ref msg );
-                        _configCacheHelper.UpsertConfigCache( msg );
+                        payload = Converter.ConvertWholeConfig( action, Options.NodeId, Options.Heartbeat, edgeConfig );
+                        _configCacheHelper.UpsertConfigCache( edgeConfig );
                         break;
                     case ActionType.Delsert:
-                        payload = Converter.ConvertWholeConfig( action, Options.NodeId, Options.Heartbeat, edgeConfig, ref msg );
-                        _configCacheHelper.InsertConfigCache( msg );
+                        payload = Converter.ConvertWholeConfig( action, Options.NodeId, Options.Heartbeat, edgeConfig );
+                        _configCacheHelper.InsertConfigCache( edgeConfig );
                         break;
                     case ActionType.Delete:
-                        payload = Converter.ConvertDeleteConfig( Options.NodeId, edgeConfig, ref msg );
-                        _configCacheHelper.DeleteConfigCache( msg );
+                        payload = Converter.ConvertDeleteConfig( Options.NodeId, edgeConfig );
+                        _configCacheHelper.DeleteConfigCache( edgeConfig );
                         break;
                 }
 
@@ -319,7 +319,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 if ( data == null )
                     return false;
 
-                List<string> payloads = new List<string>();
+                HashSet<string> payloads = new HashSet<string>();
                 bool result = Converter.ConvertData( data, ref payloads );
                 if ( result )
                 {
@@ -463,7 +463,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     _deviceConnTopic = string.Format( MQTTTopic.DeviceConnTopic, Options.NodeId, Options.DeviceId );
                     _ackTopic = string.Format( MQTTTopic.AckTopic, Options.NodeId );
                     _cfgAckTopic = string.Format( MQTTTopic.CfgAckTopic, Options.NodeId );
-                    _dataAdustTopic = string.Format( MQTTTopic.DataAdjustTopic, Options.NodeId );
+                    _dataManipulateTopic = string.Format( MQTTTopic.DataManipulateTopic, Options.NodeId );
 
                     if ( Options.Type == EdgeType.Gateway )
                         _cmdTopic = nodeCmdTopic;
@@ -544,7 +544,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 if ( result )
                 {
                     var message = new MqttApplicationMessageBuilder()
-                        .WithTopic( _dataAdustTopic )
+                        .WithTopic( _dataManipulateTopic )
                         .WithPayload( payload )
                         .WithAtLeastOnceQoS()
                         .WithRetainFlag( false )
