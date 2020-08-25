@@ -8,12 +8,12 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 {
     public class EdgeDeviceStatus
     {
-        public List<Device> DeviceList { get; set; }
+        public HashSet<Device> DeviceList { get; set; }
         public DateTime Timestamp { get; set; }
 
         public EdgeDeviceStatus()
         {
-            DeviceList = new List<Device>();
+            DeviceList = new HashSet<Device>();
             Timestamp = DateTime.UtcNow;
         }
 

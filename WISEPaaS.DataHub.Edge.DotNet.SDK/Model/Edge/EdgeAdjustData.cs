@@ -9,11 +9,11 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 {
     public class EdgeUpdateData
     {
-        public List<Tag> TagList { get; set; }
+        public HashSet<Tag> TagList { get; set; }
 
         public EdgeUpdateData()
         {
-            TagList = new List<Tag>();
+            TagList = new HashSet<Tag>();
         }
 
         public class Tag

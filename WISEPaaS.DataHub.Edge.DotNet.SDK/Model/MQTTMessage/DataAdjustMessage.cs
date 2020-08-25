@@ -27,11 +27,11 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             public DataAdjustActionType Action { get; set; }
 
             [JsonProperty( PropertyName = "tags" )]
-            public List<TagObject> TagList { get; set; }
+            public HashSet<TagObject> TagList { get; set; }
 
             public DObject()
             {
-                TagList = new List<TagObject>();
+                TagList = new HashSet<TagObject>();
             }
         }
 

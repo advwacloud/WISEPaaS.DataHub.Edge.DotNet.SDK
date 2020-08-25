@@ -18,11 +18,11 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
         public class NodeConfig
         {
             public NodeConfigType? Type { get; set; }
-            public List<DeviceConfig> DeviceList { get; set; }
+            public HashSet<DeviceConfig> DeviceList { get; set; }
 
             public NodeConfig()
             {
-                DeviceList = new List<DeviceConfig>();
+                DeviceList = new HashSet<DeviceConfig>();
             }
         }
 
@@ -33,15 +33,15 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             public string Type { get; set; }
             public string Description { get; set; }
             public string RetentionPolicyName { get; set; }
-            public List<AnalogTagConfig> AnalogTagList { get; set; }
-            public List<DiscreteTagConfig> DiscreteTagList { get; set; }
-            public List<TextTagConfig> TextTagList { get; set; }
+            public HashSet<AnalogTagConfig> AnalogTagList { get; set; }
+            public HashSet<DiscreteTagConfig> DiscreteTagList { get; set; }
+            public HashSet<TextTagConfig> TextTagList { get; set; }
 
             public DeviceConfig()
             {
-                AnalogTagList = new List<AnalogTagConfig>();
-                DiscreteTagList = new List<DiscreteTagConfig>();
-                TextTagList = new List<TextTagConfig>();
+                AnalogTagList = new HashSet<AnalogTagConfig>();
+                DiscreteTagList = new HashSet<DiscreteTagConfig>();
+                TextTagList = new HashSet<TextTagConfig>();
             }
         }
 
@@ -52,9 +52,12 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             public bool? ReadOnly { get; set; }
             public int? ArraySize { get; set; }
 
+            public bool SendWhenValueChanged { get; set; }
+
             public TagConfig()
             {
                 Name = string.Empty;
+                SendWhenValueChanged = false;
             }
         }
 

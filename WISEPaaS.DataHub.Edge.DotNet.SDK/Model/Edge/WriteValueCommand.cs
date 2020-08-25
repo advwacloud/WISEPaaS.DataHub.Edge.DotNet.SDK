@@ -9,24 +9,24 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 {
     public class WriteValueCommand
     {
-        public List<Device> DeviceList { get; set; }
+        public HashSet<Device> DeviceList { get; set; }
         public DateTime Timestamp { get; set; }
 
         public WriteValueCommand()
         {
-            DeviceList = new List<Device>();
+            DeviceList = new HashSet<Device>();
             Timestamp = DateTime.UtcNow;
         }
 
         public class Device
         {
             public string Id { get; set; }
-            public List<Tag> TagList { get; set; }
+            public HashSet<Tag> TagList { get; set; }
 
             public Device()
             {
                 Id = string.Empty;
-                TagList = new List<Tag>();
+                TagList = new HashSet<Tag>();
             }
         }
 

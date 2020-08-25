@@ -8,12 +8,12 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 {
     public class EdgeData
     {
-        public List<Tag> TagList { get; set; }
+        public HashSet<Tag> TagList { get; set; }
         public DateTime Timestamp { get; set; }
 
         public EdgeData()
         {
-            TagList = new List<Tag>();
+            TagList = new HashSet<Tag>();
             Timestamp = DateTime.UtcNow;
         }
 
