@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,11 +16,15 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
     {
         private const string configFileName = "config.json";
 
-        private Dictionary<string, ConfigMessage.DeviceObject> _configCache;
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        
+        //private dynamic _configCache = new ExpandoObject() as IDictionary<string, Object>;
+
+        private Dictionary<string, Dictionary<string, ConfigCache.TagObject>> _configCache;
 
         public ConfigCacheHelper()
         {
-            _configCache = new Dictionary<string, ConfigMessage.DeviceObject>();
+            _configCache = new Dictionary<string, Dictionary<string, ConfigCache.TagObject>>();
         }
 
         public bool LoadConfigFromFile()
@@ -31,12 +37,14 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
                 using ( StreamReader file = File.OpenText( path ) )
                 {
-                    _configCache = JsonConverter.DeserializeObject<Dictionary<string, ConfigMessage.DeviceObject>>( file.ReadToEnd() );
+                    _configCache = JsonConverter.DeserializeObject<Dictionary<string, Dictionary<string, ConfigCache.TagObject>>>( file.ReadToEnd() );
+                    //_configCache = JObject.Parse( file.ReadToEnd() );
                 }
                 return true;
             }
-            catch
+            catch ( Exception ex )
             {
+                _logger.Error( "LoadConfigFromFile Error ! " + ex.ToString() );
                 return false;
             }
         }
@@ -54,38 +62,67 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 }
                 return true;
             }
-            catch
+            catch ( Exception ex )
             {
+                _logger.Error( "SaveConfigToFile Error ! " + ex.ToString() );
                 return false;
             }
         }
 
-        public bool InsertConfigCache( ConfigMessage message )
+        public bool InsertConfigCache( EdgeConfig config )
         {
             try
             {
-                if ( message == null || message.D == null || message.D.NodeList.Count == 0 )
+                if ( config == null )
                     return false;
 
-                string nodeId = message.D.NodeList.Keys.First();
-                _configCache = message.D.NodeList[nodeId].DeviceList;
+                //string nodeId = message.D.NodeList.Keys.First();
+                //_configCache = message.D.NodeList[nodeId].DeviceList;
+                /*_configCache = new ExpandoObject();
+                foreach ( var deviceKeyPair in message.D.NodeList[nodeId].DeviceList )
+                {
+                    string deviceId = deviceKeyPair.Key;
+                    (_configCache as IDictionary<string, Object>).Add( deviceId, new ExpandoObject() );
+                    foreach ( var tagKeyPair in deviceKeyPair.Value.TagList )
+                    {
+                        string tagName = tagKeyPair.Key;
+                        ( _configCache as IDictionary<string, Object> )[deviceId].Add( tagName, tagKeyPair.Value );
+                    }
+                }*/
+                _configCache = new Dictionary<string, Dictionary<string, ConfigCache.TagObject>>();
+                foreach ( var device in config.Node.DeviceList )
+                {
+                    _configCache.Add( device.Id, new Dictionary<string, ConfigCache.TagObject>() );
+                    foreach ( var analogTag in device.AnalogTagList )
+                    {
+                        _configCache[device.Id].Add( analogTag.Name, new ConfigCache.AnalogTagObject()
+                        {
+                            SendWhenValueChanged = analogTag.SendWhenValueChanged,
+                            SpanHigh = analogTag.SpanHigh,
+                            SpanLow = analogTag.SpanLow,
+                            IntegerDisplayFormat = analogTag.IntegerDisplayFormat,
+                            FractionDisplayFormat = analogTag.FractionDisplayFormat
+                        } );
+                    }
+                }
 
                 return true;
             }
-            catch
+            catch ( Exception ex )
             {
+                _logger.Error( "InsertConfigCache Error ! " + ex.ToString() );
                 return false;
             }
         }
 
-        public bool UpsertConfigCache( ConfigMessage message )
+        public bool UpsertConfigCache( EdgeConfig config )
         {
             try
             {
-                if ( message == null || message.D == null || message.D.NodeList.Count == 0 )
+                if ( config == null )
                     return false;
 
-                string nodeId = message.D.NodeList.Keys.First();
+                /*string nodeId = message.D.NodeList.Keys.First();
 
                 JObject o1 = JObject.FromObject( _configCache );
                 JObject o2 = JObject.FromObject( message.D.NodeList[nodeId].DeviceList );
@@ -97,24 +134,25 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 } );
 
                 var list = JsonConvert.DeserializeObject<Dictionary<string, ConfigMessage.DeviceObject>>( o1.ToString(), new ConfigMessage.TagObjectConverter() );
-                _configCache = list;
+                _configCache = list;*/
                 return true;
             }
-            catch
+            catch ( Exception ex )
             {
+                _logger.Error( "UpsertConfigCache Error ! " + ex.ToString() );
                 return false;
             }
 
         }
 
-        public bool DeleteConfigCache( ConfigMessage message )
+        public bool DeleteConfigCache( EdgeConfig config )
         {
             try
             {
-                if ( message == null || message.D == null || message.D.NodeList.Count == 0 )
+                if ( config == null )
                     return false;
 
-                string nodeId = message.D.NodeList.Keys.First();
+                /*string nodeId = message.D.NodeList.Keys.First();
                 foreach ( KeyValuePair<string, ConfigMessage.DeviceObject> deviceKeyPair in message.D.NodeList[nodeId].DeviceList )
                 {
                     string deviceId = deviceKeyPair.Key;
@@ -127,15 +165,16 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                         foreach ( KeyValuePair<string, ConfigMessage.TagObject> tagKeyPair in deviceKeyPair.Value.TagList )
                         {
                             string tagName = tagKeyPair.Key;
-                            _configCache[deviceId].TagList.Remove( tagName );
+                            _configCache[deviceId].Remove( tagName );
                         }
                     }
-                }
+                }*/
 
                 return true;
             }
-            catch
+            catch ( Exception ex )
             {
+                _logger.Error( "DeleteConfigCache Error ! " + ex.ToString() );
                 return false;
             }
         }

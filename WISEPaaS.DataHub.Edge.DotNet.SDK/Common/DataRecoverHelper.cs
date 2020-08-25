@@ -92,7 +92,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             return messages;
         }
 
-        public bool Write( List<string> messages )
+        public bool Write( HashSet<string> messages )
         {
             using ( var trans = _conn.BeginTransaction() )
             {

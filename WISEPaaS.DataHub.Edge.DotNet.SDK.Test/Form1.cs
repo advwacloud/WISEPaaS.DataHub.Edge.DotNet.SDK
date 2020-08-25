@@ -23,8 +23,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
         private void Form1_Load( object sender, EventArgs e )
         {
         }
-
-
+        
         private void _edgeAgent_MessageReceived( object sender, MessageReceivedEventArgs e )
         {
             switch ( e.Type )
@@ -172,8 +171,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Node = new EdgeConfig.NodeConfig();
-            config.Node.DeviceList = new List<EdgeConfig.DeviceConfig>();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
@@ -184,11 +181,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                     Description = "Device " + i,
                     RetentionPolicyName = txtRPName.Text
                 };
-
-                device.AnalogTagList = new List<EdgeConfig.AnalogTagConfig>();
-                device.DiscreteTagList = new List<EdgeConfig.DiscreteTagConfig>();
-                device.TextTagList = new List<EdgeConfig.TextTagConfig>();
-
+                
                 for ( int j = 1; j <= numATagCount.Value; j++ )
                 {
                     EdgeConfig.AnalogTagConfig analogTag = new EdgeConfig.AnalogTagConfig()
@@ -380,19 +373,13 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Node = new EdgeConfig.NodeConfig();
-            config.Node.DeviceList = new List<EdgeConfig.DeviceConfig>();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
                 {
                     Id = "Device" + i,
                 };
-
-                device.AnalogTagList = new List<EdgeConfig.AnalogTagConfig>();
-                device.DiscreteTagList = new List<EdgeConfig.DiscreteTagConfig>();
-                device.TextTagList = new List<EdgeConfig.TextTagConfig>();
-
+                
                 EdgeConfig.AnalogTagConfig analogTag = new EdgeConfig.AnalogTagConfig()
                 {
                     Name = "ATag1",
@@ -474,8 +461,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
 
             EdgeConfig config = new EdgeConfig();
             config.Node = new EdgeConfig.NodeConfig();
-
-            config.Node.DeviceList = new List<EdgeConfig.DeviceConfig>();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
@@ -496,18 +481,13 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
 
             EdgeConfig config = new EdgeConfig();
             config.Node = new EdgeConfig.NodeConfig();
-
-            config.Node.DeviceList = new List<EdgeConfig.DeviceConfig>();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
                 {
                     Id = "Device" + i
                 };
-
-                device.AnalogTagList = new List<EdgeConfig.AnalogTagConfig>();
-                device.DiscreteTagList = new List<EdgeConfig.DiscreteTagConfig>();
-                device.TextTagList = new List<EdgeConfig.TextTagConfig>();
+                
                 for ( int j = 1; j <= numATagCount.Value; j++ )
                 {
                     EdgeConfig.AnalogTagConfig analogTag = new EdgeConfig.AnalogTagConfig()
@@ -546,7 +526,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
 
             EdgeConfig config = new EdgeConfig();
             config.Node = new EdgeConfig.NodeConfig();
-            config.Node.DeviceList = new List<EdgeConfig.DeviceConfig>();
             for (int i = 1; i <= numDeviceCount.Value; i++)
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
@@ -557,11 +536,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                     Description = "Device " + i,
                     RetentionPolicyName = txtRPName.Text
                 };
-
-                device.AnalogTagList = new List<EdgeConfig.AnalogTagConfig>();
-                device.DiscreteTagList = new List<EdgeConfig.DiscreteTagConfig>();
-                device.TextTagList = new List<EdgeConfig.TextTagConfig>();
-
+                
                 for (int j = 1; j <= numATagCount.Value; j++)
                 {
                     EdgeConfig.AnalogTagConfig analogTag = new EdgeConfig.AnalogTagConfig()

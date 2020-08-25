@@ -18,7 +18,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         public Converter()
         { }
 
-        public static string ConvertWholeConfig( ActionType action, string nodeId, int heartbeat, EdgeConfig config, ref ConfigMessage configMessage )
+        public static string ConvertWholeConfig( ActionType action, string nodeId, int heartbeat, EdgeConfig config )
         {
             string payload = string.Empty;
             try
@@ -26,8 +26,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 if ( config == null )
                     return payload;
 
-                configMessage.D.Action = action;
-                configMessage.D.NodeList = new Dictionary<string, ConfigMessage.NodeObject>();
+                ConfigMessage msg = new ConfigMessage();
+                msg.D.Action = action;
+                msg.D.NodeList = new Dictionary<string, ConfigMessage.NodeObject>();
 
                 ConfigMessage.NodeObject nodeObj = new ConfigMessage.NodeObject()
                 {
@@ -119,9 +120,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                         nodeObj.DeviceList.Add( device.Id, deviceObj );
                     }
                 }
-                configMessage.D.NodeList.Add( nodeId, nodeObj );
+                msg.D.NodeList.Add( nodeId, nodeObj );
 
-                payload = JsonConverter.SerializeObject( configMessage );
+                payload = JsonConverter.SerializeObject( msg );
             }
             catch ( Exception ex )
             {
@@ -130,16 +131,17 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             return payload;
         }
         
-        public static string ConvertDeleteConfig( string nodeId, EdgeConfig config, ref ConfigMessage configMessage )
+        public static string ConvertDeleteConfig( string nodeId, EdgeConfig config )
         {
             string payload = string.Empty;
             try
             {
                 if ( config == null )
                     return payload;
-                
-                configMessage.D.Action = ActionType.Delete;
-                configMessage.D.NodeList = new Dictionary<string, ConfigMessage.NodeObject>();
+
+                ConfigMessage msg = new ConfigMessage();
+                msg.D.Action = ActionType.Delete;
+                msg.D.NodeList = new Dictionary<string, ConfigMessage.NodeObject>();
 
                 ConfigMessage.NodeObject nodeObj = new ConfigMessage.NodeObject();
 
@@ -189,9 +191,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                         nodeObj.DeviceList.Add( device.Id, deviceObj );
                     }
                 }
-                configMessage.D.NodeList.Add( nodeId, nodeObj );
+                msg.D.NodeList.Add( nodeId, nodeObj );
 
-                payload = JsonConverter.SerializeObject( configMessage );
+                payload = JsonConverter.SerializeObject( msg );
             }
             catch ( Exception ex )
             {
@@ -200,7 +202,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             return payload;
         }
 
-        public static bool ConvertData( EdgeData data, ref List<string> payloads )
+        public static bool ConvertData( EdgeData data, ref HashSet<string> payloads )
         {
             try
             {
@@ -273,12 +275,12 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 if ( data == null )
                     return false;
 
-                DataAdjustMessage msg = new DataAdjustMessage();
-                DataAdjustActionType action = ( upsert == true ) ? DataAdjustActionType.Upsert : DataAdjustActionType.Update;
+                DataManipulateMessage msg = new DataManipulateMessage();
+                DataManipulateActionType action = ( upsert == true ) ? DataManipulateActionType.Upsert : DataManipulateActionType.Update;
                 msg.D.Action = action;
                 foreach ( var tag in data.TagList )
                 {
-                    msg.D.TagList.Add( new DataAdjustMessage.TagObject()
+                    msg.D.TagList.Add( new DataManipulateMessage.TagObject()
                     {
                         DeviceId = tag.DeviceId,
                         TagName = tag.TagName,

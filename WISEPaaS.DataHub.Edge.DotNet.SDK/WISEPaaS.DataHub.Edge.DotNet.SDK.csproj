@@ -96,6 +96,7 @@
     <Compile Include="Common\JsonConverter.cs" />
     <Compile Include="EdgeAgent.cs" />
     <Compile Include="Common\Enum.cs" />
+    <Compile Include="Model\Common\ConfigCache.cs" />
     <Compile Include="Model\Edge\EdgeAdjustData.cs" />
     <Compile Include="Model\Edge\EdgeDeviceStatus.cs" />
     <Compile Include="Model\Edge\EdgeData.cs" />
