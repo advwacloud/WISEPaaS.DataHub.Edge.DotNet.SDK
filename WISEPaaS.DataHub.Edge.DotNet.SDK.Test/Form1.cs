@@ -23,7 +23,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
         private void Form1_Load( object sender, EventArgs e )
         {
         }
-        
+
         private void _edgeAgent_MessageReceived( object sender, MessageReceivedEventArgs e )
         {
             switch ( e.Type )
@@ -40,7 +40,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                     }
                     break;
                 case MessageType.WriteConfig:
-                    Console.WriteLine("UTC Time: {0}", e.Message.ToString());
+                    Console.WriteLine( "UTC Time: {0}", e.Message.ToString() );
                     break;
                 case MessageType.TimeSync:  // when received this message
                     TimeSyncCommand tscMsg = ( TimeSyncCommand ) e.Message;
@@ -57,7 +57,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
         {
             if ( this.lblStatus.InvokeRequired )
             {
-                BeginInvoke( ( MethodInvoker ) delegate()
+                BeginInvoke( ( MethodInvoker ) delegate ()
                 {
                     lblStatus.Text = "DISCONNECTED";
                     lblStatus.BackColor = Color.Silver;
@@ -69,7 +69,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
         {
             if ( this.lblStatus.InvokeRequired )
             {
-                BeginInvoke( ( MethodInvoker ) delegate()
+                BeginInvoke( ( MethodInvoker ) delegate ()
                 {
                     lblStatus.Text = "CONNECTED";
                     lblStatus.BackColor = Color.Green;
@@ -92,7 +92,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                     AutoReconnect = true,
                     ReconnectInterval = 1000,
                     NodeId = txtNodeId.Text.Trim(),
-                    Heartbeat = Convert.ToInt32(numHeartbeat.Value) * 1000,   // default is 60 seconds,
+                    Heartbeat = Convert.ToInt32( numHeartbeat.Value ) * 1000,   // default is 60 seconds,
                     DataRecover = true,
                     ConnectType = ( string.IsNullOrEmpty( txtDCCSKey.Text ) == false ) ? ConnectType.DCCS : ConnectType.MQTT,
                     UseSecure = ckbSecure.Checked
@@ -181,7 +181,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                     Description = "Device " + i,
                     RetentionPolicyName = txtRPName.Text
                 };
-                
+
                 for ( int j = 1; j <= numATagCount.Value; j++ )
                 {
                     EdgeConfig.AnalogTagConfig analogTag = new EdgeConfig.AnalogTagConfig()
@@ -358,7 +358,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 EdgeDeviceStatus.Device device = new EdgeDeviceStatus.Device()
                 {
                     Id = "Device" + i,
-                    Status = (Status)Convert.ToInt32( devStatus )
+                    Status = ( Status ) Convert.ToInt32( devStatus )
                 };
                 deviceStatus.DeviceList.Add( device );
             }
@@ -379,7 +379,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 {
                     Id = "Device" + i,
                 };
-                
+
                 EdgeConfig.AnalogTagConfig analogTag = new EdgeConfig.AnalogTagConfig()
                 {
                     Name = "ATag1",
@@ -487,7 +487,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 {
                     Id = "Device" + i
                 };
-                
+
                 for ( int j = 1; j <= numATagCount.Value; j++ )
                 {
                     EdgeConfig.AnalogTagConfig analogTag = new EdgeConfig.AnalogTagConfig()
@@ -519,14 +519,14 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
             bool result = _edgeAgent.UploadConfig( ActionType.Delete, config ).Result;
         }
 
-        private void btnDelsertConfig_Click(object sender, EventArgs e)
+        private void btnDelsertConfig_Click( object sender, EventArgs e )
         {
-            if (_edgeAgent == null)
+            if ( _edgeAgent == null )
                 return;
 
             EdgeConfig config = new EdgeConfig();
             config.Node = new EdgeConfig.NodeConfig();
-            for (int i = 1; i <= numDeviceCount.Value; i++)
+            for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
                 {
@@ -536,8 +536,8 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                     Description = "Device " + i,
                     RetentionPolicyName = txtRPName.Text
                 };
-                
-                for (int j = 1; j <= numATagCount.Value; j++)
+
+                for ( int j = 1; j <= numATagCount.Value; j++ )
                 {
                     EdgeConfig.AnalogTagConfig analogTag = new EdgeConfig.AnalogTagConfig()
                     {
@@ -551,9 +551,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                         IntegerDisplayFormat = 4,
                         FractionDisplayFormat = 2
                     };
-                    device.AnalogTagList.Add(analogTag);
+                    device.AnalogTagList.Add( analogTag );
                 }
-                for (int j = 1; j <= numDTagCount.Value; j++)
+                for ( int j = 1; j <= numDTagCount.Value; j++ )
                 {
                     EdgeConfig.DiscreteTagConfig discreteTag = new EdgeConfig.DiscreteTagConfig()
                     {
@@ -570,9 +570,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                         State6 = string.Empty,
                         State7 = string.Empty
                     };
-                    device.DiscreteTagList.Add(discreteTag);
+                    device.DiscreteTagList.Add( discreteTag );
                 }
-                for (int j = 1; j <= numTTagCount.Value; j++)
+                for ( int j = 1; j <= numTTagCount.Value; j++ )
                 {
                     EdgeConfig.TextTagConfig textTag = new EdgeConfig.TextTagConfig()
                     {
@@ -581,7 +581,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                         ReadOnly = false,
                         ArraySize = 0
                     };
-                    device.TextTagList.Add(textTag);
+                    device.TextTagList.Add( textTag );
                 }
                 for ( int j = 1; j <= numAArrayTagCount.Value; j++ )
                 {
@@ -600,33 +600,26 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                     device.AnalogTagList.Add( arrayTag );
                 }
 
-                config.Node.DeviceList.Add(device);
+                config.Node.DeviceList.Add( device );
             }
 
-            bool result = _edgeAgent.UploadConfig(ActionType.Delsert, config).Result;
+            bool result = _edgeAgent.UploadConfig( ActionType.Delsert, config ).Result;
         }
 
         private void btnUpdateData_Click( object sender, EventArgs e )
         {
-            try
-            {
-                if ( _edgeAgent == null )
-                    return;
+            if ( _edgeAgent == null )
+                return;
 
-                EdgeUpdateData data = new EdgeUpdateData();
-                data.TagList.Add( new EdgeUpdateData.Tag()
-                {
-                    DeviceId = "Device1",
-                    TagName = "ATag1",
-                    Value = 2,
-                    Timestamp = new DateTime( 2020, 7, 19, 23, 33, 26, 295 )
-                } );
-                _edgeAgent.UpdateData( data );
-            }
-            catch ( Exception ex )
+            EdgeData data = new EdgeData();
+            data.TagList.Add( new EdgeData.Tag()
             {
-
-            }
+                DeviceId = "Device1",
+                TagName = "ATag1",
+                Value = 2
+            } );//2020 - 08 - 26T08: 02:37.893Z
+            data.Timestamp = new DateTime( 2020, 8, 26, 16, 02, 37, 893 );
+            _edgeAgent.UpdateData( data );
         }
     }
 }

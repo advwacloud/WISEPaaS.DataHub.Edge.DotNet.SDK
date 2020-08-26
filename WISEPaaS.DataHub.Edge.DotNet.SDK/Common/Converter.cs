@@ -268,7 +268,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
         }
 
-        public static bool ConvertUpdateData( EdgeUpdateData data, bool upsert, ref string payload )
+        public static bool ConvertUpdateData( EdgeData data, bool upsert, ref string payload )
         {
             try
             {
@@ -285,8 +285,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                         DeviceId = tag.DeviceId,
                         TagName = tag.TagName,
                         Value = tag.Value,
-                        Index = tag.Index,
-                        Timestamp = tag.Timestamp.ToUniversalTime()
+                        Timestamp = data.Timestamp.ToUniversalTime()
                 } );
                 }
                 payload = JsonConverter.SerializeObject( msg );

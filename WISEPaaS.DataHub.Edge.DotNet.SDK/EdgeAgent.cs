@@ -529,7 +529,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
         }
 
-        private async Task<bool> _updateData( EdgeUpdateData data, bool upsert = false )
+        private async Task<bool> _updateData( EdgeData data, bool upsert = false )
         {
             try
             {
@@ -590,7 +590,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             return Task.Run( () => _sendDeviceStatus( deviceStatus ) );
         }
 
-        public Task<bool> UpdateData( EdgeUpdateData data, bool upsert = false )
+        public Task<bool> UpdateData( EdgeData data, bool upsert = false )
         {
             return Task.Run( () => _updateData( data, upsert ) );
         }
