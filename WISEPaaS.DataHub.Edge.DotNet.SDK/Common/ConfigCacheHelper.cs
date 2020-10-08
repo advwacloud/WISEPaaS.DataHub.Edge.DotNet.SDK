@@ -14,7 +14,8 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 {
     public class ConfigCacheHelper
     {
-        private const string configFileName = "config.json";
+        private const string configFileNameFormat = "{0}_config.json";
+        private string configFileName;
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
         
@@ -22,8 +23,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
         private Dictionary<string, Dictionary<string, ConfigCache.TagObject>> _configCache;
 
-        public ConfigCacheHelper()
+        public ConfigCacheHelper( string nodeId )
         {
+            configFileName = string.Format( configFileNameFormat, nodeId );
             _configCache = new Dictionary<string, Dictionary<string, ConfigCache.TagObject>>();
         }
 

@@ -60,7 +60,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
         public EdgeAgent( EdgeAgentOptions options )
         {
-            _configCacheHelper = new ConfigCacheHelper();
+            _configCacheHelper = new ConfigCacheHelper( options.NodeId );
             _configCacheHelper.LoadConfigFromFile();
 
             Options = options;
@@ -79,7 +79,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
             if ( options.DataRecover )
             {
-                _recoverHelper = new DataRecoverHelper();
+                _recoverHelper = new DataRecoverHelper( options.NodeId );
                 _dataRecoverTimer = new Timer();
                 _dataRecoverTimer.Interval = DEAFAULT_DATARECOVER_INTERVAL;
                 _dataRecoverTimer.Elapsed += _dataRecoverTimer_Elapsed;

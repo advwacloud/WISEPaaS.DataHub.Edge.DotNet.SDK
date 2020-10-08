@@ -13,7 +13,8 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 {
     public class DataRecoverHelper
     {
-        private const string dbFileName = "recover.sqlite";
+        private const string dbFileNameFormat = "{0}_recover.sqlite";
+        private string dbFileName;
 
         private const int DefaultReadRecordCount = 10;
         private const int DeafultWriteRecordCount = 1000;
@@ -24,10 +25,11 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         private object _lockObj;
         private SQLiteConnection _conn;
 
-        public DataRecoverHelper()
+        public DataRecoverHelper( string nodeId )
         {
             _lockObj = new object();
 
+            dbFileName = string.Format( dbFileNameFormat, nodeId );
             _dbFilePath = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, dbFileName );
             _connString = "data source=" + _dbFilePath;
             _conn = new SQLiteConnection( _connString );
