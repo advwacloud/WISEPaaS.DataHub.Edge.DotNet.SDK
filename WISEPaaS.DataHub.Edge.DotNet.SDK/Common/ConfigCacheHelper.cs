@@ -23,6 +23,8 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
         private Dictionary<string, Dictionary<string, ConfigCache.TagObject>> _configCache;
 
+        public bool enabled = false;
+
         public ConfigCacheHelper( string nodeId )
         {
             configFileName = string.Format( configFileNameFormat, nodeId );
@@ -33,6 +35,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         {
             try
             {
+                if( enabled == false )
+                    return true;
+
                 string path = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, configFileName );
                 if ( !File.Exists( path ) )
                     return false;
@@ -55,6 +60,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         {
             try
             {
+                if ( enabled == false )
+                    return true;
+
                 string path = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, configFileName );
                 using ( FileStream stream = new FileStream( path, FileMode.Create ) )
                 using ( StreamWriter writer = new StreamWriter( stream, Encoding.UTF8 ) )
@@ -75,6 +83,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         {
             try
             {
+                if ( enabled == false )
+                    return true;
+
                 if ( config == null )
                     return false;
 
@@ -121,6 +132,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         {
             try
             {
+                if ( enabled == false )
+                    return true;
+
                 if ( config == null )
                     return false;
 
@@ -151,6 +165,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         {
             try
             {
+                if ( enabled == false )
+                    return true;
+
                 if ( config == null )
                     return false;
 
