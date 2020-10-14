@@ -14,7 +14,8 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             return JsonConvert.SerializeObject( value, Formatting.None, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
-                DefaultValueHandling = DefaultValueHandling.Ignore
+                DefaultValueHandling = DefaultValueHandling.Ignore,
+                DateFormatString = "yyyy-MM-ddTHH:mm:ss:FFFZ"
             } );
         }
 
