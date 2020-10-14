@@ -245,6 +245,37 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
         }
 
+        public static bool ConvertData( HashSet<EdgeData> dataset, ref HashSet<string> payloads )
+        {
+            try
+            {
+                if ( dataset == null )
+                    return false;
+
+                HashSet<DataMessage> messages = new HashSet<DataMessage>();
+                foreach ( var data in dataset )
+                {
+                    DataMessage msg = new DataMessage();
+                    foreach ( var tag in data.TagList )
+                    {
+                        if ( msg.D.ContainsKey( tag.DeviceId ) == false )
+                            msg.D[tag.DeviceId] = new Dictionary<string, object>();
+
+                        ( ( Dictionary<string, object> ) msg.D[tag.DeviceId] ).Add( tag.TagName, tag.Value );
+                    }
+                    msg.Timestamp = data.Timestamp.ToUniversalTime();
+                    messages.Add( msg );
+                }
+                payloads.Add( JsonConverter.SerializeObject( messages ) );
+                return true;
+            }
+            catch ( Exception ex )
+            {
+                _logger.Error( "Convert Data Payload Error ! " + ex.ToString() );
+                return false;
+            }
+        }
+
         public static bool ConvertDeviceStatus( EdgeDeviceStatus deviceStatus, ref string payload )
         {
             try

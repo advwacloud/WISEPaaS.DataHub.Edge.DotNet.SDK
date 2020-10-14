@@ -312,6 +312,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
         }
 
+
         private async Task<bool> _sendData( EdgeData data )
         {
             try
@@ -321,6 +322,47 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
                 HashSet<string> payloads = new HashSet<string>();
                 bool result = Converter.ConvertData( data, ref payloads );
+                if ( result )
+                {
+                    if ( _mqttClient.IsConnected == false )
+                    {
+                        // keep data for MQTT connected
+                        _recoverHelper.Write( payloads );
+                        return false;
+                    }
+
+                    foreach ( var payload in payloads )
+                    {
+                        var message = new MqttApplicationMessageBuilder()
+                            .WithTopic( _dataTopic )
+                            .WithPayload( payload )
+                            .WithAtLeastOnceQoS()
+                            .WithRetainFlag( false )
+                            .Build();
+
+                        await _mqttClient.PublishAsync( message );
+                    }
+
+                    //_logger.Info( "Send Data: {0}", payload );
+                    return true;
+                }
+            }
+            catch ( Exception ex )
+            {
+                _logger.Error( "Send Data Error ! " + ex.ToString() );
+            }
+            return false;
+        }
+
+        private async Task<bool> _sendData( HashSet<EdgeData> dataset )
+        {
+            try
+            {
+                if ( dataset == null )
+                    return false;
+
+                HashSet<string> payloads = new HashSet<string>();
+                bool result = Converter.ConvertData( dataset, ref payloads );
                 if ( result )
                 {
                     if ( _mqttClient.IsConnected == false )
@@ -585,6 +627,11 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             return Task.Run( () => _sendData( data ) );
         }
 
+        public Task<bool> SendData( HashSet<EdgeData> dataset )
+        {
+            return Task.Run( () => _sendData( dataset ) );
+        }
+        
         public Task<bool> SendDeviceStatus( EdgeDeviceStatus deviceStatus )
         {
             return Task.Run( () => _sendDeviceStatus( deviceStatus ) );

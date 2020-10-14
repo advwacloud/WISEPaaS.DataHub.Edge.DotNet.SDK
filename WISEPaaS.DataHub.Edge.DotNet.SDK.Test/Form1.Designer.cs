@@ -244,6 +244,12 @@
             // 
             // numDataFreq
             // 
+            this.numDataFreq.DecimalPlaces = 1;
+            this.numDataFreq.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numDataFreq.Location = new System.Drawing.Point(522, 440);
             this.numDataFreq.Maximum = new decimal(new int[] {
             99999,
