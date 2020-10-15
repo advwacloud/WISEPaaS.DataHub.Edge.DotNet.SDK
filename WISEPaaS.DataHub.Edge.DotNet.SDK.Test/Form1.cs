@@ -42,10 +42,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 case MessageType.WriteConfig:
                     Console.WriteLine( "UTC Time: {0}", e.Message.ToString() );
                     break;
-                case MessageType.TimeSync:  // when received this message
-                    TimeSyncCommand tscMsg = ( TimeSyncCommand ) e.Message;
-                    Console.WriteLine( "UTC Time: {0}", tscMsg.UTCTime.ToString() );
-                    break;
                 case MessageType.ConfigAck:
                     ConfigAck cfgAckMsg = ( ConfigAck ) e.Message;
                     MessageBox.Show( string.Format( "Upload Config Result: {0}", cfgAckMsg.Result.ToString() ) );

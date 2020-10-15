@@ -11,27 +11,26 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 {
     public enum Protocol
     {
-        TCP,
+        TCP = 1,
         WebSocket,
     }
 
     public enum ConnectType
     {
-        MQTT,
+        MQTT = 1,
         DCCS,
     }
 
     public enum EdgeType
     {
-        Gateway = 0,
-        Device = 1
+        Gateway = 1,
+        Device = 2
     }
 
     public enum MessageType
     {
-        WriteValue = 0,
+        WriteValue = 1,
         WriteConfig,
-        TimeSync,
         ConfigAck
     }
 

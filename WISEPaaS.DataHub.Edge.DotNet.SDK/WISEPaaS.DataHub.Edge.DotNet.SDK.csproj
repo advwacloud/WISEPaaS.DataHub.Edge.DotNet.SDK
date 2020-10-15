@@ -110,7 +110,6 @@
     <Compile Include="Model\MQTTMessage\DataManipulateMessage.cs" />
     <Compile Include="Model\MQTTMessage\DataMessage.cs" />
     <Compile Include="Model\MQTTMessage\DeviceStatusMessage.cs" />
-    <Compile Include="Model\Edge\TimeSyncCommand.cs" />
     <Compile Include="Model\Edge\WriteValueCommand.cs" />
     <Compile Include="Model\MQTTMessage\HeartbeatMessage.cs" />
     <Compile Include="Model\MQTTMessage\ConnectMessage.cs" />

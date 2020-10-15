@@ -467,12 +467,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                         case "WC":
                             //MessageReceived( sender, new MessageReceivedEventArgs( MessageType.WriteConfig, message ) );
                             break;
-                        case "TSyn":
-                            TimeSyncCommand tscMsg = new TimeSyncCommand();
-                            DateTime miniDateTime = new DateTime( 1970, 1, 1, 0, 0, 0, 0 );
-                            tscMsg.UTCTime = miniDateTime.AddSeconds( obj.d.UTC.Value );
-                            MessageReceived( sender, new MessageReceivedEventArgs( MessageType.TimeSync, tscMsg ) );
-                            break;
                     }
                 }
                 else if ( jObj["d"]["Cfg"] != null )
