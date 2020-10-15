@@ -113,7 +113,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                             SendWhenValueChanged = analogTag.SendWhenValueChanged,
                             SpanHigh = analogTag.SpanHigh,
                             SpanLow = analogTag.SpanLow,
-                            IntegerDisplayFormat = analogTag.IntegerDisplayFormat,
                             FractionDisplayFormat = analogTag.FractionDisplayFormat
                         } );
                     }

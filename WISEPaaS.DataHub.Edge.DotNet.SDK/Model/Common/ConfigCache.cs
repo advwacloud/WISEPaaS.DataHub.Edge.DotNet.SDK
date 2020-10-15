@@ -34,10 +34,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 
             [JsonProperty( PropertyName = "SL" )]
             public double? SpanLow { get; set; }
-
-            [JsonProperty( PropertyName = "IDF" )]
-            public int? IntegerDisplayFormat { get; set; }
-
+            
             [JsonProperty( PropertyName = "FDF" )]
             public int? FractionDisplayFormat { get; set; }
 

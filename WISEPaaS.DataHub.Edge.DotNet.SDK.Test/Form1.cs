@@ -189,7 +189,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                         SpanHigh = 1000,
                         SpanLow = 0,
                         EngineerUnit = string.Empty,
-                        IntegerDisplayFormat = 4,
                         FractionDisplayFormat = 2
                     };
                     device.AnalogTagList.Add( analogTag );
@@ -235,7 +234,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                         SpanHigh = 1000,
                         SpanLow = 0,
                         EngineerUnit = string.Empty,
-                        IntegerDisplayFormat = 4,
                         FractionDisplayFormat = 2
                     };
                     device.AnalogTagList.Add( arrayTag );
@@ -381,7 +379,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                     Name = "ATag1",
                     ReadOnly = false,
                     SpanHigh = 9999,
-                    IntegerDisplayFormat = 5,
                     FractionDisplayFormat = 3
                 };
                 device.AnalogTagList.Add( analogTag );
@@ -397,7 +394,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                         SpanHigh = 1000,
                         SpanLow = 0,
                         EngineerUnit = string.Empty,
-                        IntegerDisplayFormat = 4,
                         FractionDisplayFormat = 2
                     };
                     device.AnalogTagList.Add( analogTag );
@@ -544,7 +540,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                         SpanHigh = 1000,
                         SpanLow = 0,
                         EngineerUnit = string.Empty,
-                        IntegerDisplayFormat = 4,
                         FractionDisplayFormat = 2
                     };
                     device.AnalogTagList.Add( analogTag );
@@ -590,7 +585,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                         SpanHigh = 1000,
                         SpanLow = 0,
                         EngineerUnit = string.Empty,
-                        IntegerDisplayFormat = 4,
                         FractionDisplayFormat = 2
                     };
                     device.AnalogTagList.Add( arrayTag );

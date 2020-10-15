@@ -66,7 +66,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             public double? SpanHigh { get; set; }
             public double? SpanLow { get; set; }
             public string EngineerUnit { get; set; }
-            public int? IntegerDisplayFormat { get; set; }
             public int? FractionDisplayFormat { get; set; }
 
             public AnalogTagConfig()
