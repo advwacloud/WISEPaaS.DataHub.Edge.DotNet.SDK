@@ -63,6 +63,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                                     SpanHigh = analogTag.SpanHigh,
                                     SpanLow = analogTag.SpanLow,
                                     EngineerUnit = analogTag.EngineerUnit,
+                                    IntegerDisplayFormat = analogTag.IntegerDisplayFormat,
                                     FractionDisplayFormat = analogTag.FractionDisplayFormat
                                 };
 
@@ -129,7 +130,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
             return payload;
         }
-        
+
         public static string ConvertDeleteConfig( string nodeId, EdgeConfig config )
         {
             string payload = string.Empty;
@@ -221,7 +222,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
                     if ( msg.D.ContainsKey( tag.DeviceId ) == false )
                         msg.D[tag.DeviceId] = new Dictionary<string, object>();
-                    
+
                     ( ( Dictionary<string, object> ) msg.D[tag.DeviceId] ).Add( tag.TagName, tag.Value );
                     count++;
 
@@ -234,7 +235,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                         msg = null;
                     }
                 }
-             
+
                 return true;
             }
             catch ( Exception ex )
@@ -316,7 +317,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                         TagName = tag.TagName,
                         Value = tag.Value,
                         Timestamp = data.Timestamp.ToUniversalTime()
-                } );
+                    } );
                 }
                 payload = JsonConverter.SerializeObject( msg );
                 return true;

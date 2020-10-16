@@ -18,7 +18,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         private string configFileName;
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
-        
+
         //private dynamic _configCache = new ExpandoObject() as IDictionary<string, Object>;
 
         private Dictionary<string, Dictionary<string, ConfigCache.TagObject>> _configCache;
@@ -35,7 +35,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         {
             try
             {
-                if( enabled == false )
+                if ( enabled == false )
                     return true;
 
                 string path = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, configFileName );
@@ -113,6 +113,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                             SendWhenValueChanged = analogTag.SendWhenValueChanged,
                             SpanHigh = analogTag.SpanHigh,
                             SpanLow = analogTag.SpanLow,
+                            IntegerDisplayFormat = analogTag.IntegerDisplayFormat,
                             FractionDisplayFormat = analogTag.FractionDisplayFormat
                         } );
                     }
