@@ -15,7 +15,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 DefaultValueHandling = DefaultValueHandling.Ignore,
-                DateFormatString = "yyyy-MM-ddTHH:mm:ss:FFFZ"
+                DateFormatString = "yyyy-MM-ddTHH:mm:ss.FFFZ"
             } );
         }
 
