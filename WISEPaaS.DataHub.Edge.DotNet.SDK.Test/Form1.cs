@@ -190,7 +190,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                         SpanLow = 0,
                         EngineerUnit = string.Empty,
                         IntegerDisplayFormat = 4,
-                        FractionDisplayFormat = 2
+                        FractionDisplayFormat = 2,
                         SendWhenValueChanged = false
                     };
                     device.AnalogTagList.Add( analogTag );
