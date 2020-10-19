@@ -39,9 +39,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             [JsonProperty( PropertyName = "Hbt" )]
             public int? Heartbeat { get; set; }
 
-            [JsonProperty( PropertyName = "Type" )]
-            public NodeConfigType? Type { get; set; }
-
             [JsonProperty( PropertyName = "Device" )]
             public Dictionary<string, DeviceObject> DeviceList { get; set; }
 
@@ -77,36 +74,41 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
         public class TagObject
         {
             [JsonProperty( PropertyName = "Type" )]
-            public TagType? Type { get; set; }
+            public TagType Type { get; set; }
 
             [JsonProperty( PropertyName = "Desc" )]
             [DefaultValue( "" )]
             public string Description { get; set; }
 
             [JsonProperty( PropertyName = "RO" )]
-            public int? ReadOnly { get; set; }
+            [DefaultValue( 0 )]
+            public int ReadOnly { get; set; }
 
             [JsonProperty( PropertyName = "Ary" )]
-            public int? ArraySize { get; set; }
+            [DefaultValue( 0 )]
+            public int ArraySize { get; set; }
         }
 
         public class AnalogTagObject : TagObject
         {
             [JsonProperty( PropertyName = "SH" )]
-            public double? SpanHigh { get; set; }
+            [DefaultValue( 1000.0 )]
+            public double SpanHigh { get; set; }
 
             [JsonProperty( PropertyName = "SL" )]
-            public double? SpanLow { get; set; }
+            public double SpanLow { get; set; }
 
             [JsonProperty( PropertyName = "EU" )]
             [DefaultValue( "" )]
             public string EngineerUnit { get; set; }
 
             [JsonProperty( PropertyName = "IDF" )]
-            public int? IntegerDisplayFormat { get; set; }
+            [DefaultValue( 4 )]
+            public int IntegerDisplayFormat { get; set; }
 
             [JsonProperty( PropertyName = "FDF" )]
-            public int? FractionDisplayFormat { get; set; }
+            [DefaultValue( 2 )]
+            public int FractionDisplayFormat { get; set; }
 
             public AnalogTagObject()
             {
@@ -169,7 +171,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             public override object ReadJson( JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer )
             {
                 JObject jo = JObject.Load( reader );
-                ConfigMessage.TagObject tagObj = new TagObject();
+                TagObject tagObj = new TagObject();
                 switch ( jo["Type"].ToObject<TagType>() )
                 {
                     case TagType.Analog:

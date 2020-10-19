@@ -32,8 +32,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
                 ConfigMessage.NodeObject nodeObj = new ConfigMessage.NodeObject()
                 {
-                    Heartbeat = heartbeat / 1000,
-                    Type = NodeConfigType.Node
+                    Heartbeat = heartbeat / 1000
                 };
 
                 if ( config.Node.DeviceList != null )
@@ -58,7 +57,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                                 {
                                     Type = TagType.Analog,
                                     Description = analogTag.Description,
-                                    ReadOnly = ( analogTag.ReadOnly != null ) ? Convert.ToInt32( analogTag.ReadOnly ) : ( int? ) null,
+                                    ReadOnly = Convert.ToInt32( analogTag.ReadOnly ),
                                     ArraySize = analogTag.ArraySize,
                                     SpanHigh = analogTag.SpanHigh,
                                     SpanLow = analogTag.SpanLow,
@@ -81,7 +80,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                                 {
                                     Type = TagType.Discrete,
                                     Description = discreteTag.Description,
-                                    ReadOnly = ( discreteTag.ReadOnly != null ) ? Convert.ToInt32( discreteTag.ReadOnly ) : ( int? ) null,
+                                    ReadOnly = Convert.ToInt32( discreteTag.ReadOnly ),
                                     ArraySize = discreteTag.ArraySize,
                                     State0 = discreteTag.State0,
                                     State1 = discreteTag.State1,

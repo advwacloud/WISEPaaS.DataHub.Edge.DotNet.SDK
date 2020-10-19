@@ -88,7 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\ConfigCacheHelper.cs" />
+    <Compile Include="Common\PreprocessHelper.cs" />
     <Compile Include="Common\Converter.cs" />
     <Compile Include="Common\Const.cs" />
     <Compile Include="Common\DataRecoverHelper.cs" />
@@ -97,6 +97,7 @@
     <Compile Include="EdgeAgent.cs" />
     <Compile Include="Common\Enum.cs" />
     <Compile Include="Model\Common\ConfigCache.cs" />
+    <Compile Include="Model\Common\DataCache.cs" />
     <Compile Include="Model\Edge\EdgeDeviceStatus.cs" />
     <Compile Include="Model\Edge\EdgeData.cs" />
     <Compile Include="Model\Edge\EdgeConfig.cs" />

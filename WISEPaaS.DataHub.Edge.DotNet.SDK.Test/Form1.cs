@@ -191,6 +191,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                         EngineerUnit = string.Empty,
                         IntegerDisplayFormat = 4,
                         FractionDisplayFormat = 2
+                        SendWhenValueChanged = false
                     };
                     device.AnalogTagList.Add( analogTag );
                 }
@@ -209,7 +210,8 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                         State4 = string.Empty,
                         State5 = string.Empty,
                         State6 = string.Empty,
-                        State7 = string.Empty
+                        State7 = string.Empty,
+                        SendWhenValueChanged = true
                     };
                     device.DiscreteTagList.Add( discreteTag );
                 }
@@ -220,25 +222,21 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                         Name = "TTag" + j,
                         Description = "TTag " + j,
                         ReadOnly = false,
-                        ArraySize = 0
+                        ArraySize = 0,
+                        SendWhenValueChanged = true
                     };
                     device.TextTagList.Add( textTag );
                 }
                 for ( int j = 1; j <= numAArrayTagCount.Value; j++ )
                 {
-                    EdgeConfig.AnalogTagConfig arrayTag = new EdgeConfig.AnalogTagConfig()
+                    EdgeConfig.AnalogTagConfig analogTag = new EdgeConfig.AnalogTagConfig()
                     {
                         Name = "ArrayTag" + j,
                         Description = "ArrayTag " + j,
-                        ReadOnly = false,
                         ArraySize = 10,
-                        SpanHigh = 1000,
-                        SpanLow = 0,
-                        EngineerUnit = string.Empty,
-                        IntegerDisplayFormat = 4,
-                        FractionDisplayFormat = 2
+                        SendWhenValueChanged = true
                     };
-                    device.AnalogTagList.Add( arrayTag );
+                    device.AnalogTagList.Add( analogTag );
                 }
 
                 config.Node.DeviceList.Add( device );
@@ -278,7 +276,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
 
             EdgeData data = prepareData();
             bool result = _edgeAgent.SendData( data ).Result;
-
             sw.Stop();
             Console.WriteLine( sw.Elapsed.TotalMilliseconds.ToString() );
 
@@ -308,7 +305,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                     {
                         DeviceId = "Device" + i,
                         TagName = "DTag" + j,
-                        Value = j % 2
+                        Value = DateTime.Now.Second % 2
                     };
                     data.TagList.Add( dTag );
                 }
@@ -445,8 +442,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Node = new EdgeConfig.NodeConfig();
-
             bool result = _edgeAgent.UploadConfig( ActionType.Delete, config ).Result;
         }
 
@@ -456,7 +451,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Node = new EdgeConfig.NodeConfig();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
@@ -476,7 +470,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Node = new EdgeConfig.NodeConfig();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
@@ -521,7 +514,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 return;
 
             EdgeConfig config = new EdgeConfig();
-            config.Node = new EdgeConfig.NodeConfig();
             for ( int i = 1; i <= numDeviceCount.Value; i++ )
             {
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()

@@ -19,7 +19,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
         public class TagObject
         {
             [JsonProperty( PropertyName = "SWVC" )]
-            public bool? SendWhenValueChanged { get; set; }
+            public bool SendWhenValueChanged { get; set; }
 
             public TagObject()
             {
@@ -30,21 +30,32 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
         public class AnalogTagObject : TagObject
         {
             [JsonProperty( PropertyName = "SH" )]
-            public double? SpanHigh { get; set; }
+            public double SpanHigh { get; set; }
 
             [JsonProperty( PropertyName = "SL" )]
-            public double? SpanLow { get; set; }
-
-            [JsonProperty( PropertyName = "IDF" )]
-            public int? IntegerDisplayFormat { get; set; }
+            public double SpanLow { get; set; }
 
             [JsonProperty( PropertyName = "FDF" )]
-            public int? FractionDisplayFormat { get; set; }
+            public int FractionDisplayFormat { get; set; }
 
             [JsonProperty( PropertyName = "Deadband" )]
-            public int? Deadband { get; set; }
+            public int Deadband { get; set; }
 
             public AnalogTagObject()
+            {
+            }
+        }
+
+        public class DiscreteTagObject : TagObject
+        {
+            public DiscreteTagObject()
+            {
+            }
+        }
+
+        public class TextTagObject : TagObject
+        {
+            public TextTagObject()
             {
             }
         }

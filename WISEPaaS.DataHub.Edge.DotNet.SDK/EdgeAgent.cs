@@ -31,7 +31,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
         private ManagedMqttClient _mqttClient;
         private DataRecoverHelper _recoverHelper;
-        private ConfigCacheHelper _configCacheHelper;
+        private PreprocessHelper _preprocessHelper;
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -48,7 +48,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         private Timer _dataRecoverTimer;
 
         public EdgeAgentOptions Options;
-      
+
         public bool IsConnected
         {
             get { return _mqttClient.IsConnected; }
@@ -60,8 +60,8 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
 
         public EdgeAgent( EdgeAgentOptions options )
         {
-            _configCacheHelper = new ConfigCacheHelper( options.NodeId );
-            _configCacheHelper.LoadConfigFromFile();
+            _preprocessHelper = new PreprocessHelper( options.NodeId );
+            _preprocessHelper.LoadConfigFromFile();
 
             Options = options;
             _mqttClient = new MqttFactory().CreateManagedMqttClient() as ManagedMqttClient;
@@ -70,7 +70,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             _mqttClient.Connected += mqttClient_Connected;
             _mqttClient.Disconnected += mqttClient_Disconnected;
 
-            if( Options.Heartbeat > 0 )
+            if ( Options.Heartbeat > 0 )
             {
                 _heartbeatTimer = new Timer();
                 _heartbeatTimer.Interval = Options.Heartbeat;
@@ -273,19 +273,19 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 {
                     case ActionType.Create:
                         payload = Converter.ConvertWholeConfig( action, Options.NodeId, Options.Heartbeat, edgeConfig );
-                        _configCacheHelper.InsertConfigCache( edgeConfig );
+                        _preprocessHelper.InsertConfigCache( edgeConfig );
                         break;
                     case ActionType.Update:
                         payload = Converter.ConvertWholeConfig( action, Options.NodeId, Options.Heartbeat, edgeConfig );
-                        _configCacheHelper.UpsertConfigCache( edgeConfig );
+                        _preprocessHelper.UpdateConfigCache( edgeConfig );
                         break;
                     case ActionType.Delsert:
                         payload = Converter.ConvertWholeConfig( action, Options.NodeId, Options.Heartbeat, edgeConfig );
-                        _configCacheHelper.InsertConfigCache( edgeConfig );
+                        _preprocessHelper.InsertConfigCache( edgeConfig );
                         break;
                     case ActionType.Delete:
                         payload = Converter.ConvertDeleteConfig( Options.NodeId, edgeConfig );
-                        _configCacheHelper.DeleteConfigCache( edgeConfig );
+                        _preprocessHelper.DeleteConfigCache( edgeConfig );
                         break;
                 }
 
@@ -301,7 +301,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     await _mqttClient.PublishAsync( message );
                 }
 
-                _configCacheHelper.SaveConfigToFile();
+                _preprocessHelper.SaveConfigToFile();
 
                 return true;
             }
@@ -320,8 +320,10 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 if ( data == null )
                     return false;
 
+                EdgeData availData = _preprocessHelper.GetAvailEdgeData( data );
+
                 HashSet<string> payloads = new HashSet<string>();
-                bool result = Converter.ConvertData( data, ref payloads );
+                bool result = Converter.ConvertData( availData, ref payloads );
                 if ( result )
                 {
                     if ( _mqttClient.IsConnected == false )
@@ -625,7 +627,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         {
             return Task.Run( () => _sendData( dataset ) );
         }
-        
+
         public Task<bool> SendDeviceStatus( EdgeDeviceStatus deviceStatus )
         {
             return Task.Run( () => _sendDeviceStatus( deviceStatus ) );

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
 
         public class NodeConfig
         {
-            public NodeConfigType? Type { get; set; }
             public HashSet<DeviceConfig> DeviceList { get; set; }
 
             public NodeConfig()
@@ -49,8 +49,8 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
         {
             public string Name { get; set; }
             public string Description { get; set; }
-            public bool? ReadOnly { get; set; }
-            public int? ArraySize { get; set; }
+            public bool ReadOnly { get; set; }
+            public int ArraySize { get; set; }
 
             public bool SendWhenValueChanged { get; set; }
 
@@ -58,19 +58,25 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Model
             {
                 Name = string.Empty;
                 SendWhenValueChanged = false;
+                ReadOnly = false;
+                ArraySize = 0;
             }
         }
 
         public class AnalogTagConfig : TagConfig
         {
-            public double? SpanHigh { get; set; }
-            public double? SpanLow { get; set; }
+            public double SpanHigh { get; set; }
+            public double SpanLow { get; set; }
             public string EngineerUnit { get; set; }
-            public int? IntegerDisplayFormat { get; set; }
-            public int? FractionDisplayFormat { get; set; }
+            public int IntegerDisplayFormat { get; set; }
+            public int FractionDisplayFormat { get; set; }
 
             public AnalogTagConfig()
             {
+                SpanHigh = 1000;
+                SpanLow = 0;
+                IntegerDisplayFormat = 4;
+                FractionDisplayFormat = 2;
             }
         }
 

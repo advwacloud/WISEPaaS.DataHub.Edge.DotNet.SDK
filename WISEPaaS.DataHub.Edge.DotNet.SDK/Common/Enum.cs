@@ -34,13 +34,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         ConfigAck
     }
 
-    public enum NodeConfigType
-    {
-        Node = 1,
-        Gateway = 2,
-        VirtualGroup = 3
-    }
-
     public enum TagType
     {
         Analog = 1,
