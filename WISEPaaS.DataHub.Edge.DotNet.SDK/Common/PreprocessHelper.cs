@@ -214,6 +214,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         public EdgeData GetAvailEdgeData( EdgeData data )
         {
             EdgeData availData = new EdgeData();
+            availData.Timestamp = data.Timestamp;
             try
             {
                 foreach ( var tag in data.TagList )
