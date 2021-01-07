@@ -60,14 +60,4 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         Delete = 3,
         Delsert = 4
     }
-
-    public enum DataManipulateActionType
-    {
-        [EnumMember( Value = "update" )]
-        Update,
-        [EnumMember( Value = "upsert" )]
-        Upsert,
-        [EnumMember( Value = "delete" )]
-        Delete
-    };
 }

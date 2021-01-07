@@ -42,7 +42,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         private string _cmdTopic;
         private string _ackTopic;
         private string _cfgAckTopic;
-        private string _dataManipulateTopic;
 
         private Timer _heartbeatTimer;
         private Timer _dataRecoverTimer;
@@ -501,7 +500,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                     _deviceConnTopic = string.Format( MQTTTopic.DeviceConnTopic, Options.NodeId, Options.DeviceId );
                     _ackTopic = string.Format( MQTTTopic.AckTopic, Options.NodeId );
                     _cfgAckTopic = string.Format( MQTTTopic.CfgAckTopic, Options.NodeId );
-                    _dataManipulateTopic = string.Format( MQTTTopic.DataManipulateTopic, Options.NodeId );
 
                     if ( Options.Type == EdgeType.Gateway )
                         _cmdTopic = nodeCmdTopic;
@@ -567,38 +565,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
             }
         }
 
-        private async Task<bool> _updateData( EdgeData data, bool upsert = false )
-        {
-            try
-            {
-                if ( _mqttClient.IsConnected == false )
-                    return false;
-
-                if ( data == null )
-                    return false;
-
-                string payload = string.Empty;
-                bool result = Converter.ConvertUpdateData( data, upsert, ref payload );
-                if ( result )
-                {
-                    var message = new MqttApplicationMessageBuilder()
-                        .WithTopic( _dataManipulateTopic )
-                        .WithPayload( payload )
-                        .WithAtLeastOnceQoS()
-                        .WithRetainFlag( false )
-                        .Build();
-
-                    await _mqttClient.PublishAsync( message );
-                    return true;
-                }
-            }
-            catch ( Exception ex )
-            {
-                _logger.Error( "Update Data Error ! " + ex.ToString() );
-            }
-            return false;
-        }
-
         #endregion
 
         #region >>> Public Method <<<
@@ -631,11 +597,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
         public Task<bool> SendDeviceStatus( EdgeDeviceStatus deviceStatus )
         {
             return Task.Run( () => _sendDeviceStatus( deviceStatus ) );
-        }
-
-        public Task<bool> UpdateData( EdgeData data, bool upsert = false )
-        {
-            return Task.Run( () => _updateData( data, upsert ) );
         }
 
         #endregion

@@ -297,35 +297,5 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 return false;
             }
         }
-
-        public static bool ConvertUpdateData( EdgeData data, bool upsert, ref string payload )
-        {
-            try
-            {
-                if ( data == null )
-                    return false;
-
-                DataManipulateMessage msg = new DataManipulateMessage();
-                DataManipulateActionType action = ( upsert == true ) ? DataManipulateActionType.Upsert : DataManipulateActionType.Update;
-                msg.D.Action = action;
-                foreach ( var tag in data.TagList )
-                {
-                    msg.D.TagList.Add( new DataManipulateMessage.TagObject()
-                    {
-                        DeviceId = tag.DeviceId,
-                        TagName = tag.TagName,
-                        Value = tag.Value,
-                        Timestamp = data.Timestamp.ToUniversalTime()
-                    } );
-                }
-                payload = JsonConverter.SerializeObject( msg );
-                return true;
-            }
-            catch ( Exception ex )
-            {
-                _logger.Error( "Convert Update Data Payload Error ! " + ex.ToString() );
-                return false;
-            }
-        }
     }
 }

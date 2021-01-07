@@ -108,7 +108,6 @@
     <Compile Include="Model\Edge\EdgeAgentOptions.cs" />
     <Compile Include="Model\MQTTMessage\ConfigMessage.cs" />
     <Compile Include="Model\Edge\ConfigAck.cs" />
-    <Compile Include="Model\MQTTMessage\DataManipulateMessage.cs" />
     <Compile Include="Model\MQTTMessage\DataMessage.cs" />
     <Compile Include="Model\MQTTMessage\DeviceStatusMessage.cs" />
     <Compile Include="Model\Edge\WriteValueCommand.cs" />

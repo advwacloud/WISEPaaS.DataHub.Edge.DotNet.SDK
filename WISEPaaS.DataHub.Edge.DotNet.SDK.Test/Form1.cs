@@ -594,20 +594,9 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
             bool result = _edgeAgent.UploadConfig( ActionType.Delsert, config ).Result;
         }
 
-        private void btnUpdateData_Click( object sender, EventArgs e )
+        private void btnUpdateData_Click(object sender, EventArgs e)
         {
-            if ( _edgeAgent == null )
-                return;
 
-            EdgeData data = new EdgeData();
-            data.TagList.Add( new EdgeData.Tag()
-            {
-                DeviceId = "Device1",
-                TagName = "ATag1",
-                Value = 2
-            } );//2020 - 08 - 26T08: 02:37.893Z
-            data.Timestamp = new DateTime( 2020, 8, 26, 16, 02, 37, 893 );
-            _edgeAgent.UpdateData( data );
         }
     }
 }
