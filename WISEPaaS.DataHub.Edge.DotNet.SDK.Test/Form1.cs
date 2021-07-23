@@ -594,9 +594,5 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
             bool result = _edgeAgent.UploadConfig( ActionType.Delsert, config ).Result;
         }
 
-        private void btnUpdateData_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

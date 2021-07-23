@@ -30,12 +30,14 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblDataArraySize = new System.Windows.Forms.Label();
+            this.numDataArraySize = new System.Windows.Forms.NumericUpDown();
             this.lblHeartbeat = new System.Windows.Forms.Label();
             this.numHeartbeat = new System.Windows.Forms.NumericUpDown();
             this.lblRPName = new System.Windows.Forms.Label();
             this.txtRPName = new System.Windows.Forms.TextBox();
             this.numAArrayTagCount = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblAArrayTagCount = new System.Windows.Forms.Label();
             this.btnDelsertConfig = new System.Windows.Forms.Button();
             this.lblDataFreq = new System.Windows.Forms.Label();
             this.numDataFreq = new System.Windows.Forms.NumericUpDown();
@@ -77,6 +79,7 @@
             this.numDeviceCount = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numDataArraySize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numHeartbeat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAArrayTagCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDataFreq)).BeginInit();
@@ -91,12 +94,14 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lblDataArraySize);
+            this.groupBox2.Controls.Add(this.numDataArraySize);
             this.groupBox2.Controls.Add(this.lblHeartbeat);
             this.groupBox2.Controls.Add(this.numHeartbeat);
             this.groupBox2.Controls.Add(this.lblRPName);
             this.groupBox2.Controls.Add(this.txtRPName);
             this.groupBox2.Controls.Add(this.numAArrayTagCount);
-            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.lblAArrayTagCount);
             this.groupBox2.Controls.Add(this.btnDelsertConfig);
             this.groupBox2.Controls.Add(this.lblDataFreq);
             this.groupBox2.Controls.Add(this.numDataFreq);
@@ -128,6 +133,33 @@
             this.groupBox2.Size = new System.Drawing.Size(812, 555);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
+            // 
+            // lblDataArraySize
+            // 
+            this.lblDataArraySize.AutoSize = true;
+            this.lblDataArraySize.Location = new System.Drawing.Point(521, 328);
+            this.lblDataArraySize.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDataArraySize.Name = "lblDataArraySize";
+            this.lblDataArraySize.Size = new System.Drawing.Size(123, 20);
+            this.lblDataArraySize.TabIndex = 61;
+            this.lblDataArraySize.Text = "Data Array Size";
+            // 
+            // numDataArraySize
+            // 
+            this.numDataArraySize.Location = new System.Drawing.Point(522, 351);
+            this.numDataArraySize.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.numDataArraySize.Name = "numDataArraySize";
+            this.numDataArraySize.Size = new System.Drawing.Size(98, 29);
+            this.numDataArraySize.TabIndex = 62;
+            this.numDataArraySize.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // lblHeartbeat
             // 
@@ -197,16 +229,16 @@
             0,
             0});
             // 
-            // label1
+            // lblAArrayTagCount
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label1.Location = new System.Drawing.Point(22, 482);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(194, 20);
-            this.label1.TabIndex = 54;
-            this.label1.Text = "Analog Array Tag Count:";
+            this.lblAArrayTagCount.AutoSize = true;
+            this.lblAArrayTagCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblAArrayTagCount.Location = new System.Drawing.Point(22, 482);
+            this.lblAArrayTagCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblAArrayTagCount.Name = "lblAArrayTagCount";
+            this.lblAArrayTagCount.Size = new System.Drawing.Size(194, 20);
+            this.lblAArrayTagCount.TabIndex = 54;
+            this.lblAArrayTagCount.Text = "Analog Array Tag Count:";
             // 
             // btnDelsertConfig
             // 
@@ -677,6 +709,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numDataArraySize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numHeartbeat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAArrayTagCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDataFreq)).EndInit();
@@ -737,11 +770,13 @@
         private System.Windows.Forms.NumericUpDown numDataFreq;
         private System.Windows.Forms.Button btnDelsertConfig;
         private System.Windows.Forms.NumericUpDown numAArrayTagCount;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblAArrayTagCount;
         private System.Windows.Forms.Label lblRPName;
         private System.Windows.Forms.TextBox txtRPName;
         private System.Windows.Forms.Label lblHeartbeat;
         private System.Windows.Forms.NumericUpDown numHeartbeat;
+        private System.Windows.Forms.Label lblDataArraySize;
+        private System.Windows.Forms.NumericUpDown numDataArraySize;
     }
 }
 
