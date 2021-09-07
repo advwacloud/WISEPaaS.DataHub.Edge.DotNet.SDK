@@ -172,7 +172,7 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK.Test
                 EdgeConfig.DeviceConfig device = new EdgeConfig.DeviceConfig()
                 {
                     Id = "Device" + i,
-                    Name = "Device " + i,
+                    Name = "Device" + i,
                     Type = "Smart Device",
                     Description = "Device " + i,
                     RetentionPolicyName = txtRPName.Text
