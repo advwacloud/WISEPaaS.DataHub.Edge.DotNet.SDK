@@ -208,8 +208,6 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                 if ( data == null )
                     return false;
 
-                // split message by limited count
-                int count = 0;
                 var list = data.TagList.OrderBy( t => t.DeviceId ).ToList();
                 DataMessage msg = null;
                 for ( int i = 0; i < list.Count; i++ )
@@ -223,17 +221,10 @@ namespace WISEPaaS.DataHub.Edge.DotNet.SDK
                         msg.D[tag.DeviceId] = new Dictionary<string, object>();
 
                     ( ( Dictionary<string, object> ) msg.D[tag.DeviceId] ).Add( tag.TagName, tag.Value );
-                    count++;
-
-                    if ( count == Limit.DataMaxTagCount || i == list.Count - 1 )
-                    {
-                        msg.Timestamp = data.Timestamp.ToUniversalTime();
-                        payloads.Add( JsonConverter.SerializeObject( msg ) );
-
-                        count = 0;
-                        msg = null;
-                    }
                 }
+
+                msg.Timestamp = data.Timestamp.ToUniversalTime();
+                payloads.Add( JsonConverter.SerializeObject( msg ) );
 
                 return true;
             }
